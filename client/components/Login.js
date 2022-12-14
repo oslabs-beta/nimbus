@@ -37,8 +37,8 @@ const Login = ({ swapAuthView }) => {
         setPassword(e.target.value);
     };
     // Hnadle wrong user input
-    const handleError = () => {
-        setErrorMessage("Incorrect email or password");
+    const handleError = (err) => {
+        setErrorMessage(err);
     };
     const submitForm = (e) => {
         e.preventDefault();
@@ -47,24 +47,21 @@ const Login = ({ swapAuthView }) => {
             password
         };
         console.log(credentials);
-        if (email.length < 5) {
-            handleError();
-        }
-        // fetch('/login', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'Application/JSON' },
-        //   body: JSON.stringify(credentials),
-        // })
-        // .then(res => res.json())
-        // .then((result) => {
-        //   console.log('email form login:', result);
-        //   if (result.email) {
-        //     loginUser(result.username);
-        //   }
-        //   else {
-        //     setError('Wrong username or password')
-        //   }
-        // });
+        fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'Application/JSON' },
+            body: JSON.stringify(credentials),
+        })
+            .then(res => res.json())
+            .then((result) => {
+            console.log('email form login:', result);
+            // if (result.email) {
+            //   loginUser(result.username);
+            // }
+            if (!result) {
+                handleError('Wrong username or password');
+            }
+        });
     };
     return (react_1.default.createElement("div", null,
         "Login",
