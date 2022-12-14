@@ -43,6 +43,8 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.231.0",
+    "@aws-sdk/client-sts": "^3.231.0",
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",

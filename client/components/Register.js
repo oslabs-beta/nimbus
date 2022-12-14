@@ -75,32 +75,33 @@ const Register = ({ swapAuthView }) => {
             password,
             confirmation
         };
-        console.log(userData);
+        console.log("user data from front end ", userData);
         const errors = [];
-        for (const el in userData) {
-            if (userData[el].length === 0) {
-                errors.push(el);
+        // for (const el in userData){
+        //   if (userData[el as keyof UserData].length === 0) {
+        //     errors.push(el)
+        //   }
+        // }
+        // if (errors.length > 0) {
+        //   handleError();
+        //   highlightInput(errors);
+        // }
+        fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'Application/JSON' },
+            body: JSON.stringify(userData),
+        })
+            .then(res => res.json())
+            .then((result) => {
+            console.log('email form login:', result);
+            if (result.errMessage) {
+                handleError();
+                highlightInput(result.errors);
             }
-        }
-        if (errors.length > 0) {
-            handleError();
-            highlightInput(errors);
-        }
-        // fetch('/login', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'Application/JSON' },
-        //   body: JSON.stringify(credentials),
-        // })
-        // .then(res => res.json())
-        // .then((result) => {
-        //   console.log('email form login:', result);
-        //   if (result.email) {
-        //     loginUser(result.username);
-        //   }
-        //   else {
-        //     setError('Wrong username or password')
-        //   }
-        // });
+            else {
+                console.log('user info:', result);
+            }
+        });
     };
     return (react_1.default.createElement("div", null,
         "Register",
