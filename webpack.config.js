@@ -38,8 +38,15 @@ const config = {
     ]
   },
   devServer: {
+    port: 8080,
     'static': {
       directory: './dist'
+    },
+    proxy: {
+      '/': {
+        target: 'http://localhost:3000',
+        // secure: true,
+      },
     }
   },
   resolve: {
@@ -53,6 +60,22 @@ const config = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "./client/index.html"),
     }),
-  ],
+  ]
 };
+
+
+// devServer: {
+//   port: 8080,
+//   static: {
+//     directory: path.resolve(__dirname, 'build'),
+//     publicPath: './build'
+//   },
+//   proxy: {
+//     '/': {
+//       target: 'http://localhost:3000',
+//       // secure: true,
+//     },
+//   },
+// },
+
 module.exports = config;

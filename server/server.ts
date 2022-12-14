@@ -1,27 +1,30 @@
+// import express from express and extract out built-in Express, Request and NexFunction types from express
 import express, { Express, Request, Response, NextFunction } from 'express';
+// require in dotenv to store sensitive data that need to be stored and accessed securely 
 const dotenv = require('dotenv');
+// load any environment variables from a .env file 
 dotenv.config();
-const app: Express = express();
-const cookieParser = require('cookie-parser')
-const PORT = process.env.PORT
-
+// create an instance of an express application (allow us to set up routes, middleware etc.)
+const app = express();
+// assign server to port declared in secure file
+const { PORT } = process.env
 
 // use express to parse json objects sent from client
 app.use(express.json());
-// parse cookies
-app.use(cookieParser());
-
-
-// require in authRouter
+// require our authRouter
 const authRouter = require('./routes/authRouter')
 
-// use the authRouter for specified endpoint
+// handle any request sent to / endpoint 
 app.use('/', authRouter)
-
 
 app.get('/', (req: Request, res: Response) => {
   // serve file
   res.send('Express + TypeScript Server');
+});
+
+// Handle all remaining endpoints that are not captured in the server/routers.
+app.use('*', (req: Request, res: Response) => {
+  return res.status(404).json('Not Found');
 });
 
 // Global error handler

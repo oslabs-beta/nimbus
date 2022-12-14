@@ -14,17 +14,15 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const userController = {
     verifyUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            // extract email and password from requeset body
             const { email, password } = req.body;
             try {
                 // find user with input email from database
                 const user = yield User.findOne({ email });
-                // if user does not exist 
                 if (!user) {
-                    // go to next callback in auth router
                     return next({
                         log: "Error caught in userController.verifyUser middleware function",
                         status: 500,
@@ -33,15 +31,12 @@ const userController = {
                 }
                 // if user exists, compare password from client with password in database
                 const isValid = yield bcrypt.compare(password, user.password);
-                // if password exists, persists signedIn to be true
                 if (!isValid) {
-                    // go to next callback in auth router
                     return next({
                         log: "Error caught in userController.verifyUser middleware function",
                         status: 500,
                         message: { err: 'Wrong password' }
                     });
-                    // if password does not exist, send an error message
                 }
                 res.locals.email = email;
                 return next();
@@ -58,8 +53,7 @@ const userController = {
     },
     createUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            // extract out properties needed to sign up user 
-            const { email, firstName, lastName, password, confirmPassword } = req.body;
+            const { email, firstName, lastName, password, confirmation } = req.body;
             // Declare an array to store errors
             const errors = [];
             // Validate email:
@@ -73,24 +67,28 @@ const userController = {
                 }
             }
             // Check if password matches confirmation
-            if (password !== confirmPassword) {
+            if (password !== confirmation) {
                 errors.push("password", "confirmation");
             }
             // Send back errors
             if (errors.length > 0) {
-                res.locals.errors = errors;
-                return next({ err: "errors found in form inputs" });
+                // res.locals.errors = errors;
+                return next({
+                    log: "Error caught in userController.signupUser middleware function",
+                    status: 500,
+                    message: { errMessage: `Error found in user input`, errors: errors }
+                });
             }
             try {
-                // bcrypt.hash returns a promise that will resolve to a string containing the hashed password.
                 const hashedPass = yield bcrypt.hash(password, SALT_WORK_FACTOR);
                 // create a new user in database with hashedPass as password
-                User.create({
-                    email,
+                const user = yield User.create({
                     firstName,
                     lastName,
+                    email,
                     password: hashedPass
                 });
+                res.locals.user = user;
                 return next();
             }
             catch (err) {
@@ -102,39 +100,25 @@ const userController = {
             }
         });
     },
-    assignJWT(res, req, next) {
+    generateJWT(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id } = req.body;
-                const token = jwt.sign(id, ACCESS_TOKEN_SECRET, {
-                    expiresIn: 
+                // Grab user from database
+                const user = User.findOne({
+                    email: req.body.email
                 });
-            }
-            catch (err) {
-                return next({
-                    log: "Error caught in userController.assignJWT middleware function",
-                    status: 500,
-                    message: { err: `Error assigning JWT to user` }
-                });
-            }
-        });
-    },
-    verifyJWT(res, req, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // VERIFY THAT THE TOKEN IS IN THE REQ HEADERS
-                const token = req.headers['x-access-token'];
+                const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d' });
+                res.locals.token = accessToken;
                 return next();
             }
             catch (err) {
                 return next({
-                    log: "Error caught in userController.verifyJWT middleware function",
+                    log: "Error caught in userController.generateJWT middleware function",
                     status: 500,
-                    message: { err: `Error verifying JWT` }
+                    message: { err: `Error generating JWT for user` }
                 });
             }
         });
-    }
+    },
 };
-// Send signup information to database
-// userController.createUser = 
+module.exports = userController;

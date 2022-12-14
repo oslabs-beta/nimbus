@@ -20,8 +20,8 @@ const Login: React.FC<Props> = ({ swapAuthView }: Props) => {
   }
 
   // Hnadle wrong user input
-  const handleError = () => {
-    setErrorMessage("Incorrect email or password")
+  const handleError = (err: string) => {
+    setErrorMessage(err)
   }
 
   const submitForm = (e:any) => {
@@ -31,24 +31,22 @@ const Login: React.FC<Props> = ({ swapAuthView }: Props) => {
       password
     }
     console.log(credentials);
-    if (email.length < 5) {
-      handleError();
-    }
-    // fetch('/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'Application/JSON' },
-    //   body: JSON.stringify(credentials),
-    // })
-    // .then(res => res.json())
-    // .then((result) => {
-    //   console.log('email form login:', result);
-    //   if (result.email) {
-    //     loginUser(result.username);
-    //   }
-    //   else {
-    //     setError('Wrong username or password')
-    //   }
-    // });
+    
+    fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'Application/JSON' },
+      body: JSON.stringify(credentials),
+    })
+    .then(res => res.json())
+    .then((result) => {
+      console.log('email form login:', result);
+      // if (result.email) {
+      //   loginUser(result.username);
+      // }
+      if (!result) {
+        handleError('Wrong username or password');
+      }
+    });
   }
 
 
