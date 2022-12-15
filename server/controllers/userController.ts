@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const SALT_WORK_FACTOR = 10;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const jwt = require('jsonwebtoken')
+import * as dotenv from "dotenv";
 require('dotenv').config();
 
 // create a usercontroller type

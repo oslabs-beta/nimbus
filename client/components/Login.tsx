@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
 interface Props {
-  swapAuthView: () => void;
+  swapAuthView: () => void
+  handleUserLogin: () => void
 }
 
-const Login: React.FC<Props> = ({ swapAuthView }: Props) => {
+const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
   // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,12 +40,12 @@ const Login: React.FC<Props> = ({ swapAuthView }: Props) => {
     })
     .then(res => res.json())
     .then((result) => {
-      console.log('email form login:', result);
-      // if (result.email) {
-      //   loginUser(result.username);
-      // }
-      if (!result) {
+      if (result.err) {
         handleError('Wrong username or password');
+      }
+      else {
+        console.log('user info:', result);
+        handleUserLogin();
       }
     });
   }
@@ -65,7 +66,7 @@ const Login: React.FC<Props> = ({ swapAuthView }: Props) => {
         <br></br>
         <label htmlFor="password">Password</label><br></br>
         <input 
-          type="text" 
+          type="password" 
           id="password" 
           name="password"
           onChange={updatePassword}

@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const Login = ({ swapAuthView }) => {
+const Login = ({ swapAuthView, handleUserLogin }) => {
     // const [username, setUsername] = useState("");
     const [email, setEmail] = (0, react_1.useState)("");
     const [password, setPassword] = (0, react_1.useState)("");
@@ -54,12 +54,12 @@ const Login = ({ swapAuthView }) => {
         })
             .then(res => res.json())
             .then((result) => {
-            console.log('email form login:', result);
-            // if (result.email) {
-            //   loginUser(result.username);
-            // }
-            if (!result) {
+            if (result.err) {
                 handleError('Wrong username or password');
+            }
+            else {
+                console.log('user info:', result);
+                handleUserLogin();
             }
         });
     };
@@ -72,7 +72,7 @@ const Login = ({ swapAuthView }) => {
             react_1.default.createElement("br", null),
             react_1.default.createElement("label", { htmlFor: "password" }, "Password"),
             react_1.default.createElement("br", null),
-            react_1.default.createElement("input", { type: "text", id: "password", name: "password", onChange: updatePassword }),
+            react_1.default.createElement("input", { type: "password", id: "password", name: "password", onChange: updatePassword }),
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: "submit", value: "Submit" })),
         react_1.default.createElement("div", { className: "errorMessage" }, errorMessage),
