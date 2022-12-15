@@ -5,8 +5,13 @@ require('dotenv').config();
 const User = require('../models/userModel')
 
 type authController = {
-  verifyToken: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+  verifyToken: (req: getUserToken, res: Response, next: NextFunction) => Promise<void>;
   generateJWT: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+}
+
+// Created an interface for verifyToken to store the token into the request
+interface getUserToken extends Request {
+  token: string;
 }
 
 const authController: authController = {
@@ -21,6 +26,7 @@ const authController: authController = {
         email
       }
       const accessToken = jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, { expiresIn: '30s'})
+      console.log(accessToken, "ACCESS TOKEN");
       const refreshToken = jwt.sign(res.locals.user, REFRESH_TOKEN_SECRET)
       res.locals.accessToken = accessToken;
       res.locals.refreshToken = refreshToken;
@@ -39,37 +45,29 @@ const authController: authController = {
     }
   },
 
-  async verifyToken (req, res, next):Promise<any> {
+  async verifyToken (req, res, next) {
     try {
       const { authorization } = req.headers
       // token should be BEARER TOKEN NUMBER so we want to split bearer and token number and take the token if it exists in our req.headers
-      const token = authorization && authorization.split(' ')[1]
-      if (token === null) {
-        console.log("TOKEN NOT FOUND")
-        // Should we redirect back to the login page?
-        return res.sendStatus(400).json({ message: 'Token no longer valid' })
+      const token = authorization
+      if (token !== undefined) {
+        req.token = token;
+      } else {
+        return next({
+          log: "Error caught in userController.verifyJWT middleware function",
+          status: 500,
+          message: {err: `Error idenfying JWT`}
+        })
       }
-      // Figure out what jwt.verify returns
-      console.log("BEFORE JWT VERIFY")
-      // THE ISSUE IS HERE INVOKING MY GLOBAL ERROR HANDLER IF I DON'T USE THE CALLBACK FUNCTION
-      await jwt.verify(token, ACCESS_TOKEN_SECRET, async (err: Error, user: {}) => {
-        if (err) {
-          const user = await User.findOne({refreshToken: res.locals.refreshToken})
-          if (user) {
-            console.log(res.locals.user, "USER");
-            const accessToken = await jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, {expiresIn: '30s'})
-            res.locals.accessToken = accessToken;
-            console.log(accessToken, "ACCESS TOKEN")
-            return next();
-          }
+      const user = jwt.verify(token, ACCESS_TOKEN_SECRET)
+      if (user) {
+        const userWithRefreshToken = await User.findOne({refreshToken: res.locals.refreshToken})
+        if (userWithRefreshToken) {
+          // JWT SIGN NOT WORKING
+          const newAccessToken = jwt.sign(userWithRefreshToken, ACCESS_TOKEN_SECRET, { expiresIn: '30s'})
+          res.locals.accessToken = newAccessToken;
         }
-      })
-      // If the request body doesn't have a token (expired)
-      const refreshToken = req.body.token;
-      // if (refreshToken) {
-      //   const accessToken = await jwt.sign(user, ACCESS_TOKEN_SECRET, {expiresIn: '30s'})
-      //   res.locals.token = accessToken;
-      // }
+      }
       return next();
     } catch (err) {
       return next({
@@ -79,17 +77,6 @@ const authController: authController = {
       })
     }
   } 
-  // async verifyToken (req, res, next):Promise<any> {
-  //   const { refreshToken } = req.body;
-  //   if (refreshToken === null) return res.sendStatus(404);
-  //   const userRT = await User.findOne({ refreshToken })
-  //   if (!userRT) return res.sendStatus(404);
-  //   const user = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
-  //   if (!user) return res.sendStatus(404)
-  //   const accessToken = jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, {expiresIn: '15s'})
-  //   res.locals.accessToken = accessToken;
-  //   return next();
-  // }
 }
 
 module.exports = authController;

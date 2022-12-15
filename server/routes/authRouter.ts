@@ -29,8 +29,9 @@ router.post('/register', userController.createUser, (req: Request, res: Response
 
 router.get('/verifyToken', authController.verifyToken, (req: Request, res: Response) => {
     return res.status(200).json({
-        token: res.locals.token
-    })
+        message: 'YOU ARE AUTHENTICATED',
+        accessToken: res.locals.newAccessToken
+    });
 })
 
 module.exports = router
