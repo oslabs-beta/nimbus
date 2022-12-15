@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 interface Props {
   swapAuthView: () => void;
+  handleUserLogin: () => void
 }
 
 interface UserData {
@@ -12,7 +13,7 @@ interface UserData {
   confirmation: String
 }
 
-const Register: React.FC<Props> = ({ swapAuthView }: Props) => {
+const Register: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
   // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -99,6 +100,7 @@ const Register: React.FC<Props> = ({ swapAuthView }: Props) => {
       }
       else {
         console.log('user info:', result);
+        handleUserLogin();
       }
     });
   }

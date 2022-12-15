@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import Login from "../components/Login.js";
 import Register from "../components/Register.js";
 
-const UserAuth = () => {
+interface Props {
+  handleUserLogin: () => void;
+}
+
+const UserAuth: React.FC<Props> = ({ handleUserLogin }: Props) => {
   const [showLogin, setShowLogin] = useState(true);
 
   const swapAuthView = () => {
@@ -12,7 +16,7 @@ const UserAuth = () => {
 
   return (
     <div className="user-auth">
-      {showLogin === true ? <Login swapAuthView={swapAuthView}/> : <Register swapAuthView={swapAuthView}/>}
+      {showLogin === true ? <Login handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/> : <Register handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/>}
     </div>
   )
 }
