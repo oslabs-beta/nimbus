@@ -66,7 +66,7 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
         <br></br>
         <label htmlFor="password">Password</label><br></br>
         <input 
-          type="text" 
+          type="password" 
           id="password" 
           name="password"
           onChange={updatePassword}
