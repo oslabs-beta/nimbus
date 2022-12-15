@@ -72,7 +72,7 @@ const Login = ({ swapAuthView }) => {
             react_1.default.createElement("br", null),
             react_1.default.createElement("label", { htmlFor: "password" }, "Password"),
             react_1.default.createElement("br", null),
-            react_1.default.createElement("input", { type: "text", id: "password", name: "password", onChange: updatePassword }),
+            react_1.default.createElement("input", { type: "password", id: "password", name: "password", onChange: updatePassword }),
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: "submit", value: "Submit" })),
         react_1.default.createElement("div", { className: "errorMessage" }, errorMessage),
