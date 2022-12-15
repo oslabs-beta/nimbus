@@ -13,12 +13,12 @@ const { PORT } = process.env
 app.use(express.json());
 // require our authRouter
 const authRouter = require('./routes/authRouter')
-const dashboardRouter = require('./routes/dashboardRouter')
+// const dashboardRouter = require('./routes/dashboardRouter')
 
 // handle any request sent to / endpoint 
 app.use('/', authRouter)
 
-app.use('/dashboard', dashboardRouter)
+// app.use('/dashboard', dashboardRouter)
 
 app.get('/', (req: Request, res: Response) => {
   // serve file
