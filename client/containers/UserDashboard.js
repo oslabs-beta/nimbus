@@ -22,18 +22,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const UserAuth_1 = __importDefault(require("./UserAuth"));
-const UserDashboard_1 = __importDefault(require("./UserDashboard"));
-const App = () => {
-    const [userLoggedIn, setUserLoggedIn] = (0, react_1.useState)(false);
-    const handleUserLogin = () => {
-        setUserLoggedIn((userLoggedIn) => !userLoggedIn);
-    };
-    return (react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, null)) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin }))));
+const UserDashboard = () => {
+    const [state, setstate] = (0, react_1.useState)();
+    //   const swapAuthView = () => {
+    //     setShowLogin((showLogin) => !showLogin);
+    //   }
+    return (
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path='/home'></Route>
+    //     <Route path='/functions'></Route>
+    //     <Route path='/logs'></Route>
+    //     <Route path='/apis'></Route>
+    //     <Route path='/settings'></Route>
+    //   </Routes>
+    // </BrowserRouter>
+    react_1.default.createElement("div", null, "Dashboard"));
 };
-exports.default = App;
+exports.default = UserDashboard;

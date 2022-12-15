@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UserAuth from './UserAuth';
+import UserDashboard from './UserDashboard';
 
 const App = () => {
-    return (
-        <div className='app'>
-            <UserAuth/>
-        </div>
-    )
-}
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-export default App
+  const handleUserLogin = () => {
+    setUserLoggedIn((userLoggedIn) => !userLoggedIn);
+  };
+
+  return (
+    <div className='app'>
+      {userLoggedIn ? (
+        <UserDashboard />
+      ) : (
+        <UserAuth handleUserLogin={handleUserLogin} />
+      )}
+    </div>
+  );
+};
+
+export default App;

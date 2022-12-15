@@ -17,8 +17,10 @@ const { PORT } = process.env;
 app.use(express_1.default.json());
 // require our authRouter
 const authRouter = require('./routes/authRouter');
+// const dashboardRouter = require('./routes/dashboardRouter')
 // handle any request sent to / endpoint 
 app.use('/', authRouter);
+// app.use('/dashboard', dashboardRouter)
 app.get('/', (req, res) => {
     // serve file
     res.send('Express + TypeScript Server');
