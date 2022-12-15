@@ -29,9 +29,10 @@ const credentialsControllers = {
     getCredentials(req, res, next) {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('hitting credentials controller');
+            console.log(req.body.arn);
             const roleDetails = {
-                // This is hardcoded for now, should be input field from FrontEnd *******
-                RoleArn: 'arn:aws:iam::588640996282:role/NimbusDelegationRole',
+                RoleArn: req.body.arn,
                 RoleSessionName: 'NimbusSession'
             };
             try {
@@ -49,9 +50,9 @@ const credentialsControllers = {
                 console.log(err);
                 // If the ARN user input is invalid, send info to front end so that field will be highlighted red
                 res.locals.arnValidation = { validated: false };
-                return next(err);
+                return next();
             }
         });
     }
 };
-module.exports = credentialsControllers;
+exports.default = credentialsControllers;

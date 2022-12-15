@@ -20,6 +20,8 @@ const client = new STSClient({ region, credentials });
 
 const credentialsControllers = {
   async getCredentials(req: Request, res: Response, next: NextFunction) {
+    console.log('hitting credentials controller');
+    console.log(req.body.arn);
     const roleDetails = {
       RoleArn: req.body.arn, //example: 'arn:aws:iam::588640996282:role/NimbusDelegationRole',
       RoleSessionName: 'NimbusSession'
@@ -39,9 +41,9 @@ const credentialsControllers = {
       console.log(err);
       // If the ARN user input is invalid, send info to front end so that field will be highlighted red
       res.locals.arnValidation = {validated: false};
-     return next(err);
+      return next();
     }
   }
 };
 
-module.exports = credentialsControllers;
+export default credentialsControllers;

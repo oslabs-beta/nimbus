@@ -37,6 +37,14 @@ const UserSchema = new Schema({
    type: String,
    // Probably won't be required
    // required: true
+ },
+ arn: {
+   type: String, 
+   required: true
+ },
+ region: {
+   type: String, 
+   required: true
  }
 })
 
