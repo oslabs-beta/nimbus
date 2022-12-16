@@ -13,7 +13,6 @@ require('dotenv').config();
 type userController = {
     verifyUser: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
     createUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-    generateJWT: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 
 const userController: userController = {
@@ -105,7 +104,6 @@ const userController: userController = {
       console.log(user);
       res.locals.user = user;
       return next();
-
     } catch (err) {
       return next({
         log: "Error caught in userController.signupUser middleware function",
@@ -113,25 +111,7 @@ const userController: userController = {
         message: {errMessage: `Error inserting user to database`, errors: errors}
       })
     }
-  },
-  
-  async generateJWT (req, res, next) {
-    try {
-      // Grab user from database
-      const user = User.findOne({
-        email: req.body.email
-      })
-      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d'})
-      res.locals.token = accessToken;
-      return next();
-    } catch (err) {
-      return next({
-        log: "Error caught in userController.generateJWT middleware function",
-        status: 500,
-        message: {err: `Error generating JWT for user`}
-      })
-    }
-  },
+  }
 };
 
 export default userController;
