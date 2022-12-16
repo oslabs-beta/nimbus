@@ -13,7 +13,7 @@ const App = () => {
   return (
     <div className='app'>
       {userLoggedIn ? (
-        <UserDashboard />
+        <UserDashboard handleUserLogin={handleUserLogin}/>
       ) : (
         <UserAuth handleUserLogin={handleUserLogin} />
       )}

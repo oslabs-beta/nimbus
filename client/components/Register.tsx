@@ -100,6 +100,8 @@ const Register: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => 
       else {
         console.log('user info:', result);
         handleUserLogin();
+        localStorage.setItem("accessToken", result.accessToken)
+        localStorage.setItem("refreshToken", result.refreshToken)
       }
     });
   }

@@ -1,4 +1,5 @@
 const express = require('express') 
+const path = require('path')
 // import Request and Response types from express library
 import { Request, Response } from 'express'
 const userController = require('../controllers/userController')
@@ -8,29 +9,27 @@ const router = express.Router()
 
 // handle post requests sent to /login endpoint from the client 
 router.post('/login', userController.verifyUser, authController.generateJWT, (req: Request, res: Response) => {
-    // Redirect to the dashboard here? What do we want to send to the front end
-    // if (res.locals.email === false) res.redirect('/signup');
-    // what should happen here on successful log in?
-    // else res.redirect('/dashboard');
     return res.status(200).send({
         email: res.locals.email,
-        success: true,
+        success: res.locals.success,
         accessToken: res.locals.accessToken,
         refreshToken: res.locals.refreshToken
     });
 })
 
-// userController.assignJWT, 
 // Handle post request sent to /signup endpoint
-router.post('/register', userController.createUser, (req: Request, res: Response) => {
+router.post('/register', userController.createUser, authController.generateJWT, (req: Request, res: Response) => {
     // Redirect to the dashboard here? What do we want to send to the front end
-    return res.status(200).json(res.locals.user)
+    return res.status(200).json({
+        accessToken: res.locals.accessToken,
+        refreshToken: res.locals.refreshToken
+    })
 })
 
 router.get('/verifyToken', authController.verifyToken, (req: Request, res: Response) => {
     return res.status(200).json({
-        message: 'YOU ARE AUTHENTICATED',
-        accessToken: res.locals.newAccessToken
+        message: res.locals.accessToken ? 'YOU ARE AUTHENTICATED' : 'NOT AUTHENTICATED',
+        accessToken: res.locals.accessToken,
     });
 })
 

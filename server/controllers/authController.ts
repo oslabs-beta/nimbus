@@ -19,22 +19,14 @@ const authController: authController = {
     try {
       const { email } = req.body;
       // Grab user from database
-      const { firstName, lastName } = await User.findOne({ email })
       res.locals.user = {
-        firstName,
-        lastName,
         email
       }
-      const accessToken = jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, { expiresIn: '30s'})
-      console.log(accessToken, "ACCESS TOKEN");
+      // Generate an access and refresh token for user
+      const accessToken = jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, { expiresIn: '10s'})
       const refreshToken = jwt.sign(res.locals.user, REFRESH_TOKEN_SECRET)
       res.locals.accessToken = accessToken;
       res.locals.refreshToken = refreshToken;
-      await User.findOneAndUpdate(
-        { email }, 
-        { refreshToken },
-        { upsert: true }
-      )
       return next();
     } catch (err) {
       return next({
@@ -46,37 +38,43 @@ const authController: authController = {
   },
 
   async verifyToken (req, res, next) {
-    try {
       const { authorization } = req.headers
-      // token should be BEARER TOKEN NUMBER so we want to split bearer and token number and take the token if it exists in our req.headers
-      const token = authorization
-      if (token !== undefined) {
-        req.token = token;
-      } else {
-        return next({
-          log: "Error caught in userController.verifyJWT middleware function",
-          status: 500,
-          message: {err: `Error idenfying JWT`}
-        })
-      }
-      const user = jwt.verify(token, ACCESS_TOKEN_SECRET)
-      if (user) {
-        const userWithRefreshToken = await User.findOne({refreshToken: res.locals.refreshToken})
-        if (userWithRefreshToken) {
-          // JWT SIGN NOT WORKING
-          const newAccessToken = jwt.sign(userWithRefreshToken, ACCESS_TOKEN_SECRET, { expiresIn: '30s'})
-          res.locals.accessToken = newAccessToken;
+      // Token should be 'BEARER TOKEN NUMBER' so slice the string to grab only the token number
+      const token = authorization && authorization.slice(7)
+      // Check if user has an access token
+      if (token) {
+        // Verify if token is valid
+        let user;
+        try {
+          user = jwt.verify(token, ACCESS_TOKEN_SECRET)
+        } catch (err) {
+          console.log(err);
         }
-      }
+        if (user) {
+          res.locals.accessToken = token;
+          return next();
+        }
+        else {
+          // If the user's token was not verified, check for refresh token
+          const { refresh } = req.headers
+          const refreshToken = refresh && refresh.slice(7);
+          try {
+            // Verify if user's refresh token is valid
+            const user = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+            if (user) {
+              // Generate new access token
+              user.iat = Date.now()
+              const newAccessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '10s'})
+              res.locals.accessToken = newAccessToken;
+            } 
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      } 
       return next();
-    } catch (err) {
-      return next({
-        log: "Error caught in userController.verifyJWT middleware function",
-        status: 500,
-        message: {err: `Error verifying JWT`}
-      })
-    }
   } 
 }
+
 
 module.exports = authController;
