@@ -2,7 +2,8 @@ const express = require('express')
 const path = require('path')
 // import Request and Response types from express library
 import { Request, Response } from 'express'
-const userController = require('../controllers/userController')
+import userController from '../controllers/userController'
+import credentialsController from '../controllers/aws/credentialsController'
 const authController = require('../controllers/authController')
 // Give our express app the ability define routes, handle requests, and configure the router by creating an instance of an Express Router
 const router = express.Router()
@@ -18,7 +19,7 @@ router.post('/login', userController.verifyUser, authController.generateJWT, (re
 })
 
 // Handle post request sent to /signup endpoint
-router.post('/register', userController.createUser, authController.generateJWT, (req: Request, res: Response) => {
+router.post('/register', credentialsController.getCredentials, userController.createUser, authController.generateJWT, (req: Request, res: Response) => {
     // Redirect to the dashboard here? What do we want to send to the front end
     return res.status(200).json({
         accessToken: res.locals.accessToken,

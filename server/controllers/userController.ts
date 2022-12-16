@@ -18,7 +18,8 @@ type userController = {
 const userController: userController = {
 
   async verifyUser(req, res, next) {
-    const {email, password} = req.body
+    const { email, password } = req.body;
+
     try {
       // find user with input email from database
       const user: any = await User.findOne({email})
@@ -53,15 +54,17 @@ const userController: userController = {
 },
 
  async createUser (req, res, next) {
-    const { email, firstName, lastName, password, confirmation } = req.body;
+    const { email, firstName, lastName, password, confirmation, arn, region } = req.body;
+    const { arnValidation } = res.locals;
+    console.log(arn, arnValidation);
     // Declare an array to store errors
-    const errors: Array<"email" | "firstName" | "lastName" | "password" | "confirmation"> = [];
+    const errors: Array<"email" | "firstName" | "lastName" | "password" | "confirmation" | "arn" | "region"> = [];
     
     // Validate email:
     if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email) === false) {
       errors.push("email");
     }
-    type KeyType = "email" | "firstName" | "lastName" | "password" | "confirmation";
+    type KeyType = "email" | "firstName" | "lastName" | "password" | "confirmation" | "arn" | "region";
     // Check if input fields are empty
     for (const key in req.body) {
       if (req.body[key as KeyType].length === 0) {
@@ -72,6 +75,12 @@ const userController: userController = {
     if (password !== confirmation) {
       errors.push("password", "confirmation");
     }
+
+    //Check if arn is validated
+    if (!arnValidation.validated) {
+      errors.push("arn");
+    }
+
     // Send back errors
     if (errors.length > 0) {
       // res.locals.errors = errors;
@@ -88,18 +97,21 @@ const userController: userController = {
           firstName,
           lastName,
           email,
-          password: hashedPass
+          password: hashedPass,
+          arn,
+          region
       })
+      console.log(user);
       res.locals.user = user;
       return next();
     } catch (err) {
       return next({
         log: "Error caught in userController.signupUser middleware function",
         status: 500,
-        message: {err: `Error inserting user to database`}
+        message: {errMessage: `Error inserting user to database`, errors: errors}
       })
     }
   }
 };
 
-module.exports = userController;
+export default userController;

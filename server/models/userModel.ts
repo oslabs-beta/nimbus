@@ -36,6 +36,14 @@ const UserSchema = new Schema({
  refreshToken: {
    type: String,
    // required: true
+ },
+ arn: {
+   type: String, 
+   required: true
+ },
+ region: {
+   type: String, 
+   required: true
  }
 })
 

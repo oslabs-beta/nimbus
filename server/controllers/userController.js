@@ -53,7 +53,9 @@ const userController = {
     },
     createUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { email, firstName, lastName, password, confirmation } = req.body;
+            const { email, firstName, lastName, password, confirmation, arn, region } = req.body;
+            const { arnValidation } = res.locals;
+            console.log(arn, arnValidation);
             // Declare an array to store errors
             const errors = [];
             // Validate email:
@@ -69,6 +71,10 @@ const userController = {
             // Check if password matches confirmation
             if (password !== confirmation) {
                 errors.push("password", "confirmation");
+            }
+            //Check if arn is validated
+            if (!arnValidation.validated) {
+                errors.push("arn");
             }
             // Send back errors
             if (errors.length > 0) {
@@ -86,8 +92,11 @@ const userController = {
                     firstName,
                     lastName,
                     email,
-                    password: hashedPass
+                    password: hashedPass,
+                    arn,
+                    region
                 });
+                console.log(user);
                 res.locals.user = user;
                 return next();
             }
@@ -95,7 +104,7 @@ const userController = {
                 return next({
                     log: "Error caught in userController.signupUser middleware function",
                     status: 500,
-                    message: { err: `Error inserting user to database` }
+                    message: { errMessage: `Error inserting user to database`, errors: errors }
                 });
             }
         });
@@ -121,4 +130,4 @@ const userController = {
         });
     },
 };
-module.exports = userController;
+exports.default = userController;
