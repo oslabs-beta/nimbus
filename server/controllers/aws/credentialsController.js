@@ -25,7 +25,7 @@ const client = new client_sts_1.STSClient({ region, credentials });
 // Establish relationship between Nimbus AWS account and client's account
 // Grab the client's credentials
 // This F(n) is used when grabbing information from Lambda, Gateway, etc
-const credentialsControllers = {
+const credentialsController = {
     getCredentials(req, res, next) {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
@@ -43,6 +43,7 @@ const credentialsControllers = {
                 const expiration = (_d = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _d === void 0 ? void 0 : _d.Expiration;
                 res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken, expiration };
                 res.locals.arnValidation = { validated: true };
+                console.log(res.locals.credentials);
                 return next();
                 console.log(assumedRole);
             }
@@ -55,4 +56,4 @@ const credentialsControllers = {
         });
     }
 };
-exports.default = credentialsControllers;
+exports.default = credentialsController;

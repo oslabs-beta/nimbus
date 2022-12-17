@@ -18,7 +18,7 @@ const client = new STSClient({ region, credentials });
 // Grab the client's credentials
 // This F(n) is used when grabbing information from Lambda, Gateway, etc
 
-const credentialsControllers = {
+const credentialsController = {
   async getCredentials(req: Request, res: Response, next: NextFunction) {
     console.log('hitting credentials controller');
     console.log(req.body.arn);
@@ -28,6 +28,7 @@ const credentialsControllers = {
     };
   
     try {
+      // Granting ourselves permission to client's account
       const assumedRole = await client.send(new AssumeRoleCommand(roleDetails));
       const accessKeyId = assumedRole?.Credentials?.AccessKeyId;
       const secretAccessKey = assumedRole?.Credentials?.SecretAccessKey;
@@ -35,6 +36,7 @@ const credentialsControllers = {
       const expiration = assumedRole?.Credentials?.Expiration;
       res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken, expiration };
       res.locals.arnValidation = {validated: true};
+      console.log(res.locals.credentials);
       return next();
       console.log(assumedRole);
     } catch (err) { 
@@ -46,4 +48,4 @@ const credentialsControllers = {
   }
 };
 
-export default credentialsControllers;
+export default credentialsController;

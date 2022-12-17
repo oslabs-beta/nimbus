@@ -13,6 +13,8 @@ router.post('/functions')
 
 router.post('/getlogs')
 
+router.post('/getmetrics')
+
 router.post('/apis')
 
 router.post('/settings')
