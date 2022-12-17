@@ -43,7 +43,9 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-api-gateway": "^3.231.0",
     "@aws-sdk/client-cloudwatch-logs": "^3.231.0",
+    "@aws-sdk/client-lambda": "^3.231.0",
     "@aws-sdk/client-sts": "^3.231.0",
     "@aws-sdk/types": "^3.226.0",
     "@babel/core": "^7.20.2",
