@@ -28,6 +28,7 @@ const credentialsController = {
     };
   
     try {
+      // Granting ourselves permission to client's account
       const assumedRole = await client.send(new AssumeRoleCommand(roleDetails));
       const accessKeyId = assumedRole?.Credentials?.AccessKeyId;
       const secretAccessKey = assumedRole?.Credentials?.SecretAccessKey;
