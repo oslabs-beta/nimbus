@@ -1,6 +1,7 @@
 import { request } from 'http';
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import DashBoardLayout from './DashboardLayout' 
 
 interface FetchHeader {
   headers: {
@@ -42,19 +43,20 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin }: Props) => {
    setData(res);
   }
   return (
-    <div>
+    <>
     <button onClick={getData}>DO I HAVE TOKEN</button>
-    {/* // <BrowserRouter>
-    //   <Routes>
-    //     <Route path='/home'></Route>
-    //     <Route path='/functions'></Route>
-    //     <Route path='/logs'></Route>
-    //     <Route path='/apis'></Route>
-    //     <Route path='/settings'></Route>
-    //   </Routes>
-    // </BrowserRouter> */}
-    <div>Dashboard</div>
-    </div>
+     <Router>
+        <Routes>
+          <Route path='/' element={<DashBoardLayout/>}>
+           <Route index element={<Home/>}></Route>
+           {/* <Route path='/functions' element={<Functions/>}></Route>
+           <Route path='/logs' element={<Logs/>}></Route>
+           <Route path='/apis' element={<Apis/>}></Route>
+           <Route path='/settings' element={<Settings/>}></Route> */}
+          </Route>
+        </Routes>
+     </Router>
+    </>
   );
 };
 

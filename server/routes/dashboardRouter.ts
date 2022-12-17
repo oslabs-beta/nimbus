@@ -1,23 +1,33 @@
 const express = require('express') 
-// import Request and Response types from express library
 import { Request, Response } from 'express'
-
-// Give our express app the ability define routes, handle requests, and configure the router by creating an instance of an Express Router
 const router = express.Router()
+const authController = require('../controllers/authController')
 
-router.post('/home', (req: Request, res: Response) => {
-    return res.status(200).send()
-})
 
-router.post('/functions')
+// All routes should invoke verifyToken middleware in order to get email
+// 2nd middleware should: Query the database for the ARN
+// Grab AWS credentials from the ARN
 
-router.post('/getlogs')
 
-router.post('/getmetrics')
+router.post('/home', authController.verifyToken, (req: Request, res: Response) => {
+    return res.status(200).send();
+});
 
-router.post('/apis')
+router.post('/functions', authController.verifyToken, (req: Request, res: Response) => {
+    return res.status(200).send();
+});
 
-router.post('/settings')
+router.post('/logs', authController.verifyToken, (req: Request, res: Response) => {
+    return res.status(200).send();
+});
+
+router.post('/apis', authController.verifyToken, (req: Request, res: Response) => {
+    return res.status(200).send();
+});
+
+router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
+    return res.status(200).send();
+});
 
 
 
