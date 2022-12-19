@@ -20,4 +20,5 @@ const logsController = {
         });
     }
 };
+// Change to export default syntaix
 module.exports = logsController;

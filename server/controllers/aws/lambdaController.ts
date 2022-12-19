@@ -31,4 +31,4 @@ const lambdaController = {
     }
 }
 
-lambdaController.getFunctions();
+// lambdaController.getFunctions();

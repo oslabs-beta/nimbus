@@ -1,16 +1,21 @@
 import { request } from 'http';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import DashBoardLayout from './DashboardLayout' 
+import Layout from './Layout';
+import Home from '../components/Home';
+import Functions from '../components/Functions';
+import Logs from '../components/Logs';
+import Apis from '../components/Apis';
+import Settings from '../components/Settings';
 
 interface FetchHeader {
   headers: {
-    'Content-Type': string,
+    'Content-Type': string;
     authorization: {
-      accessToken: string,
-      refreshToken: string
-    }
-  }
+      accessToken: string;
+      refreshToken: string;
+    };
+  };
 }
 
 interface Props {
@@ -28,35 +33,34 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin }: Props) => {
     // if (refreshToken) request.setHeader('refresh', `BEARER ${refreshToken}`);
     const data = await fetch('/verifyToken', {
       method: 'GET',
-      headers: { 
-        'Content-Type': 'Application/JSON', 
-        'authorization': `BEARER ${localStorage.getItem('accessToken')}`,
-        'refresh': `BEARER ${localStorage.getItem('refreshToken')}`,
-      }
-   });
-   const res = await data.json();
-   console.log(res, "RESPONSE FROM VERIFYING")
-   if (!res.accessToken) {
-    handleUserLogin();
-   }
-   console.log(res);
-   setData(res);
-  }
+      headers: {
+        'Content-Type': 'Application/JSON',
+        authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+      },
+    });
+    const res = await data.json();
+    console.log(res, 'RESPONSE FROM VERIFYING');
+    if (!res.accessToken) {
+      handleUserLogin();
+    }
+    console.log(res);
+    setData(res);
+  };
   return (
     <>
-    <button onClick={getData}>DO I HAVE TOKEN</button>
-     <Router>
+      <button onClick={getData}>DO I HAVE TOKEN</button>
+      <Router>
+        <Layout />
         <Routes>
-          <Route path='/' element={<DashBoardLayout/>}>
-           <Route index element={<Home/>}></Route>
-           {/* <Route path='/functions' element={<Functions/>}></Route>
-           <Route path='/logs' element={<Logs/>}></Route>
-           <Route path='/apis' element={<Apis/>}></Route>
-           <Route path='/settings' element={<Settings/>}></Route> */}
-          </Route>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='functions' element={<Functions />}></Route>
+          <Route path='logs' element={<Logs />}></Route>
+          <Route path='apis' element={<Apis />}></Route>
+          <Route path='settings' element={<Settings />} ></Route>
         </Routes>
-     </Router>
-    </>
+      </Router>
+    </> 
   );
 };
 

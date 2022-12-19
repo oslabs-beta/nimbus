@@ -17,29 +17,30 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 //req: Request, res: Response, next: NextFunction
 const lambdaController = {
-    getFunctions() {
+    getFunctions(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const lambdaClient = new client_lambda_1.LambdaClient({
-                region: 'us-east-1',
-                credentials: {
+                region: req.body.region,
+                credentials: req.body.credentials /* {
                     accessKeyId: 'ASIAYSDN4ZO5EVRXMD2J',
                     secretAccessKey: '2b/KMmCLIeT+zOJwPvCgeRJixlPK9Zo87nfDVGgy',
                     sessionToken: 'IQoJb3JpZ2luX2VjEND//////////wEaCXVzLWVhc3QtMSJHMEUCIHZZneS46OGdL10mub0z33xjXAZm8zHL9nqm12CgJwLlAiEAwnSUo8OM9QHicu8CVHJF7pah3laMtvhfL4D6ZwJvD7gqowII+f//////////ARAAGgw1ODg2NDA5OTYyODIiDKGyhOFIpg9FII3NXCr3AS/l40lQFXLbbWg90aLOSVMDrpbfgeFvOPgmHow6WBawBhejChmt/YomqN8wC44TXptymSFoqxPXH+oRUYhsA+3PMumvrN/9iy/8CveI+IUmySxBFUKU95YxxZJEGrP1T4lk2hVKdyY7/jxSbkWsIhH3fPdNDvIXoyQcgxThX9wuXzW/dvv1Q8Uini638alx4PBWG/WarfaO1rSoDpqWI1ZoMUAzbFY8G3ZltkStfCUGLWN8SEwuKn7+Z5c4qU9rZrFZr+0In1KkTWPk5XZwaWxJ4I/NLG/lttA7xnXg94nbDie/vJUVIWRZ+WEsLRCgJg7oaZaQCxMw7uXunAY6nQEns7DO5UvHmsid70gaBpWVfkuwCPyWUTlrdB4PzADCkvjQfdhpxfFsD7+4QK4Wc0kUcQD21chstDpjrLCFCsg3FruPMqxO54RFMyAf3DwS9AMtPS5oSPi2aUNzMttmj3pEMLYYgJnaAxztGzfZncC8w9onpCO0D4G9vAAcd9VVEWsiSFdem4v9tJBn9t4P0aSsEmvxS8hAADMExus8'
-                } //req.body.credentials
+                } */
             });
             const getFunctionsCommand = new client_lambda_1.ListFunctionsCommand({});
             try {
                 const commandResults = yield lambdaClient.send(getFunctionsCommand);
                 const lambdaFunctions = commandResults === null || commandResults === void 0 ? void 0 : commandResults.Functions;
-                const lambdaFunctionNames = lambdaFunctions === null || lambdaFunctions === void 0 ? void 0 : lambdaFunctions.map(f => f.FunctionName);
-                console.log(lambdaFunctionNames);
+                const lambdaFunctionDetails = lambdaFunctions === null || lambdaFunctions === void 0 ? void 0 : lambdaFunctions.map(f => f.FunctionName);
+                console.log(lambdaFunctionDetails);
+                res.locals.lambdaFunctions = lambdaFunctionDetails;
                 //return next();
             }
             catch (err) {
-                console.error('Error in Lambda List Functions: ', err);
+                console.log(err);
                 //return next(err);
             }
         });
     }
 };
-lambdaController.getFunctions();
+// lambdaController.getFunctions();

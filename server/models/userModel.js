@@ -58,9 +58,8 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    ssid: {
+    refreshToken: {
         type: String,
-        // Probably won't be required
         // required: true
     },
     arn: {
