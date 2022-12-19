@@ -27,6 +27,7 @@ router.post('/register', credentialsController_1.default.getCredentials, userCon
         refreshToken: res.locals.refreshToken
     });
 });
+// MUST USE FOR EVERY ROUTE: authController.verifyToken adds user's email to res.locals
 router.get('/verifyToken', authController.verifyToken, (req, res) => {
     return res.status(200).json({
         message: res.locals.accessToken ? 'YOU ARE AUTHENTICATED' : 'NOT AUTHENTICATED',

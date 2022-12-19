@@ -16,6 +16,12 @@ const Logs = () => {
   const [filter, setFilter] = useState<Filter>('allLogs');
   const [search, setSearch] = useState<Search>('');
 
+  const routes = {
+    functions: '/dashboard/functions',
+    logs: '/dashboard/logs'
+  }
+
+  // Change options
   const changePeriod = (e: any) => {
     setPeriod(e.target.value);
     console.log(period);
@@ -31,12 +37,10 @@ const Logs = () => {
     console.log(search);
   };
 
-  // get function names
-  const getFunctions = async () => {
-    // const accessToken = localStorage.getItem('accessToken');
-    // const refreshToken = localStorage.getItem('refreshToken');
-
-    const res = await fetch('/dashboard/functions', {
+  // Get data: function names or logs (depending on the input)
+  const getData = async (route:string) => {
+    // response is a JSON Object that contains either an array of logs or array of functions depending on the route
+    const res = await fetch(`${route}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'Application/JSON',
@@ -45,32 +49,49 @@ const Logs = () => {
       },
       body: JSON.stringify({}),
     });
-
-    const funcArr = await res.json();
-    console.log('FUNC ARRAY', funcArr);
-    // setFunctions(funcArr)
+    // convert response to JS object
+    const resArr = await res.json();
+    console.log(`${route}`, resArr);
+    
+    switch(route) {
+      case routes.functions:
+        setFunctions(resArr);
+        break;
+      case routes.logs:
+        setLogs(resArr);
+        break;
+      default:
+        console.log(`${route}`, resArr);
+    }
   };
 
-  // useEffect
+  // On component mount: get all lambda functions
   useEffect(() => {
-    getFunctions();
+    getData(routes.functions);
   }, []);
-  // get logs based on the function that's clicked
 
-  // Get function
+  // On state change selectedFunc, period, filter: get logs based on selected lambda func and options
+  useEffect(() => {
+    getData(routes.logs);
+  }, [selectedFunc, period, filter]);
 
-  // Get logs
-  const getLogs = () => {
-    // const logs = fetch('/POST');
-  };
+
+  const logsList = logs.map((log) =>
+  <div className='logs-log-event'>{log}</div>
+  );
+
+  const functionsList = functions.map((func) =>
+  <div className='logs-function-name'>{func}</div>
+  );
+
 
   return (
     <div>
       <div>Logs</div>
       <div className='logs-container' style={{ display: 'flex', gap: '2rem' }}>
         <div className='logs-functions'>
-          {/* {functions} */}
           functions
+          {functionsList}
         </div>
         <div className='logs-logs'>
           <div className='logs-filters'>
@@ -108,11 +129,11 @@ const Logs = () => {
             </div>
             <div className='logs-options-search'>
               <input onChange={changeSearch}></input>
-              <button onClick={getLogs}>Search</button>
+              <button onClick={() => getData(routes.logs)}>Search</button>
             </div>
           </div>
-          {/* {functions} */}
           logs
+          {logsList}
         </div>
       </div>
     </div>

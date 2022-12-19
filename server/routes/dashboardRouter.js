@@ -3,26 +3,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-// All routes should invoke verifyToken middleware in order to get email
-// 2nd middleware should: Query the database for the ARN
-// Grab AWS credentials from the ARN
-router.post('/home', authController.verifyToken, (req, res) => {
-    return res.status(200).send();
+const credentialsController = require('../controllers/aws/credentialsController');
+const lambdaController = require('../controllers/aws/lambdaController');
+const logsController = require('../controllers/aws/logsController');
+// All routes verify JWT Token to get email
+// Email is used to query the database for ARN
+// ARN is used to get credentials from client's AWS account
+// Credentials used to grab matrics
+router.post('/home', authController.verifyToken, credentialsController.getCredentialsFromDB, (req, res) => {
+    return res.status(200).json();
 });
-router.post('/functions', authController.verifyToken, (req, res) => {
-    return res.status(200).send();
+router.post('/functions', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, (req, res) => {
+    return res.status(200).json({
+        functions: res.locals.functions
+    });
 });
-router.post('/logs', authController.verifyToken, (req, res) => {
-    return res.status(200).send();
+router.post('/allLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getAllLogs, (req, res) => {
+    return res.status(200).json({
+        logs: res.locals.logs
+    });
 });
-router.post('/apis', authController.verifyToken, (req, res) => {
-    return res.status(200).send();
+router.post('/filteredLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getFilteredLogs, (req, res) => {
+    return res.status(200).json({
+        filteredLogs: res.locals.filteredLogs
+    });
 });
-router.post('/settings', authController.verifyToken, (req, res) => {
-    return res.status(200).send();
+// Add middleware for API Gateway
+router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req, res) => {
+    return res.status(200).json();
 });
-router.post('/functions');
-router.post('/getlogs');
-router.post('/getmetrics');
-router.post('/apis');
-router.post('/settings');
+// router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
+//     return res.status(200).json();
+// });

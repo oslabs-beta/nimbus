@@ -31,8 +31,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const react_router_dom_1 = require("react-router-dom");
+const Layout_1 = __importDefault(require("./Layout"));
+const Home_1 = __importDefault(require("../components/Home"));
+const Functions_1 = __importDefault(require("../components/Functions"));
+const Logs_1 = __importDefault(require("../components/Logs"));
+const Apis_1 = __importDefault(require("../components/Apis"));
+const Settings_1 = __importDefault(require("../components/Settings"));
 const UserDashboard = ({ handleUserLogin }) => {
     const [data, setData] = (0, react_1.useState)([]);
     //   const swapAuthView = () => {
@@ -45,20 +55,27 @@ const UserDashboard = ({ handleUserLogin }) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'Application/JSON',
-                'authorization': `BEARER ${localStorage.getItem('accessToken')}`,
-                'refresh': `BEARER ${localStorage.getItem('refreshToken')}`,
-            }
+                authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+                refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+            },
         });
         const res = yield data.json();
-        console.log(res, "RESPONSE FROM VERIFYING");
+        console.log(res, 'RESPONSE FROM VERIFYING');
         if (!res.accessToken) {
             handleUserLogin();
         }
         console.log(res);
         setData(res);
     });
-    return (react_1.default.createElement("div", null,
+    return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("button", { onClick: getData }, "DO I HAVE TOKEN"),
-        react_1.default.createElement("div", null, "Dashboard")));
+        react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
+            react_1.default.createElement(Layout_1.default, null),
+            react_1.default.createElement(react_router_dom_1.Routes, null,
+                react_1.default.createElement(react_router_dom_1.Route, { path: '/', element: react_1.default.createElement(Home_1.default, null) }),
+                react_1.default.createElement(react_router_dom_1.Route, { path: 'functions', element: react_1.default.createElement(Functions_1.default, null) }),
+                react_1.default.createElement(react_router_dom_1.Route, { path: 'logs', element: react_1.default.createElement(Logs_1.default, null) }),
+                react_1.default.createElement(react_router_dom_1.Route, { path: 'apis', element: react_1.default.createElement(Apis_1.default, null) }),
+                react_1.default.createElement(react_router_dom_1.Route, { path: 'settings', element: react_1.default.createElement(Settings_1.default, null) })))));
 };
 exports.default = UserDashboard;
