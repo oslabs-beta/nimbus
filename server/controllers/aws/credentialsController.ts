@@ -5,15 +5,15 @@ import User from '../../models/userModel';
 import dotenv from 'dotenv';
 dotenv.config();
 
-interface User {
- firstName: string,
- lastName: string,
- email: string,
- password: string,
- refreshToken?: string,
- arn: string, 
- region: string, 
-}
+// interface User {
+//  firstName: string,
+//  lastName: string,
+//  email: string,
+//  password: string,
+//  refreshToken?: string,
+//  arn: string, 
+//  region: string, 
+// }
 
 const credentials: AwsCredentialIdentity = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -60,16 +60,16 @@ const credentialsController = {
 
   async getCredentialsFromDB(req: Request, res: Response, next: NextFunction) {
     console.log('hitting credentials controller');
-    console.log(req.body.email);
-    const { email } = req.body;
-    let arn;
-    const user: User | null = await User.findOne({ email })
+    const { email } = res.locals;
+    const user: any = await User.findOne({ email })
+    console.log(user);
     if (user) {
-      arn = user.arn;
+      res.locals.arn = user.arn;
+      res.locals.region = user.region;
     }
     
     const roleDetails = {
-      RoleArn: arn, //example: 'arn:aws:iam::588640996282:role/NimbusDelegationRole',
+      RoleArn: res.locals.arn, //example: 'arn:aws:iam::588640996282:role/NimbusDelegationRole',
       RoleSessionName: 'NimbusSession'
     };
   
@@ -79,15 +79,18 @@ const credentialsController = {
       const accessKeyId = assumedRole?.Credentials?.AccessKeyId;
       const secretAccessKey = assumedRole?.Credentials?.SecretAccessKey;
       const sessionToken = assumedRole?.Credentials?.SessionToken;
-      const expiration = assumedRole?.Credentials?.Expiration;
-      res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken, expiration };
+      //const expiration = assumedRole?.Credentials?.Expiration;
+      res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken };
       console.log(res.locals.credentials);
       return next();
       console.log(assumedRole);
     } catch (err) { 
       console.log(err);
-      // If the ARN user input is invalid, send info to front end so that field will be highlighted red
-      return next();
+      return next({
+        log: "Error caught in credentialsController.getCredentialsFromDB middleware function",
+        status: 500,
+        message: {errMessage: `Error assigning assumed role to the provided ARN`, errors: err}
+      });
     }
   }
 };
