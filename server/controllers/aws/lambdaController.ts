@@ -15,20 +15,20 @@ const lambdaController = {
             } */
         });
 
-//         const getFunctionsCommand = new ListFunctionsCommand({});
+        const getFunctionsCommand = new ListFunctionsCommand({});
 
-//         try {
-//             const commandResults = await lambdaClient.send(getFunctionsCommand);
-//             const lambdaFunctions = commandResults?.Functions;
-//             const lambdaFunctionDetails = lambdaFunctions?.map(f => f.FunctionName);
-//             console.log(lambdaFunctionDetails);
-//             res.locals.lambdaFunctions = lambdaFunctionDetails;
-//             //return next();
-//         } catch (err) {
-//             console.log(err);
-//             //return next(err);
-//         }
-//     }
-// }
+        try {
+            const commandResults = await lambdaClient.send(getFunctionsCommand);
+            const lambdaFunctions = commandResults?.Functions;
+            const lambdaFunctionDetails = lambdaFunctions?.map(f => f.FunctionName);
+            console.log(lambdaFunctionDetails);
+            res.locals.lambdaFunctions = lambdaFunctionDetails;
+            //return next();
+        } catch (err) {
+            console.log(err);
+            //return next(err);
+        }
+    }
+}
 
 export default lambdaController;
