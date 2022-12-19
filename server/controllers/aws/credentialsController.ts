@@ -61,7 +61,7 @@ const credentialsController = {
   async getCredentialsFromDB(req: Request, res: Response, next: NextFunction) {
     console.log('hitting credentials controller');
     console.log(req.body.email);
-    const { email } = req.body.email;
+    const { email } = req.body;
     let arn;
     const user: User | null = await User.findOne({ email })
     if (user) {
