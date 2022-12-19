@@ -62,7 +62,7 @@ const credentialsController = {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('hitting credentials controller');
             console.log(req.body.email);
-            const { email } = req.body.email;
+            const { email } = req.body;
             let arn;
             const user = yield userModel_1.default.findOne({ email });
             if (user) {

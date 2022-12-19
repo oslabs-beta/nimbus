@@ -77,8 +77,7 @@ const logsController = {
             //     new Date().setDate(new Date().getDate() - 30)
             //   ).valueOf();
             // }
-            let filterPattern;
-            filterPattern = '1.26 ms'; //req.body.filterPattern
+            const filterPattern = '1.26 ms'; //req.body.filterPattern
             const cwLogsClient = new client_cloudwatch_logs_1.CloudWatchLogsClient({
                 region: 'us-east-1',
                 credentials: {
@@ -102,4 +101,4 @@ const logsController = {
 };
 logsController.getFilteredLogs();
 // Change to export default syntaix
-module.exports = logsController;
+exports.default = logsController;
