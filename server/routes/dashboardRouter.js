@@ -21,3 +21,8 @@ router.post('/apis', authController.verifyToken, (req, res) => {
 router.post('/settings', authController.verifyToken, (req, res) => {
     return res.status(200).send();
 });
+router.post('/functions');
+router.post('/getlogs');
+router.post('/getmetrics');
+router.post('/apis');
+router.post('/settings');

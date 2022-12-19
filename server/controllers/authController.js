@@ -55,7 +55,7 @@ const authController = {
                 }
                 if (user) {
                     res.locals.accessToken = token;
-                    res.locals.email = user.email;
+                    return next();
                 }
                 else {
                     // If the user's token was not verified, check for refresh token
@@ -69,7 +69,6 @@ const authController = {
                             user.iat = Date.now();
                             const newAccessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '10s' });
                             res.locals.accessToken = newAccessToken;
-                            res.locals.email = user.email;
                         }
                     }
                     catch (err) {
