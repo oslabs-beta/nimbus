@@ -31,4 +31,5 @@ const lambdaController = {
     }
 }
 
-lambdaController.getFunctions();
+export default lambdaController;
+// lambdaController.getFunctions();

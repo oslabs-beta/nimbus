@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/oslabs-beta/nimbus#readme",
   "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.231.0",
     "@types/jsonwebtoken": "^8.5.9",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",

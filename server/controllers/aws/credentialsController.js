@@ -36,6 +36,7 @@ const credentialsController = {
                 RoleSessionName: 'NimbusSession'
             };
             try {
+                // Granting ourselves permission to client's account
                 const assumedRole = yield client.send(new client_sts_1.AssumeRoleCommand(roleDetails));
                 const accessKeyId = (_a = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _a === void 0 ? void 0 : _a.AccessKeyId;
                 const secretAccessKey = (_b = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _b === void 0 ? void 0 : _b.SecretAccessKey;

@@ -108,26 +108,6 @@ const userController = {
                 });
             }
         });
-    },
-    generateJWT(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // Grab user from database
-                const user = User.findOne({
-                    email: req.body.email
-                });
-                const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d' });
-                res.locals.token = accessToken;
-                return next();
-            }
-            catch (err) {
-                return next({
-                    log: "Error caught in userController.generateJWT middleware function",
-                    status: 500,
-                    message: { err: `Error generating JWT for user` }
-                });
-            }
-        });
-    },
+    }
 };
 exports.default = userController;
