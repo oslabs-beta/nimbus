@@ -34,6 +34,6 @@ const App = () => {
     const handleUserLogin = () => {
         setUserLoggedIn((userLoggedIn) => !userLoggedIn);
     };
-    return (react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, null)) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin }))));
+    return (react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, { handleUserLogin: handleUserLogin })) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin }))));
 };
 exports.default = App;

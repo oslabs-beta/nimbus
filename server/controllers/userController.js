@@ -8,8 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const User = require('../models/userModel');
+const userModel_1 = __importDefault(require("../models/userModel"));
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -21,7 +24,7 @@ const userController = {
             const { email, password } = req.body;
             try {
                 // find user with input email from database
-                const user = yield User.findOne({ email });
+                const user = yield userModel_1.default.findOne({ email });
                 if (!user) {
                     return next({
                         log: "Error caught in userController.verifyUser middleware function",
@@ -80,7 +83,7 @@ const userController = {
             if (errors.length > 0) {
                 // res.locals.errors = errors;
                 return next({
-                    log: "Error caught in userController.signupUser middleware function",
+                    log: "Error caught in userController.createUser middleware function",
                     status: 500,
                     message: { errMessage: `Error found in user input`, errors: errors }
                 });
@@ -88,7 +91,7 @@ const userController = {
             try {
                 const hashedPass = yield bcrypt.hash(password, SALT_WORK_FACTOR);
                 // create a new user in database with hashedPass as password
-                const user = yield User.create({
+                const user = yield userModel_1.default.create({
                     firstName,
                     lastName,
                     email,
@@ -108,26 +111,6 @@ const userController = {
                 });
             }
         });
-    },
-    generateJWT(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // Grab user from database
-                const user = User.findOne({
-                    email: req.body.email
-                });
-                const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '365d' });
-                res.locals.token = accessToken;
-                return next();
-            }
-            catch (err) {
-                return next({
-                    log: "Error caught in userController.generateJWT middleware function",
-                    status: 500,
-                    message: { err: `Error generating JWT for user` }
-                });
-            }
-        });
-    },
+    }
 };
 exports.default = userController;

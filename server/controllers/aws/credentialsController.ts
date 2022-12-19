@@ -1,8 +1,19 @@
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { AwsCredentialIdentity } from "@aws-sdk/types";
 import { Request, Response, NextFunction } from "express";
+import User from '../../models/userModel';
 import dotenv from 'dotenv';
 dotenv.config();
+
+interface User {
+ firstName: string,
+ lastName: string,
+ email: string,
+ password: string,
+ refreshToken?: string,
+ arn: string, 
+ region: string, 
+}
 
 const credentials: AwsCredentialIdentity = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -43,6 +54,39 @@ const credentialsController = {
       console.log(err);
       // If the ARN user input is invalid, send info to front end so that field will be highlighted red
       res.locals.arnValidation = {validated: false};
+      return next();
+    }
+  },
+
+  async getCredentialsFromDB(req: Request, res: Response, next: NextFunction) {
+    console.log('hitting credentials controller');
+    console.log(req.body.email);
+    const { email } = req.body.email;
+    let arn;
+    const user: User | null = await User.findOne({ email })
+    if (user) {
+      arn = user.arn;
+    }
+    
+    const roleDetails = {
+      RoleArn: arn, //example: 'arn:aws:iam::588640996282:role/NimbusDelegationRole',
+      RoleSessionName: 'NimbusSession'
+    };
+  
+    try {
+      // Granting ourselves permission to client's account
+      const assumedRole = await client.send(new AssumeRoleCommand(roleDetails));
+      const accessKeyId = assumedRole?.Credentials?.AccessKeyId;
+      const secretAccessKey = assumedRole?.Credentials?.SecretAccessKey;
+      const sessionToken = assumedRole?.Credentials?.SessionToken;
+      const expiration = assumedRole?.Credentials?.Expiration;
+      res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken, expiration };
+      console.log(res.locals.credentials);
+      return next();
+      console.log(assumedRole);
+    } catch (err) { 
+      console.log(err);
+      // If the ARN user input is invalid, send info to front end so that field will be highlighted red
       return next();
     }
   }

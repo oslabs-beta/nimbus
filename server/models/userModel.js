@@ -58,9 +58,8 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    ssid: {
+    refreshToken: {
         type: String,
-        // Probably won't be required
         // required: true
     },
     arn: {
@@ -75,4 +74,4 @@ const UserSchema = new Schema({
 // create a User model constructor using the UserSchmea we defined above 
 const User = mongoose_1.default.model('User', UserSchema);
 // make User model constructor public to all files in our app
-module.exports = User;
+exports.default = User;
