@@ -22,11 +22,15 @@ const lambdaController = {
             const lambdaFunctions = commandResults?.Functions;
             const lambdaFunctionDetails = lambdaFunctions?.map(f => f.FunctionName);
             console.log(lambdaFunctionDetails);
-            res.locals.lambdaFunctions = lambdaFunctionDetails;
-            //return next();
+             res.locals.functions = lambdaFunctionDetails;
+            return next();
         } catch (err) {
             console.log(err);
-            //return next(err);
+            return next({
+                log: "Error caught in lambdaController.getFunctions middleware function",
+                status: 500,
+                message: {errMessage: `Error getting functions for the account`, errors: err}
+              });
         }
     }
 }
