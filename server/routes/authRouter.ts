@@ -5,11 +5,12 @@ import { Request, Response } from 'express'
 import userController from '../controllers/userController'
 import credentialsController from '../controllers/aws/credentialsController'
 const authController = require('../controllers/authController')
+import metricsController  from '../controllers/aws/metricsController'
 // Give our express app the ability define routes, handle requests, and configure the router by creating an instance of an Express Router
 const router = express.Router()
 
 // handle post requests sent to /login endpoint from the client 
-router.post('/login', userController.verifyUser, authController.generateJWT, (req: Request, res: Response) => {
+router.post('/login', userController.verifyUser, metricsController.getAllMetrics, authController.generateJWT, (req: Request, res: Response) => {
     return res.status(200).send({
         email: res.locals.email,
         success: res.locals.success,
