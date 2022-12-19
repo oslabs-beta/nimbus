@@ -10,7 +10,7 @@ import metricsController  from '../controllers/aws/metricsController'
 const router = express.Router()
 
 // handle post requests sent to /login endpoint from the client 
-router.post('/login', userController.verifyUser, metricsController.getMetricsByFunc, authController.generateJWT, (req: Request, res: Response) => {
+router.post('/login', userController.verifyUser, metricsController.getAllMetrics, authController.generateJWT, (req: Request, res: Response) => {
     return res.status(200).send({
         email: res.locals.email,
         success: res.locals.success,
