@@ -1,7 +1,7 @@
 // import built-in Request, Response and NextFunction types from express module
 import { Request, Response, NextFunction } from "express";
 import { nextTick } from "process";
-const User = require('../models/userModel')
+import User from '../models/userModel';
 const bcrypt = require('bcrypt')
 const SALT_WORK_FACTOR = 10;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -85,7 +85,7 @@ const userController: userController = {
     if (errors.length > 0) {
       // res.locals.errors = errors;
       return next({
-        log: "Error caught in userController.signupUser middleware function",
+        log: "Error caught in userController.createUser middleware function",
         status: 500,
         message: {errMessage: `Error found in user input`, errors: errors}
       })

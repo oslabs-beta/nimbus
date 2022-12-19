@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_sts_1 = require("@aws-sdk/client-sts");
+const userModel_1 = __importDefault(require("../../models/userModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const credentials = {
@@ -36,6 +37,7 @@ const credentialsController = {
                 RoleSessionName: 'NimbusSession'
             };
             try {
+                // Granting ourselves permission to client's account
                 const assumedRole = yield client.send(new client_sts_1.AssumeRoleCommand(roleDetails));
                 const accessKeyId = (_a = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _a === void 0 ? void 0 : _a.AccessKeyId;
                 const secretAccessKey = (_b = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _b === void 0 ? void 0 : _b.SecretAccessKey;
@@ -51,6 +53,40 @@ const credentialsController = {
                 console.log(err);
                 // If the ARN user input is invalid, send info to front end so that field will be highlighted red
                 res.locals.arnValidation = { validated: false };
+                return next();
+            }
+        });
+    },
+    getCredentialsFromDB(req, res, next) {
+        var _a, _b, _c, _d;
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('hitting credentials controller');
+            console.log(req.body.email);
+            const { email } = req.body;
+            let arn;
+            const user = yield userModel_1.default.findOne({ email });
+            if (user) {
+                arn = user.arn;
+            }
+            const roleDetails = {
+                RoleArn: arn,
+                RoleSessionName: 'NimbusSession'
+            };
+            try {
+                // Granting ourselves permission to client's account
+                const assumedRole = yield client.send(new client_sts_1.AssumeRoleCommand(roleDetails));
+                const accessKeyId = (_a = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _a === void 0 ? void 0 : _a.AccessKeyId;
+                const secretAccessKey = (_b = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _b === void 0 ? void 0 : _b.SecretAccessKey;
+                const sessionToken = (_c = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _c === void 0 ? void 0 : _c.SessionToken;
+                const expiration = (_d = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _d === void 0 ? void 0 : _d.Expiration;
+                res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken, expiration };
+                console.log(res.locals.credentials);
+                return next();
+                console.log(assumedRole);
+            }
+            catch (err) {
+                console.log(err);
+                // If the ARN user input is invalid, send info to front end so that field will be highlighted red
                 return next();
             }
         });

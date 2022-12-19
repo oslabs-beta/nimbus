@@ -22,23 +22,43 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const UserDashboard = () => {
-    const [state, setstate] = (0, react_1.useState)();
+const UserDashboard = ({ handleUserLogin }) => {
+    const [data, setData] = (0, react_1.useState)([]);
     //   const swapAuthView = () => {
     //     setShowLogin((showLogin) => !showLogin);
     //   }
-    return (
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path='/home'></Route>
-    //     <Route path='/functions'></Route>
-    //     <Route path='/logs'></Route>
-    //     <Route path='/apis'></Route>
-    //     <Route path='/settings'></Route>
-    //   </Routes>
-    // </BrowserRouter>
-    react_1.default.createElement("div", null, "Dashboard"));
+    const getData = () => __awaiter(void 0, void 0, void 0, function* () {
+        // const refreshToken = localStorage.getItem('refreshToken')
+        // if (refreshToken) request.setHeader('refresh', `BEARER ${refreshToken}`);
+        const data = yield fetch('/verifyToken', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'Application/JSON',
+                'authorization': `BEARER ${localStorage.getItem('accessToken')}`,
+                'refresh': `BEARER ${localStorage.getItem('refreshToken')}`,
+            }
+        });
+        const res = yield data.json();
+        console.log(res, "RESPONSE FROM VERIFYING");
+        if (!res.accessToken) {
+            handleUserLogin();
+        }
+        console.log(res);
+        setData(res);
+    });
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("button", { onClick: getData }, "DO I HAVE TOKEN"),
+        react_1.default.createElement("div", null, "Dashboard")));
 };
 exports.default = UserDashboard;

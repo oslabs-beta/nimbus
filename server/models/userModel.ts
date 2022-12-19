@@ -51,4 +51,4 @@ const UserSchema = new Schema({
 const User = mongoose.model('User', UserSchema);
 
 // make User model constructor public to all files in our app
-module.exports = User;
+export default User;
