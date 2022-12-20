@@ -33,7 +33,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const filters = ['allLogs', 'reports', 'errors'];
 const Logs = () => {
     // use context from userContext
     // States: functions, logs, FILTERS: period (string)
@@ -51,20 +50,30 @@ const Logs = () => {
     const changePeriod = (e) => {
         if (e.target.value !== period) {
             setPeriod(e.target.value);
+            //   document.getElementById(`${e.target.value}`)!.style.fontWeight = 'bold';
         }
     };
     // const changeFilter = (e: any) => {
     //   setFilter(e.target.value);
     // };
     const changeSearch = (e) => {
-        setSearch(e.target.value);
-        if (filters.includes(e.target.value)) {
-            console.log("filter works");
-            getLogs();
+        if (e.target.value === 'allLogs') {
+            setSearch('');
+        }
+        else if (e.target.value === 'reports') {
+            setSearch('REPORT');
+        }
+        else if (e.target.value === 'errors') {
+            setSearch('ERROR');
+        }
+        else {
+            setSearch(e.target.value);
         }
     };
     const changeSelectedFunc = (e) => {
-        setSelectedFunc(e.target.value);
+        if (e.target.value !== selectedFunc) {
+            setSelectedFunc(e.target.value);
+        }
     };
     const getFunctions = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
@@ -76,17 +85,17 @@ const Logs = () => {
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
                     refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
-                body: JSON.stringify({}),
+                // body: JSON.stringify({}),
             });
             // convert response to JS object
             res = yield res.json();
+            const funcArr = res.functions || ['unable to fetch lambda functions'];
+            setFunctions(funcArr);
+            setSelectedFunc(funcArr[0]);
         }
         catch (err) {
-            console.log(err);
+            console.log("ERROR FROM GET FUNCTIONS", err);
         }
-        const funcArr = res.functions || ['unable to fetch lambda functions'];
-        setFunctions(funcArr);
-        setSelectedFunc(funcArr[0]);
     });
     const getLogs = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
@@ -104,35 +113,27 @@ const Logs = () => {
             });
             // convert response to JS object
             res = yield res.json();
+            let logsArr = res.filteredLogs || ['Logs not found'];
+            console.log("LOGS ARRAY", logsArr);
+            setLogs(logsArr);
         }
         catch (err) {
-            console.log(err);
+            console.log("ERROR FROM GET LOGS", err);
         }
-        // let logsArr;
-        // if (logs[0] === 'Fetching logs...' && !res.logs) {
-        //   logsArr = ['No logs found'];
-        // }
-        // else if (logs.length === 0 && !res.logs) {
-        //   logsArr = ['Fetching logs...'];
-        // }
-        // else if (res.logs) {
-        //   logsArr = res.logs;
-        // }
-        // console.log("LOGS ARRAY", logsArr);
-        // let logsArr = res.logs || ['Fetching logs...']
-        let logsArr = res.filteredLogs || ['Logs not found'];
-        console.log("LOGS ARRAY", logsArr);
-        setLogs(logsArr);
     });
     // On component mount: get all lambda functions
     (0, react_1.useEffect)(() => {
+        console.log("first useEffct");
         getFunctions();
     }, []);
     // On state change selectedFunc, period, filter: get logs based on selected lambda func and options
     (0, react_1.useEffect)(() => {
+        console.log("second useEffct");
         console.log("PERIOD", period);
-        getLogs();
-    }, [selectedFunc, period]);
+        if (selectedFunc !== '') {
+            getLogs();
+        }
+    }, [selectedFunc, period, search]);
     const logsList = logs.map((log, i) => react_1.default.createElement("div", { key: `log-${i}`, className: 'logs-log-event' }, log));
     const functionsList = functions.map((func, i) => react_1.default.createElement("button", { key: `func-${i}`, onClick: changeSelectedFunc, value: func, className: 'logs-function-name' }, func));
     return (react_1.default.createElement("div", null,
@@ -144,11 +145,11 @@ const Logs = () => {
             react_1.default.createElement("div", { className: 'logs-logs' },
                 react_1.default.createElement("div", { className: 'logs-filters' },
                     react_1.default.createElement("div", { className: 'logs-options-period', style: { display: 'flex', gap: '1rem' } },
-                        react_1.default.createElement("button", { value: '30d', onClick: changePeriod }, "30D"),
-                        react_1.default.createElement("button", { value: '14d', onClick: changePeriod }, "14D"),
-                        react_1.default.createElement("button", { value: '7d', onClick: changePeriod }, "7D"),
-                        react_1.default.createElement("button", { value: '1d', onClick: changePeriod }, "1D"),
-                        react_1.default.createElement("button", { value: '1hr', onClick: changePeriod }, "1H")),
+                        react_1.default.createElement("button", { id: '30d', value: '30d', onClick: changePeriod }, "30D"),
+                        react_1.default.createElement("button", { id: '14d', value: '14d', onClick: changePeriod }, "14D"),
+                        react_1.default.createElement("button", { id: '7d', value: '7d', onClick: changePeriod }, "7D"),
+                        react_1.default.createElement("button", { id: '1d', value: '1d', onClick: changePeriod }, "1D"),
+                        react_1.default.createElement("button", { id: '1hr', value: '1hr', onClick: changePeriod }, "1H")),
                     react_1.default.createElement("div", { className: 'logs-options-filters' },
                         react_1.default.createElement("button", { value: 'allLogs', onClick: changeSearch }, "All logs"),
                         react_1.default.createElement("button", { value: 'reports', onClick: changeSearch }, "Reports"),
