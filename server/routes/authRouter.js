@@ -8,16 +8,16 @@ const path = require('path');
 const userController_1 = __importDefault(require("../controllers/userController"));
 const credentialsController_1 = __importDefault(require("../controllers/aws/credentialsController"));
 const authController = require('../controllers/authController');
-const metricsController_1 = __importDefault(require("../controllers/aws/metricsController"));
 // Give our express app the ability define routes, handle requests, and configure the router by creating an instance of an Express Router
 const router = express.Router();
-// handle post requests sent to /login endpoint from the client 
-router.post('/login', userController_1.default.verifyUser, metricsController_1.default.getAllMetrics, authController.generateJWT, (req, res) => {
+// metricsController.getAllMetrics
+// handle post requests sent to /login endpoint from the client
+router.post('/login', userController_1.default.verifyUser, authController.generateJWT, (req, res) => {
     return res.status(200).send({
         email: res.locals.email,
         success: res.locals.success,
         accessToken: res.locals.accessToken,
-        refreshToken: res.locals.refreshToken
+        refreshToken: res.locals.refreshToken,
     });
 });
 // Handle post request sent to /signup endpoint
@@ -25,12 +25,15 @@ router.post('/register', credentialsController_1.default.getCredentials, userCon
     // Redirect to the dashboard here? What do we want to send to the front end
     return res.status(200).json({
         accessToken: res.locals.accessToken,
-        refreshToken: res.locals.refreshToken
+        refreshToken: res.locals.refreshToken,
     });
 });
+// MUST USE FOR EVERY ROUTE: authController.verifyToken adds user's email to res.locals
 router.get('/verifyToken', authController.verifyToken, (req, res) => {
     return res.status(200).json({
-        message: res.locals.accessToken ? 'YOU ARE AUTHENTICATED' : 'NOT AUTHENTICATED',
+        message: res.locals.accessToken
+            ? 'YOU ARE AUTHENTICATED'
+            : 'NOT AUTHENTICATED',
         accessToken: res.locals.accessToken,
     });
 });
