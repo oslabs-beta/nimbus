@@ -11,10 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_cloudwatch_1 = require("@aws-sdk/client-cloudwatch");
 require('dotenv').config();
-// NOTE: LOOK TO SEE IF THE GETMETRIC HAS AN INPUT TYPE IN THE LIBRARY
-// GetMetricStatistics only retrieves data for a single metric
-// GetMetricData allows you to retrieve data for multiple metrics at the same time
-// GetMetricData is more flexible and powerful than GetMetricStatistics as it allows you to retrieve data for multiple metrics at the same time, but more complex to use, as it requires you to specify more information in the request
+// Grab the Invocation, Error, Duration, and Throttle metrics
 const metricsController = {
     getAllMetrics(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -31,7 +28,7 @@ const metricsController = {
                             Namespace: "AWS/Lambda",
                         },
                         Period: 60,
-                        Stat: "Sum", //Sum/Average/Minimum/Maximum
+                        Stat: "Sum",
                     },
                     Label: "Total Invocations of Lambda Functions"
                 };
