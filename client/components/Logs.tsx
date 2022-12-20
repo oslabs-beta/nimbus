@@ -18,7 +18,7 @@ const Logs = () => {
 
   const routes = {
     functions: '/dashboard/functions',
-    logs: '/dashboard/logs'
+    logs: '/dashboard/allLogs'
   }
 
   // Change options
@@ -38,41 +38,132 @@ const Logs = () => {
   };
 
   // Get data: function names or logs (depending on the input)
-  const getData = async (route:string) => {
-    // response is a JSON Object that contains either an array of logs or array of functions depending on the route
-    const res = await fetch(`${route}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'Application/JSON',
-        authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-      },
-      body: JSON.stringify({}),
-    });
-    // convert response to JS object
-    const resArr = await res.json();
-    console.log(`${route}`, resArr);
+  // const getData = async (route:string) => {
+  //   // response is a JSON Object that contains either an array of logs or array of functions depending on the route
+  //   let res;
+  //   try {
+  //     res = await fetch(`${route}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'Application/JSON',
+  //         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+  //         refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+  //       },
+  //       body: JSON.stringify({}),
+  //     });
+  //     // convert response to JS object
+  //     res = await res.json();
+  //   }
+  //   catch(err){
+  //     console.log(err);
+  //   }
+  //   // console.log(`${route}`, resArr);
     
-    switch(route) {
-      case routes.functions:
-        setFunctions(resArr);
-        break;
-      case routes.logs:
-        setLogs(resArr);
-        break;
-      default:
-        console.log(`${route}`, resArr);
+  //   switch(route) {
+  //     case routes.functions:
+  //       setFunctions(res.functions);
+  //       setSelectedFunc(res.functions[0])
+  //       break;
+  //     case routes.logs:
+  //       setLogs(res.logs);
+  //       break;
+  //     default:
+  //       console.log(`${route}`, res);
+  //   }
+  // };
+
+
+  const getFunctions = async () => {
+    let res;
+    try {
+      res = await fetch(`${routes.functions}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/JSON',
+          authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+        },
+        body: JSON.stringify({}),
+      });
+      // convert response to JS object
+      res = await res.json();
     }
-  };
+    catch(err){
+      console.log(err);
+    }
+    const funcArr = res.functions || ['unable to fetch lambda functions'];
+
+    setFunctions(funcArr);
+    setSelectedFunc(funcArr[0])
+  }
+
+  const getLogs = async () => {
+    let res;
+    try {
+      res = await fetch(`${routes.logs}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/JSON',
+          authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+        },
+        body: JSON.stringify({selectedFunc}),
+      });
+      // convert response to JS object
+      res = await res.json();
+    }
+    catch(err){
+      console.log(err);
+    }
+
+    const logsArr = res.logs || ['unable to fetch logs'];
+
+    setLogs(res.logs);
+  }
+
+
+  // const getData = async (route:string) => {
+  //   // response is a JSON Object that contains either an array of logs or array of functions depending on the route
+  //   let resArr = [];
+  //   try {
+  //     const res = await fetch(`${route}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'Application/JSON',
+  //         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+  //         refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+  //       },
+  //       body: JSON.stringify({}),
+  //     });
+  //     // convert response to JS object
+  //     const resObj = await res.json();
+  //   }
+  //   catch {
+  //     resArr.push('unable to fetch data');
+  //   }
+  //   console.log(`${route}`, resArr);
+    
+  //   switch(route) {
+  //     case routes.functions:
+  //       setFunctions(resArr);
+  //       setSelectedFunc(resArr[0])
+  //       break;
+  //     case routes.logs:
+  //       setLogs(resArr);
+  //       break;
+  //     default:
+  //       console.log(`${route}`, resArr);
+  //   }
+  // };
 
   // On component mount: get all lambda functions
   useEffect(() => {
-    getData(routes.functions);
+    getFunctions();
   }, []);
 
   // On state change selectedFunc, period, filter: get logs based on selected lambda func and options
   useEffect(() => {
-    getData(routes.logs);
+    getLogs();
   }, [selectedFunc, period, filter]);
 
 
@@ -129,7 +220,7 @@ const Logs = () => {
             </div>
             <div className='logs-options-search'>
               <input onChange={changeSearch}></input>
-              <button onClick={() => getData(routes.logs)}>Search</button>
+              <button onClick={getLogs}>Search</button>
             </div>
           </div>
           logs
