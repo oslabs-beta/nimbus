@@ -4,14 +4,15 @@ const path = require('path')
 import { Request, Response } from 'express'
 import userController from '../controllers/userController'
 import credentialsController from '../controllers/aws/credentialsController'
-const authController = require('../controllers/authController')
-import metricsController  from '../controllers/aws/metricsController'
+import authController from '../controllers/authController'
+import metricsController from '../controllers/aws/metricsController'
+
 // Give our express app the ability define routes, handle requests, and configure the router by creating an instance of an Express Router
 const router = express.Router()
 
 // handle post requests sent to /login endpoint from the client 
-router.post('/login', userController.verifyUser, metricsController.getAllMetrics, authController.generateJWT, (req: Request, res: Response) => {
-    return res.status(200).send({
+router.post('/login', userController.verifyUser, authController.generateJWT, (req: Request, res: Response) => {
+    return res.status(200).json({
         email: res.locals.email,
         success: res.locals.success,
         accessToken: res.locals.accessToken,
@@ -26,13 +27,6 @@ router.post('/register', credentialsController.getCredentials, userController.cr
         accessToken: res.locals.accessToken,
         refreshToken: res.locals.refreshToken
     })
-})
-
-router.get('/verifyToken', authController.verifyToken, (req: Request, res: Response) => {
-    return res.status(200).json({
-        message: res.locals.accessToken ? 'YOU ARE AUTHENTICATED' : 'NOT AUTHENTICATED',
-        accessToken: res.locals.accessToken,
-    });
 })
 
 module.exports = router
