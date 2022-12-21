@@ -1,4 +1,4 @@
-import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataResult} from "@aws-sdk/client-cloudwatch";
+import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataQuery} from "@aws-sdk/client-cloudwatch";
 import { Request, Response, NextFunction } from "express";
 require('dotenv').config();
 
@@ -117,41 +117,121 @@ const metricsController = {
         region: res.locals.region,
         credentials: res.locals.credentials
       })
-      const { id, metricName, stat, functionName } = req.body
-      const metricData = {
-        Id: `${id}`, 
-        MetricStat: {
-          Metric: {
-            MetricName: `${metricName}`, // Invocation/Throttles/Errors/Duration
-            Namespace: "AWS/Lambda"
+
+      const metricData: MetricDataQuery[] = []
+      res.locals.functions.forEach((functionName:string, i:number) => {
+        const metricInvocationData = {
+          Id: `i${i}`, 
+          MetricStat: {
+            Metric: {
+              MetricName: "Invocations",
+              Namespace: "AWS/Lambda",
+            },
+            Dimensions: [
+                    {
+                      Name: 'FunctionName',
+                      Value: `${functionName}`
+                    },           
+                  ],
+            Period: 60,
+            Stat: "Sum", 
           },
-          Dimensions: [
-            {
-              Name: 'FunctionName',
-              Value: `${functionName}`
-            },           
-          ],
-          Period: 60,
-          Stat: `${stat}`, //Sum/Average/Minimum/Maximum
-        },
-        Label: `Total ${metricName} of Lambda Functions`
-      }
-      
+          Label: `${functionName} Total Invocations of Lambda Function`
+        }
+        metricData.push(metricInvocationData)
+        const metricErrorData = {
+          Id: `e${i}`, 
+          MetricStat: {
+            Metric: {
+              MetricName: "Errors",
+              Namespace: "AWS/Lambda"
+            },
+            Dimensions: [
+              {
+                Name: 'FunctionName',
+                Value: `${functionName}`
+              },           
+            ],
+            Period: 60,
+            Stat: "Sum",
+          },
+          Label: `${functionName} Total Errors of Lambda Function`
+        }
+        metricData.push(metricErrorData)
+        const metricThrottlesData = {
+          Id: `t${i}`, 
+          MetricStat: {
+            Metric: {
+              MetricName: "Throttles",
+              Namespace: "AWS/Lambda"
+            },
+            Dimensions: [
+              {
+                Name: 'FunctionName',
+                Value: `${functionName}`
+              },           
+            ],
+            Period: 60,
+            Stat: "Sum",
+          },
+          Label: `${functionName} Total Throttles of Lambda Function`
+        }
+        metricData.push(metricThrottlesData)
+        const metricDurationData = {
+          Id: `d${i}`, 
+          MetricStat: {
+            Metric: {
+              MetricName: "Duration",
+              Namespace: "AWS/Lambda"
+            },
+            Dimensions: [
+              {
+                Name: 'FunctionName',
+                Value: `${functionName}`
+              },           
+            ],
+            Period: 60,
+            Stat: "Sum",
+          },
+          Label: `${functionName} Total Duration of Lambda Function`
+        }
+        metricData.push(metricDurationData)
+      })
+
       const input: GetMetricDataCommandInput = {
         // Update StartTime and EndTime to be more dynamic from user
         "StartTime": new Date(new Date().setDate(new Date().getDate() - 7)),
         "EndTime": new Date(),
-        "MetricDataQueries": [metricData],
+        "MetricDataQueries": metricData
       }
       const command = new GetMetricDataCommand(input)
       const response = await client.send(command);
+      console.log(response, "RESPONSE")
       // Create a metrics object to store the values and timestamps of specific metric
       if (response.MetricDataResults) {
-        const metric: subMetrics = {
-          values: response.MetricDataResults[0].Values,
-          timestamp: response.MetricDataResults[0].Timestamps
+        const data = response.MetricDataResults
+        for (let i = 0; i < data.length; i += 4) {
+          const functionName = data[i].Label?.split(' ')[0]
+          // Fix res.locals.functionName
+          res.locals.functionName = {
+            invocations: {
+              values: response.MetricDataResults[i].Values,
+              timestamp: response.MetricDataResults[i].Timestamps
+            },
+            errors: {
+              values: response.MetricDataResults[i + 1].Values,
+              timestamp: response.MetricDataResults[i + 1].Timestamps
+            },
+            throttles: {
+              values: response.MetricDataResults[i + 2].Values,
+              timestamp: response.MetricDataResults[i + 2].Timestamps
+            },
+            duration: {
+              values: response.MetricDataResults[i + 3].Values,
+              timestamp: response.MetricDataResults[i + 3].Timestamps
+            }
+          };
         }
-        res.locals.metric = metric;
       }
       return next();
     } catch (err) {

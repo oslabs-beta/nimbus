@@ -12,22 +12,35 @@ import metricsController from '../controllers/aws/metricsController'
     // ARN is used to get credentials from client's AWS account
     // Credentials used to grab matrics
 
-router.get('/allMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, metricsController.getAllMetrics, (req: Request, res: Response) => {
-    return res.status(200).json({
-        metrics: res.locals.metrics,
-    });
+router.get('/allMetrics', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    metricsController.getAllMetrics, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            metrics: res.locals.metrics,
+        });
 });
 
-router.post('/metricsByFunc', authController.verifyToken, credentialsController.getCredentialsFromDB, metricsController.getMetricsByFunc, (req: Request, res: Response) => {
-    return res.status(200).json({
-        metric: res.locals.metric,
-    });
+router.post('/metricsByFunc', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    lambdaController.getFunctions, 
+    metricsController.getMetricsByFunc, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            metric: res.locals.metric,
+        });
 });
 
-router.get('/functions', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, (req: Request, res: Response) => {
-    return res.status(200).json({
-        functions: res.locals.functions
-    });
+router.get('/functions', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    lambdaController.getFunctions, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            functions: res.locals.functions
+        });
 });
 
 router.post('/allLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getAllLogs, (req: Request, res: Response) => {

@@ -6,12 +6,16 @@ import userController from '../controllers/userController'
 import credentialsController from '../controllers/aws/credentialsController'
 import authController from '../controllers/authController'
 import metricsController  from '../controllers/aws/metricsController'
+import lambdaController from '../controllers/aws/lambdaController';
 // Give our express app the ability define routes, handle requests, and configure the router by creating an instance of an Express Router
 const router = express.Router();
 
 // handle post requests sent to /login endpoint from the client 
 router.post('/login', userController.verifyUser, 
     authController.generateJWT, 
+    credentialsController.getCredentialsFromDB,
+    lambdaController.getFunctions,
+    metricsController.getMetricsByFunc,
     (req: Request, res: Response) => {
         return res.status(200).send({
             email: res.locals.email,
