@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Home = () => {
   const [invocationsData, setInvocations] = useState({});
@@ -8,6 +8,8 @@ const Home = () => {
 
   const route = '/dashboard/allMetrics'
 
+  // Sends a GET request to the '/dashboard/allMetrics' route
+  // Uses ReactHooks in order to change the states based on data received from AWS
   const getMetrics = async () => {
     let res;
     try {
@@ -29,17 +31,20 @@ const Home = () => {
     }
   }
 
+  // Invokes the getMetrics function
   useEffect(() => {
     getMetrics();
   }, []);
 
 
 
-  return (<div>Home
+  return (
+  <div>Home
     <ul>
       <li></li>
     </ul>
-  </div>);
+  </div>
+  );
 };
 
 export default Home;

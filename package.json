@@ -26,6 +26,7 @@
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "d3": "^7.8.0",
     "docker": "^1.0.0",
     "dotenv": "^16.0.3",
     "dotenv-webpack": "^8.0.1",
