@@ -12,7 +12,6 @@ const router = express.Router();
 // handle post requests sent to /login endpoint from the client 
 router.post('/login', userController.verifyUser, 
     authController.generateJWT, 
-    credentialsController.getCredentialsFromDB,
     (req: Request, res: Response) => {
         return res.status(200).send({
             email: res.locals.email,
