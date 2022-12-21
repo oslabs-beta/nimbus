@@ -112,13 +112,14 @@ const metricsController = {
   // Grab specific metrics from cloudwatch depending on user input 
   async getMetricsByFunc (req: Request, res: Response, next: NextFunction) {
     try {
-      // Intiate client with credentials
+      // Initiate client with credentials
       const client = new CloudWatchClient({
         region: res.locals.region,
         credentials: res.locals.credentials
       })
 
       const metricData: MetricDataQuery[] = []
+      // functions from lamda controller 
       res.locals.functions.forEach((functionName:string, i:number) => {
         const metricInvocationData = {
           Id: `i${i}`, 
@@ -210,33 +211,33 @@ const metricsController = {
       if (response.MetricDataResults) {
         const parseData = (arr: MetricDataResult[]) => {
           // declare an output object
-          const metrics = {};
+          const allFuncMetrics = {};
           // loop over elements in arr in chunks of 4
           for (let i = 0; i < arr.length; i+=4) {
             // get function name
             const funcName = arr[i].Label!.split(' ')[0];
             // declare func object
-            const allMetricsObj = {};
+            const metricsByFunc = {};
             // populate allMetricsObj
             // loop over number of metrics
             for (let j = 0; j < 4; j++) {
               const metricName = arr[i+j].Label!.split(' ')[2];
               // declare func object
-              const metricsObj: subMetrics = {
+              const singleMetric: subMetrics = {
                 values: arr[i+j].Values,
                 timestamp: arr[i+j].Timestamps
               };
               // add metric name and stats to obj
-              (allMetricsObj as any)[metricName] = metricsObj;
+              (metricsByFunc as any)[metricName] = singleMetric;
             }
             // add func name and metrics to obj
-            (metrics as any)[funcName] = allMetricsObj;
+            (allFuncMetrics as any)[funcName] = metricsByFunc;
           }
-          return metrics;
+          return allFuncMetrics;
         }
+        // metrics data for the functions page
         res.locals.metrics = parseData(response.MetricDataResults)
       }
-      console.log(res.locals.metrics, "METRICS")
       return next();
     } catch (err) {
       return next({
