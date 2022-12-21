@@ -17,7 +17,7 @@ const apiController = {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             // Change variable name
-            console.log('hitting API controller');
+            console.log('Hitting API controller');
             const apiClient = new client_api_gateway_1.APIGatewayClient({
                 region: res.locals.region,
                 credentials: res.locals.credentials,
@@ -98,7 +98,6 @@ const apiController = {
                             }
                         }
                     }
-                    console.log(relationObj);
                     relations.push(relationObj);
                 }
                 res.locals.apiRelations = relations;

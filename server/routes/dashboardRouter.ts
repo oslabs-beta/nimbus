@@ -56,7 +56,7 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
     });
 });
 
-router.post('/apiRelations', credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
+router.post('/apiRelations', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
     return res.status(200).json({
         apiRelations: res.locals.apiRelations
     });

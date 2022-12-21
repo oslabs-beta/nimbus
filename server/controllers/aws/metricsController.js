@@ -28,7 +28,7 @@ const metricsController = {
                             Namespace: "AWS/Lambda",
                         },
                         Period: 60,
-                        Stat: "Sum", //Sum/Average/Minimum/Maximum
+                        Stat: "Sum",
                     },
                     Label: "Total Invocations of Lambda Functions"
                 };
@@ -113,12 +113,13 @@ const metricsController = {
     getMetricsByFunc(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // Intiate client with credentials
+                // Initiate client with credentials
                 const client = new client_cloudwatch_1.CloudWatchClient({
                     region: res.locals.region,
                     credentials: res.locals.credentials
                 });
                 const metricData = [];
+                // functions from lamda controller 
                 res.locals.functions.forEach((functionName, i) => {
                     const metricInvocationData = {
                         Id: `i${i}`,
@@ -136,7 +137,7 @@ const metricsController = {
                             Period: 60,
                             Stat: "Sum",
                         },
-                        Label: `${functionName} Total Invocations of Lambda Function`
+                        Label: `${functionName} Total invocations of Lambda Function`
                     };
                     metricData.push(metricInvocationData);
                     const metricErrorData = {
@@ -155,7 +156,7 @@ const metricsController = {
                             Period: 60,
                             Stat: "Sum",
                         },
-                        Label: `${functionName} Total Errors of Lambda Function`
+                        Label: `${functionName} Total errors of Lambda Function`
                     };
                     metricData.push(metricErrorData);
                     const metricThrottlesData = {
@@ -174,7 +175,7 @@ const metricsController = {
                             Period: 60,
                             Stat: "Sum",
                         },
-                        Label: `${functionName} Total Throttles of Lambda Function`
+                        Label: `${functionName} Total throttles of Lambda Function`
                     };
                     metricData.push(metricThrottlesData);
                     const metricDurationData = {
@@ -193,7 +194,7 @@ const metricsController = {
                             Period: 60,
                             Stat: "Sum",
                         },
-                        Label: `${functionName} Total Duration of Lambda Function`
+                        Label: `${functionName} Total duration of Lambda Function`
                     };
                     metricData.push(metricDurationData);
                 });
@@ -205,14 +206,36 @@ const metricsController = {
                 };
                 const command = new client_cloudwatch_1.GetMetricDataCommand(input);
                 const response = yield client.send(command);
-                console.log(response, "RESPONSE");
                 // Create a metrics object to store the values and timestamps of specific metric
                 if (response.MetricDataResults) {
-                    const metric = {
-                        values: response.MetricDataResults[0].Values,
-                        timestamp: response.MetricDataResults[0].Timestamps
+                    const parseData = (arr) => {
+                        // declare an output object
+                        const allFuncMetrics = {};
+                        // loop over elements in arr in chunks of 4
+                        for (let i = 0; i < arr.length; i += 4) {
+                            // get function name
+                            const funcName = arr[i].Label.split(' ')[0];
+                            // declare func object
+                            const metricsByFunc = {};
+                            // populate allMetricsObj
+                            // loop over number of metrics
+                            for (let j = 0; j < 4; j++) {
+                                const metricName = arr[i + j].Label.split(' ')[2];
+                                // declare func object
+                                const singleMetric = {
+                                    values: arr[i + j].Values,
+                                    timestamp: arr[i + j].Timestamps
+                                };
+                                // add metric name and stats to obj
+                                metricsByFunc[metricName] = singleMetric;
+                            }
+                            // add func name and metrics to obj
+                            allFuncMetrics[funcName] = metricsByFunc;
+                        }
+                        return allFuncMetrics;
                     };
-                    res.locals.metric = metric;
+                    // metrics data for the functions page
+                    res.locals.metrics = parseData(response.MetricDataResults);
                 }
                 return next();
             }
