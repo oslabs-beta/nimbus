@@ -38,60 +38,43 @@ const Logs = () => {
     // States: functions, logs, FILTERS: period (string)
     const [functions, setFunctions] = (0, react_1.useState)([]);
     const [selectedFunc, setSelectedFunc] = (0, react_1.useState)('');
-    const [logs, setLogs] = (0, react_1.useState)([]);
+    const [logs, setLogs] = (0, react_1.useState)(['Fetching logs...']);
     const [period, setPeriod] = (0, react_1.useState)('30d');
-    const [filter, setFilter] = (0, react_1.useState)('allLogs');
+    // const [filter, setFilter] = useState<Filter>('allLogs');
     const [search, setSearch] = (0, react_1.useState)('');
     const routes = {
         functions: '/dashboard/functions',
-        logs: '/dashboard/allLogs'
+        logs: '/dashboard/filteredLogs'
     };
     // Change options
     const changePeriod = (e) => {
-        setPeriod(e.target.value);
-        console.log(period);
+        if (e.target.value !== period) {
+            setPeriod(e.target.value);
+            //   document.getElementById(`${e.target.value}`)!.style.fontWeight = 'bold';
+        }
     };
-    const changeFilter = (e) => {
-        setFilter(e.target.value);
-        console.log(filter);
-    };
-    const changeSearch = (e) => {
-        setSearch(e.target.value);
-        console.log(search);
-    };
-    // Get data: function names or logs (depending on the input)
-    // const getData = async (route:string) => {
-    //   // response is a JSON Object that contains either an array of logs or array of functions depending on the route
-    //   let res;
-    //   try {
-    //     res = await fetch(`${route}`, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'Application/JSON',
-    //         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-    //         refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-    //       },
-    //       body: JSON.stringify({}),
-    //     });
-    //     // convert response to JS object
-    //     res = await res.json();
-    //   }
-    //   catch(err){
-    //     console.log(err);
-    //   }
-    //   // console.log(`${route}`, resArr);
-    //   switch(route) {
-    //     case routes.functions:
-    //       setFunctions(res.functions);
-    //       setSelectedFunc(res.functions[0])
-    //       break;
-    //     case routes.logs:
-    //       setLogs(res.logs);
-    //       break;
-    //     default:
-    //       console.log(`${route}`, res);
-    //   }
+    // const changeFilter = (e: any) => {
+    //   setFilter(e.target.value);
     // };
+    const changeSearch = (e) => {
+        if (e.target.value === 'allLogs') {
+            setSearch('');
+        }
+        else if (e.target.value === 'reports') {
+            setSearch('REPORT');
+        }
+        else if (e.target.value === 'errors') {
+            setSearch('ERROR');
+        }
+        else {
+            setSearch(e.target.value);
+        }
+    };
+    const changeSelectedFunc = (e) => {
+        if (e.target.value !== selectedFunc) {
+            setSelectedFunc(e.target.value);
+        }
+    };
     const getFunctions = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -102,20 +85,22 @@ const Logs = () => {
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
                     refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
-                body: JSON.stringify({}),
+                // body: JSON.stringify({}),
             });
             // convert response to JS object
             res = yield res.json();
+            const funcArr = res.functions || ['unable to fetch lambda functions'];
+            setFunctions(funcArr);
+            setSelectedFunc(funcArr[0]);
         }
         catch (err) {
-            console.log(err);
+            console.log("ERROR FROM GET FUNCTIONS", err);
         }
-        const funcArr = res.functions || ['unable to fetch lambda functions'];
-        setFunctions(funcArr);
-        setSelectedFunc(funcArr[0]);
     });
     const getLogs = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
+        const reqBody = { functionName: selectedFunc, filterPattern: search, period: period };
+        console.log(reqBody);
         try {
             res = yield fetch(`${routes.logs}`, {
                 method: 'POST',
@@ -124,77 +109,51 @@ const Logs = () => {
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
                     refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
-                body: JSON.stringify({ selectedFunc }),
+                body: JSON.stringify(reqBody),
             });
             // convert response to JS object
             res = yield res.json();
+            let logsArr = res.filteredLogs || ['Logs not found'];
+            console.log("LOGS ARRAY", logsArr);
+            setLogs(logsArr);
         }
         catch (err) {
-            console.log(err);
+            console.log("ERROR FROM GET LOGS", err);
         }
-        const logsArr = res.logs || ['unable to fetch logs'];
-        setLogs(res.logs);
     });
-    // const getData = async (route:string) => {
-    //   // response is a JSON Object that contains either an array of logs or array of functions depending on the route
-    //   let resArr = [];
-    //   try {
-    //     const res = await fetch(`${route}`, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'Application/JSON',
-    //         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-    //         refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-    //       },
-    //       body: JSON.stringify({}),
-    //     });
-    //     // convert response to JS object
-    //     const resObj = await res.json();
-    //   }
-    //   catch {
-    //     resArr.push('unable to fetch data');
-    //   }
-    //   console.log(`${route}`, resArr);
-    //   switch(route) {
-    //     case routes.functions:
-    //       setFunctions(resArr);
-    //       setSelectedFunc(resArr[0])
-    //       break;
-    //     case routes.logs:
-    //       setLogs(resArr);
-    //       break;
-    //     default:
-    //       console.log(`${route}`, resArr);
-    //   }
-    // };
     // On component mount: get all lambda functions
     (0, react_1.useEffect)(() => {
+        console.log("first useEffct");
         getFunctions();
     }, []);
     // On state change selectedFunc, period, filter: get logs based on selected lambda func and options
     (0, react_1.useEffect)(() => {
-        getLogs();
-    }, [selectedFunc, period, filter]);
-    const logsList = logs.map((log) => react_1.default.createElement("div", { className: 'logs-log-event' }, log));
-    const functionsList = functions.map((func) => react_1.default.createElement("div", { className: 'logs-function-name' }, func));
+        console.log("second useEffct");
+        console.log("PERIOD", period);
+        if (selectedFunc !== '') {
+            getLogs();
+        }
+    }, [selectedFunc, period, search]);
+    const logsList = logs.map((log, i) => react_1.default.createElement("div", { key: `log-${i}`, className: 'logs-log-event' }, log));
+    const functionsList = functions.map((func, i) => react_1.default.createElement("button", { key: `func-${i}`, onClick: changeSelectedFunc, value: func, className: 'logs-function-name' }, func));
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("div", null, "Logs"),
         react_1.default.createElement("div", { className: 'logs-container', style: { display: 'flex', gap: '2rem' } },
-            react_1.default.createElement("div", { className: 'logs-functions' },
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column' }, className: 'logs-functions' },
                 "functions",
                 functionsList),
             react_1.default.createElement("div", { className: 'logs-logs' },
                 react_1.default.createElement("div", { className: 'logs-filters' },
                     react_1.default.createElement("div", { className: 'logs-options-period', style: { display: 'flex', gap: '1rem' } },
-                        react_1.default.createElement("button", { value: '30d', onClick: changePeriod }, "30D"),
-                        react_1.default.createElement("button", { value: '14d', onClick: changePeriod }, "14D"),
-                        react_1.default.createElement("button", { value: '7d', onClick: changePeriod }, "7D"),
-                        react_1.default.createElement("button", { value: '1d', onClick: changePeriod }, "1D"),
-                        react_1.default.createElement("button", { value: '1h', onClick: changePeriod }, "1H")),
+                        react_1.default.createElement("button", { id: '30d', value: '30d', onClick: changePeriod }, "30D"),
+                        react_1.default.createElement("button", { id: '14d', value: '14d', onClick: changePeriod }, "14D"),
+                        react_1.default.createElement("button", { id: '7d', value: '7d', onClick: changePeriod }, "7D"),
+                        react_1.default.createElement("button", { id: '1d', value: '1d', onClick: changePeriod }, "1D"),
+                        react_1.default.createElement("button", { id: '1hr', value: '1hr', onClick: changePeriod }, "1H")),
                     react_1.default.createElement("div", { className: 'logs-options-filters' },
-                        react_1.default.createElement("button", { value: 'allLogs', onClick: changeFilter }, "All logs"),
-                        react_1.default.createElement("button", { value: 'reports', onClick: changeFilter }, "Reports"),
-                        react_1.default.createElement("button", { value: 'errors', onClick: changeFilter }, "Errors")),
+                        react_1.default.createElement("button", { value: 'allLogs', onClick: changeSearch }, "All logs"),
+                        react_1.default.createElement("button", { value: 'reports', onClick: changeSearch }, "Reports"),
+                        react_1.default.createElement("button", { value: 'errors', onClick: changeSearch }, "Errors")),
                     react_1.default.createElement("div", { className: 'logs-options-search' },
                         react_1.default.createElement("input", { onChange: changeSearch }),
                         react_1.default.createElement("button", { onClick: getLogs }, "Search"))),
