@@ -1,4 +1,4 @@
-import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataQuery} from "@aws-sdk/client-cloudwatch";
+import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataQuery, MetricDataResult} from "@aws-sdk/client-cloudwatch";
 import { Request, Response, NextFunction } from "express";
 require('dotenv').config();
 
@@ -136,7 +136,7 @@ const metricsController = {
             Period: 60,
             Stat: "Sum", 
           },
-          Label: `${functionName} Total Invocations of Lambda Function`
+          Label: `${functionName} Total invocations of Lambda Function`
         }
         metricData.push(metricInvocationData)
         const metricErrorData = {
@@ -155,7 +155,7 @@ const metricsController = {
             Period: 60,
             Stat: "Sum",
           },
-          Label: `${functionName} Total Errors of Lambda Function`
+          Label: `${functionName} Total errors of Lambda Function`
         }
         metricData.push(metricErrorData)
         const metricThrottlesData = {
@@ -174,7 +174,7 @@ const metricsController = {
             Period: 60,
             Stat: "Sum",
           },
-          Label: `${functionName} Total Throttles of Lambda Function`
+          Label: `${functionName} Total throttles of Lambda Function`
         }
         metricData.push(metricThrottlesData)
         const metricDurationData = {
@@ -193,7 +193,7 @@ const metricsController = {
             Period: 60,
             Stat: "Sum",
           },
-          Label: `${functionName} Total Duration of Lambda Function`
+          Label: `${functionName} Total duration of Lambda Function`
         }
         metricData.push(metricDurationData)
       })
@@ -206,33 +206,37 @@ const metricsController = {
       }
       const command = new GetMetricDataCommand(input)
       const response = await client.send(command);
-      console.log(response, "RESPONSE")
       // Create a metrics object to store the values and timestamps of specific metric
       if (response.MetricDataResults) {
-        const data = response.MetricDataResults
-        for (let i = 0; i < data.length; i += 4) {
-          const functionName = data[i].Label?.split(' ')[0]
-          // Fix res.locals.functionName
-          res.locals.functionName = {
-            invocations: {
-              values: response.MetricDataResults[i].Values,
-              timestamp: response.MetricDataResults[i].Timestamps
-            },
-            errors: {
-              values: response.MetricDataResults[i + 1].Values,
-              timestamp: response.MetricDataResults[i + 1].Timestamps
-            },
-            throttles: {
-              values: response.MetricDataResults[i + 2].Values,
-              timestamp: response.MetricDataResults[i + 2].Timestamps
-            },
-            duration: {
-              values: response.MetricDataResults[i + 3].Values,
-              timestamp: response.MetricDataResults[i + 3].Timestamps
+        const parseData = (arr: MetricDataResult[]) => {
+          // declare an output object
+          const metrics = {};
+          // loop over elements in arr in chunks of 4
+          for (let i = 0; i < arr.length; i+=4) {
+            // get function name
+            const funcName = arr[i].Label!.split(' ')[0];
+            // declare func object
+            const allMetricsObj = {};
+            // populate allMetricsObj
+            // loop over number of metrics
+            for (let j = 0; j < 4; j++) {
+              const metricName = arr[i+j].Label!.split(' ')[2];
+              // declare func object
+              const metricsObj: subMetrics = {
+                values: arr[i+j].Values,
+                timestamp: arr[i+j].Timestamps
+              };
+              // add metric name and stats to obj
+              (allMetricsObj as any)[metricName] = metricsObj;
             }
-          };
+            // add func name and metrics to obj
+            (metrics as any)[funcName] = allMetricsObj;
+          }
+          return metrics;
         }
+        res.locals.metrics = parseData(response.MetricDataResults)
       }
+      console.log(res.locals.metrics, "METRICS")
       return next();
     } catch (err) {
       return next({

@@ -29,7 +29,7 @@ router.post('/metricsByFunc',
     metricsController.getMetricsByFunc, 
     (req: Request, res: Response) => {
         return res.status(200).json({
-            metric: res.locals.metric,
+            metrics: res.locals.metrics,
         });
 });
 
