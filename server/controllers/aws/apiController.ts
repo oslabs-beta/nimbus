@@ -1,8 +1,8 @@
 
 //NEED TO CONVERT FILE TO TYPESCRIPT
-import { APIGatewayClient, GetRestApisCommand, GetResourcesCommand, GetResourcesCommandInput, GetRestApisCommandOutput, GetDomainNameCommand, GetIntegrationCommand, GetUsagePlansCommand } from "@aws-sdk/client-api-gateway";
+import { APIGatewayClient, GetRestApisCommand, GetResourcesCommand, GetResourcesCommandInput, GetRestApisCommandOutput } from "@aws-sdk/client-api-gateway";
 import { Request, Response, NextFunction } from "express";
-import { LambdaClient, ListFunctionsCommand, GetPolicyCommand, GetPolicyCommandOutput } from "@aws-sdk/client-lambda";
+import { LambdaClient, GetPolicyCommand, GetPolicyCommandOutput } from "@aws-sdk/client-lambda";
 
 type Endpoint = {
     apiId: string;
@@ -28,7 +28,7 @@ type Relation = {
 const apiController = {
     async getAPIRelations(req: Request, res: Response, next: NextFunction) {
         // Change variable name
-        console.log('hitting API controller');
+        console.log('Hitting API controller');
         const apiClient = new APIGatewayClient({
             region: res.locals.region, 
             credentials: res.locals.credentials,
@@ -73,6 +73,7 @@ const apiController = {
                     });
 
                     const policyResults: GetPolicyCommandOutput = await lambdaClient.send(getPolicyCommand);
+
                     if (policyResults) {
                         const policy: (string | undefined) = policyResults.Policy;
                         if (policy) {
@@ -95,6 +96,7 @@ const apiController = {
                             lambdaAPIsList.push(lambdaAPIs);
                         }
                     }
+
                 } catch (err) {
 
                 }
@@ -120,7 +122,6 @@ const apiController = {
                         }
                     }
                 }
-                console.log(relationObj);
                 relations.push(relationObj);
             }
             
