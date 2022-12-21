@@ -1,5 +1,6 @@
 const express = require('express') 
 import { Request, Response } from 'express'
+import apiController from '../controllers/aws/apiController';
 const router = express.Router()
 const authController = require('../controllers/authController');
 import credentialsController from '../controllers/aws/credentialsController';
@@ -33,6 +34,15 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
         filteredLogs: res.locals.filteredLogs
     });
 });
+
+
+// router.post('/policy', credentialsController.getCredentialsFromDB, lambdaController.getPolicy, (req: Request, res: Response) => {
+//     return res.status(200).json({
+//         filteredLogs: res.locals.policy
+//     });
+// });
+
+router.post('/apis', credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIData);
 
 // // Add middleware for API Gateway
 // router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {

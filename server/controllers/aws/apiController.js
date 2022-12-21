@@ -1,35 +1,119 @@
 "use strict";
-// NEED TO CONVERT FILE TO TYPESCRIPT
-// import { APIGatewayClient, GetRestApisCommand, GetResourcesCommand, GetIntegrationCommand, GetUsagePlansCommand } from "@aws-sdk/client-api-gateway";
-// import { Request, Response, NextFunction } from "express";
-// const apiController = {
-//     async getAPIData(req: Request, res: Response, next: NextFunction) {
-//         // Change variable name
-//         const client = new APIGatewayClient({
-//             region: req.body.region, 
-//             credentials: req.body.credentials,
-//         });
-//         const apiData: {name: string, apiId: string, resourses: any[]}[] = [];
-//         // Grab names of API Endpoints and associated IDs
-//         try {
-//             const restAPIs = await client.send(new GetRestApisCommand({}));
-//             restAPIs?.items?.forEach((api) => {
-//                 // Unsure where this apiObj is coming from
-//                 const apiObj = { name : api.name, apiId: api.id, resources: []};
-//                 apiData.push(apiObj);
-//             });
-//         };
-//         // Iterate through apiData array
-//         // Send request to get associated resources
-//         for (const el of apiData) {
-//             const resources = await client.send(new GetResourcesCommand({
-//                 restApiId: apiData[el].apiId
-//             });
-//         );
-//         };
-//         // Iterate through resources array
-//         for (const resource of resources.items) {
-//         }
-//     }
-// }
-// export default apiController;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+//NEED TO CONVERT FILE TO TYPESCRIPT
+const client_api_gateway_1 = require("@aws-sdk/client-api-gateway");
+const client_lambda_1 = require("@aws-sdk/client-lambda");
+const apiController = {
+    getAPIData(req, res, next) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            // Change variable name
+            console.log('hitting API controller');
+            const apiClient = new client_api_gateway_1.APIGatewayClient({
+                region: res.locals.region,
+                credentials: res.locals.credentials,
+            });
+            const lambdaClient = new client_lambda_1.LambdaClient({
+                region: res.locals.region,
+                credentials: res.locals.credentials
+            });
+            // const apiData: {name: string, apiId: string, resourses: any[]}[] = [];
+            // // Grab names of API Endpoints and associated IDs
+            const apiList = [];
+            const lambdaAPIsList = [];
+            try {
+                const restAPIs = yield apiClient.send(new client_api_gateway_1.GetRestApisCommand({}));
+                //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
+                // const resources = await client.send(new GetResourceCommand({  }));
+                const restAPIsItems = restAPIs === null || restAPIs === void 0 ? void 0 : restAPIs.items;
+                if (restAPIsItems !== undefined) {
+                    for (const item of restAPIsItems) {
+                        const getResourcesInput = { restApiId: item.id };
+                        const resources = yield apiClient.send(new client_api_gateway_1.GetResourcesCommand(getResourcesInput));
+                        const paths = (_a = resources === null || resources === void 0 ? void 0 : resources.items) === null || _a === void 0 ? void 0 : _a.map(item => item.path);
+                        const apiDetails = { apiName: item.name, apiId: item.id, paths: paths };
+                        apiList.push(apiDetails);
+                    }
+                }
+                console.log(apiList);
+                //const restItems = restAPIs.items;
+                //restItems?.forEach(i => console.log(i.resourceMethods));
+                const functions = res.locals.functions;
+                for (const func of functions) {
+                    try {
+                        const functionName = func;
+                        const getPolicyCommand = new client_lambda_1.GetPolicyCommand({
+                            FunctionName: functionName
+                        });
+                        const policyResults = yield lambdaClient.send(getPolicyCommand);
+                        if (policyResults) {
+                            const policy = policyResults.Policy;
+                            if (policy) {
+                                const statements = JSON.parse(policy).Statement;
+                                const lambdaAPIs = {
+                                    functionName,
+                                    endpoints: []
+                                };
+                                console.log(lambdaAPIs);
+                                for (const statement of statements) {
+                                    const apiEndpoint = statement.Condition.ArnLike['AWS:SourceArn'];
+                                    const apiEndpointStrArr = apiEndpoint.split('/');
+                                    const apiIdStrArr = apiEndpointStrArr[apiEndpointStrArr.length - 4].split(':');
+                                    const apiId = apiIdStrArr[apiIdStrArr.length - 1];
+                                    const apiMethod = apiEndpointStrArr[apiEndpointStrArr.length - 2];
+                                    const apiPath = apiEndpointStrArr[apiEndpointStrArr.length - 1];
+                                    const apiInfo = { apiMethod, apiPath: '/' + apiPath, apiId };
+                                    lambdaAPIs.endpoints.push(apiInfo);
+                                }
+                                lambdaAPIsList.push(lambdaAPIs);
+                            }
+                        }
+                    }
+                    catch (err) {
+                    }
+                }
+                console.log(lambdaAPIsList);
+                // const relations = [];
+                // for (const api of lambdaAPIs) {
+                // const apiObj = {};
+                // apiObj.apiName = api.apiName;
+                // apiObj.endpoints = {};
+                // for (const func of funcs) {
+                //     for (const ep of func.endpoints) {
+                //     if (ep.apiId === api.apiId) {
+                //         if (apiObj.endpoints[ep.apiPath] === undefined) {
+                //         apiObj.endpoints[ep.apiPath] = [];
+                //         }
+                //         apiObj.endpoints[ep.apiPath].push({
+                //         method: ep.apiMethod,
+                //         func: func.functionName
+                //         });
+                //     }
+                //     }
+                // }
+                // console.log(apiObj);
+                // list.push(apiObj);
+                // }
+                // })
+                // return next();
+            }
+            catch (err) {
+                next({
+                    log: "Error caught in lambdaController.getAPIData middleware function",
+                    status: 500,
+                    message: { errMessage: `Error getting functions for the account`, errors: err }
+                });
+            }
+        });
+    }
+};
+exports.default = apiController;

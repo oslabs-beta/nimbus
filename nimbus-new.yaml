@@ -1,0 +1,172 @@
+Description: 'Delegating a Nimbus Role - CloudFormation Stack'
+Resources:
+  NimbusDelegationRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - arn:aws:iam::588640996282:root
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      RoleName: NimbusDelegationRole
+      Policies:
+        - PolicyName: Resources
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 'apigateway:GET'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'apigateway:HEAD'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'apigateway:OPTIONS'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'appsync:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'appsync:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'batch:describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudformation:describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudformation:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudformation:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudfront:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudfront:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudwatch:describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudwatch:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'cloudwatch:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'dynamodb:describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'dynamodb:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'events:describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'events:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'lambda:listFunctions'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'lambda:listTags'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'lambda:getPolicy'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'lambda:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'rds:describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'rds:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'route53:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'route53:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 's3:getBucket*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 's3:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'sdb:domainMetadata'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'sdb:get*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'sdb:list*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'tag:get*'
+                Resource: '*'
+        - PolicyName: Logs
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 'logs:deleteSubscriptionFilter'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:describeLogStreams'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:getLogEvents'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:describeSubscriptionFilters'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:filterLogEvents'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:putSubscriptionFilter'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:startQuery'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'logs:stopQuery'
+                Resource: '*'
+        - PolicyName: Metrics
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 'cloudwatch:get*'
+                Resource: '*'
+        - PolicyName: Traces
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 'xray:batch*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'xray:get*'
+                Resource: '*'
+
+Outputs:
+  Version:
+    Description: Nimbus CloudFormation Template
+    Value: 2021-07-09
+  NimbusRoleArn:
+    Description: 'Nimbus ARN'
+    Value: !GetAtt
+      - NimbusDelegationRole
+      - Arn

@@ -70,7 +70,7 @@ const credentialsController = {
         var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             console.log('hitting credentials controller');
-            const { email } = res.locals;
+            const { email } = req.body; //res.locals
             const user = yield userModel_1.default.findOne({ email });
             console.log(user);
             if (user) {

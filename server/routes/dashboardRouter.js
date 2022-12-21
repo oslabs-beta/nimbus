@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
+const apiController_1 = __importDefault(require("../controllers/aws/apiController"));
 const router = express.Router();
 const authController = require('../controllers/authController');
 const credentialsController_1 = __importDefault(require("../controllers/aws/credentialsController"));
@@ -31,6 +32,12 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController_1
         filteredLogs: res.locals.filteredLogs
     });
 });
+// router.post('/policy', credentialsController.getCredentialsFromDB, lambdaController.getPolicy, (req: Request, res: Response) => {
+//     return res.status(200).json({
+//         filteredLogs: res.locals.policy
+//     });
+// });
+router.post('/apis', credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIData);
 // // Add middleware for API Gateway
 // router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
 //     return res.status(200).json();
