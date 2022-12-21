@@ -5,6 +5,7 @@ import { Request, Response, NextFunction } from "express";
 import { LambdaClient, ListFunctionsCommand, GetPolicyCommand, GetPolicyCommandOutput } from "@aws-sdk/client-lambda";
 
 type Endpoint = {
+    apiId: string;
     apiMethod: string;
     apiPath: string;
 }
@@ -19,8 +20,13 @@ type API = {
     paths: (string | undefined)[] | undefined;
 }
 
+type Relation = {
+    apiName: string | undefined;
+    endpoints: { [key: string]: { method: string, func: string }[] } | undefined;
+}
+
 const apiController = {
-    async getAPIData(req: Request, res: Response, next: NextFunction) {
+    async getAPIRelations(req: Request, res: Response, next: NextFunction) {
         // Change variable name
         console.log('hitting API controller');
         const apiClient = new APIGatewayClient({
@@ -53,7 +59,6 @@ const apiController = {
                     apiList.push(apiDetails);
                 }
             }
-            console.log(apiList);
             //const restItems = restAPIs.items;
             //restItems?.forEach(i => console.log(i.resourceMethods));
 
@@ -95,41 +100,37 @@ const apiController = {
                 }
                 
             }
+            const relations = [];
 
-            console.log(lambdaAPIsList);
-
-            // const relations = [];
-
-            // for (const api of lambdaAPIs) {
-            // const apiObj = {};
-            // apiObj.apiName = api.apiName;
-            // apiObj.endpoints = {};
-            // for (const func of funcs) {
-            //     for (const ep of func.endpoints) {
-            //     if (ep.apiId === api.apiId) {
-            //         if (apiObj.endpoints[ep.apiPath] === undefined) {
-            //         apiObj.endpoints[ep.apiPath] = [];
-            //         }
-            //         apiObj.endpoints[ep.apiPath].push({
-            //         method: ep.apiMethod,
-            //         func: func.functionName
-            //         });
-            //     }
-            //     }
-            // }
-            // console.log(apiObj);
-            // list.push(apiObj);
-            // }
+            for (const api of apiList) {
+                const relationObj:Relation = { apiName: api.apiName, endpoints: {} };
+                if (relationObj.endpoints) {
+                    for (const lambdaAPI of lambdaAPIsList) {
+                        for (const ep of lambdaAPI.endpoints) {
+                        if (ep && ep?.apiId === api.apiId) {
+                            const path: string = ep.apiPath
+                            if (relationObj.endpoints[path] === undefined) {
+                                relationObj.endpoints[path] = [];
+                            }
+                            relationObj.endpoints[ep.apiPath].push({
+                                method: ep.apiMethod,
+                                func: lambdaAPI.functionName
+                            });
+                        }
+                        }
+                    }
+                }
+                console.log(relationObj);
+                relations.push(relationObj);
+            }
             
-            
-            // })
-            
-            // return next();
+            res.locals.apiRelations = relations;
+            return next();
         } catch (err) {
             next({
-                log: "Error caught in lambdaController.getAPIData middleware function",
+                log: "Error caught in lambdaController.getAPIRelations middleware function",
                 status: 500,
-                message: {errMessage: `Error getting functions for the account`, errors: err}
+                message: {errMessage: `Error getting API relations for the account`, errors: err}
             });
         }
 

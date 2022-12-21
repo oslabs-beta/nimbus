@@ -32,16 +32,11 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController_1
         filteredLogs: res.locals.filteredLogs
     });
 });
-// router.post('/policy', credentialsController.getCredentialsFromDB, lambdaController.getPolicy, (req: Request, res: Response) => {
-//     return res.status(200).json({
-//         filteredLogs: res.locals.policy
-//     });
-// });
-router.post('/apis', credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIData);
-// // Add middleware for API Gateway
-// router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.post('/apiRelations', credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIRelations, (req, res) => {
+    return res.status(200).json({
+        apiRelations: res.locals.apiRelations
+    });
+});
 // router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
 //     return res.status(200).json();
 // });

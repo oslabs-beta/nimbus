@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_api_gateway_1 = require("@aws-sdk/client-api-gateway");
 const client_lambda_1 = require("@aws-sdk/client-lambda");
 const apiController = {
-    getAPIData(req, res, next) {
+    getAPIRelations(req, res, next) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             // Change variable name
@@ -44,7 +44,6 @@ const apiController = {
                         apiList.push(apiDetails);
                     }
                 }
-                console.log(apiList);
                 //const restItems = restAPIs.items;
                 //restItems?.forEach(i => console.log(i.resourceMethods));
                 const functions = res.locals.functions;
@@ -63,7 +62,6 @@ const apiController = {
                                     functionName,
                                     endpoints: []
                                 };
-                                console.log(lambdaAPIs);
                                 for (const statement of statements) {
                                     const apiEndpoint = statement.Condition.ArnLike['AWS:SourceArn'];
                                     const apiEndpointStrArr = apiEndpoint.split('/');
@@ -81,36 +79,36 @@ const apiController = {
                     catch (err) {
                     }
                 }
-                console.log(lambdaAPIsList);
-                // const relations = [];
-                // for (const api of lambdaAPIs) {
-                // const apiObj = {};
-                // apiObj.apiName = api.apiName;
-                // apiObj.endpoints = {};
-                // for (const func of funcs) {
-                //     for (const ep of func.endpoints) {
-                //     if (ep.apiId === api.apiId) {
-                //         if (apiObj.endpoints[ep.apiPath] === undefined) {
-                //         apiObj.endpoints[ep.apiPath] = [];
-                //         }
-                //         apiObj.endpoints[ep.apiPath].push({
-                //         method: ep.apiMethod,
-                //         func: func.functionName
-                //         });
-                //     }
-                //     }
-                // }
-                // console.log(apiObj);
-                // list.push(apiObj);
-                // }
-                // })
-                // return next();
+                const relations = [];
+                for (const api of apiList) {
+                    const relationObj = { apiName: api.apiName, endpoints: {} };
+                    if (relationObj.endpoints) {
+                        for (const lambdaAPI of lambdaAPIsList) {
+                            for (const ep of lambdaAPI.endpoints) {
+                                if (ep && (ep === null || ep === void 0 ? void 0 : ep.apiId) === api.apiId) {
+                                    const path = ep.apiPath;
+                                    if (relationObj.endpoints[path] === undefined) {
+                                        relationObj.endpoints[path] = [];
+                                    }
+                                    relationObj.endpoints[ep.apiPath].push({
+                                        method: ep.apiMethod,
+                                        func: lambdaAPI.functionName
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    console.log(relationObj);
+                    relations.push(relationObj);
+                }
+                res.locals.apiRelations = relations;
+                return next();
             }
             catch (err) {
                 next({
-                    log: "Error caught in lambdaController.getAPIData middleware function",
+                    log: "Error caught in lambdaController.getAPIRelations middleware function",
                     status: 500,
-                    message: { errMessage: `Error getting functions for the account`, errors: err }
+                    message: { errMessage: `Error getting API relations for the account`, errors: err }
                 });
             }
         });
