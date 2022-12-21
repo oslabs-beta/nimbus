@@ -2,25 +2,46 @@ const express = require('express')
 import { Request, Response } from 'express'
 import apiController from '../controllers/aws/apiController';
 const router = express.Router()
-const authController = require('../controllers/authController');
+import authController from '../controllers/authController';
 import credentialsController from '../controllers/aws/credentialsController';
 import lambdaController from '../controllers/aws/lambdaController';
 import logsController from '../controllers/aws/logsController';
-
+import metricsController from '../controllers/aws/metricsController'
 
 // All routes verify JWT Token to get email
     // Email is used to query the database for ARN
     // ARN is used to get credentials from client's AWS account
     // Credentials used to grab matrics
 
-// router.post('/home', authController.verifyToken, credentialsController.getCredentialsFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.get('/allMetrics', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    metricsController.getAllMetrics, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            metrics: res.locals.metrics,
+        });
+});
 
-router.post('/functions', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions,  (req: Request, res: Response) => {
-    return res.status(200).json({
-        functions: res.locals.functions
-    });
+router.post('/metricsByFunc', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    lambdaController.getFunctions, 
+    metricsController.getMetricsByFunc, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            metrics: res.locals.metrics,
+        });
+});
+
+router.get('/functions', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    lambdaController.getFunctions, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            functions: res.locals.functions
+        });
 });
 
 router.post('/allLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getAllLogs, (req: Request, res: Response) => {

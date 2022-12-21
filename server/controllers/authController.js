@@ -81,4 +81,4 @@ const authController = {
         });
     }
 };
-module.exports = authController;
+exports.default = authController;
