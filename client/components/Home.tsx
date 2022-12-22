@@ -1,34 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import * as d3 from 'd3';
-import { Axis, Orient } from 'd3-axis-for-react';
-
-interface subMetrics {
-    values: number[]
-    timestamp: Date[]
-  }
+import LineChart from './LineChart'
 
 type RawData = {
-  values: number,
-  timestamp: Date,
+  y: number,
+  x: Date,
 }; 
 
 type d3Data = Array<RawData>;
 
 const Home = () => {
     // End of D3 experimentation
-  const [invocationsData, setInvocations] = useState({});
-  const [errorsData, setErrors] = useState({});
-  const [throttlesData, setThrottles] = useState({});
-  const [durationData, setDurations] = useState({});
+  const [invocationsData, setInvocations] = useState<d3Data>([]);
+  const [errorsData, setErrors] = useState<d3Data>([]);
+  const [throttlesData, setThrottles] = useState<d3Data>([]);
+  const [durationData, setDurations] = useState<d3Data>([]);
 
   const route = '/dashboard/allMetrics'
-
-  // Declare dimensions for the graphs
-  const width = 600;
-  const height = 400;
-  const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-
- 
 
   // Sends a GET request to the '/dashboard/allMetrics' route
   // Uses ReactHooks in order to change the states based on data received from AWS
@@ -68,10 +55,10 @@ const Home = () => {
 
   const convertToD3Structure = (rawData: any) => {
     const output = [];
-    for (let key of rawData.values) {
-      const subElement: subMetrics = {
-        values: rawData.values[key],
-        timestamp: rawData.timestamp[key],
+    for (let key in rawData.values) {
+      const subElement: RawData = {
+        y: rawData.values[key],
+        x: rawData.timestamp[key],
       };
       output.push(subElement);
     }
@@ -85,11 +72,19 @@ const Home = () => {
 
   
   return (
-  <div>
-    Home
+  <div> Home
+    <LineChart rawData={invocationsData}/>
+    <LineChart rawData={errorsData}/>
+    <LineChart rawData={throttlesData}/>
+    <LineChart rawData={durationData}/>
   </div>
   );
 };
+
+// rawData={invocationsData}
+// rawData={errorsData}
+// rawData={throttlesData}
+// rawData={durationData}
 
 export default Home;
 

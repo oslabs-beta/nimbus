@@ -31,19 +31,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const LineChart_1 = __importDefault(require("./LineChart"));
 const Home = () => {
     // End of D3 experimentation
-    const [invocationsData, setInvocations] = (0, react_1.useState)({});
-    const [errorsData, setErrors] = (0, react_1.useState)({});
-    const [throttlesData, setThrottles] = (0, react_1.useState)({});
-    const [durationData, setDurations] = (0, react_1.useState)({});
+    const [invocationsData, setInvocations] = (0, react_1.useState)([]);
+    const [errorsData, setErrors] = (0, react_1.useState)([]);
+    const [throttlesData, setThrottles] = (0, react_1.useState)([]);
+    const [durationData, setDurations] = (0, react_1.useState)([]);
     const route = '/dashboard/allMetrics';
-    // Declare dimensions for the graphs
-    const width = 600;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
     // Sends a GET request to the '/dashboard/allMetrics' route
     // Uses ReactHooks in order to change the states based on data received from AWS
     const getMetrics = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,10 +81,10 @@ const Home = () => {
     });
     const convertToD3Structure = (rawData) => {
         const output = [];
-        for (let key of rawData.values) {
+        for (let key in rawData.values) {
             const subElement = {
-                values: rawData.values[key],
-                timestamp: rawData.timestamp[key],
+                y: rawData.values[key],
+                x: rawData.timestamp[key],
             };
             output.push(subElement);
         }
@@ -93,11 +93,16 @@ const Home = () => {
     // Invokes the getMetrics function
     (0, react_1.useEffect)(() => {
         getMetrics();
-        console.log(invocationsData);
-        console.log(errorsData);
-        console.log(throttlesData);
-        console.log(durationData);
     }, []);
-    return (react_1.default.createElement("div", null, "Home"));
+    return (react_1.default.createElement("div", null,
+        " Home",
+        react_1.default.createElement(LineChart_1.default, { rawData: invocationsData }),
+        react_1.default.createElement(LineChart_1.default, { rawData: errorsData }),
+        react_1.default.createElement(LineChart_1.default, { rawData: throttlesData }),
+        react_1.default.createElement(LineChart_1.default, { rawData: durationData })));
 };
+// rawData={invocationsData}
+// rawData={errorsData}
+// rawData={throttlesData}
+// rawData={durationData}
 exports.default = Home;
