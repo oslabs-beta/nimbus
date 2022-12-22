@@ -34,13 +34,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Logs = () => {
-    // use context from userContext
-    // States: functions, logs, FILTERS: period (string)
     const [functions, setFunctions] = (0, react_1.useState)([]);
     const [selectedFunc, setSelectedFunc] = (0, react_1.useState)('');
     const [logs, setLogs] = (0, react_1.useState)(['Fetching logs...']);
     const [period, setPeriod] = (0, react_1.useState)('30d');
-    // const [filter, setFilter] = useState<Filter>('allLogs');
     const [search, setSearch] = (0, react_1.useState)('');
     const routes = {
         functions: '/dashboard/functions',
@@ -50,12 +47,8 @@ const Logs = () => {
     const changePeriod = (e) => {
         if (e.target.value !== period) {
             setPeriod(e.target.value);
-            //   document.getElementById(`${e.target.value}`)!.style.fontWeight = 'bold';
         }
     };
-    // const changeFilter = (e: any) => {
-    //   setFilter(e.target.value);
-    // };
     const changeSearch = (e) => {
         if (e.target.value === 'allLogs') {
             setSearch('');
@@ -75,6 +68,7 @@ const Logs = () => {
             setSelectedFunc(e.target.value);
         }
     };
+    // Get the names of Lambda functions in a string[], setFunctions to result and setSelectedFunc to first function
     const getFunctions = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -85,7 +79,6 @@ const Logs = () => {
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
                     refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
-                // body: JSON.stringify({}),
             });
             // convert response to JS object
             res = yield res.json();
@@ -97,6 +90,7 @@ const Logs = () => {
             console.log("ERROR FROM GET FUNCTIONS", err);
         }
     });
+    // Fetch logs for the selectedFunc in a string[] and setLogs
     const getLogs = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         const reqBody = { functionName: selectedFunc, filterPattern: search, period: period };
@@ -126,7 +120,7 @@ const Logs = () => {
         console.log("first useEffct");
         getFunctions();
     }, []);
-    // On state change selectedFunc, period, filter: get logs based on selected lambda func and options
+    // On state change selectedFunc, period, search: get logs based on selected lambda func and options
     (0, react_1.useEffect)(() => {
         console.log("second useEffct");
         console.log("PERIOD", period);
