@@ -51,7 +51,7 @@ const Logs = () => {
     let res;
     try {
       res = await fetch(`${routes.functions}`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'Application/JSON',
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,
@@ -79,7 +79,7 @@ const Logs = () => {
     console.log(reqBody);
     try {
       res = await fetch(`${routes.logs}`, {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'Application/JSON',
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,

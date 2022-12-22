@@ -48,4 +48,10 @@ router.post('/filteredLogs', authController_1.default.verifyToken, credentialsCo
 router.get('/userDetails', authController_1.default.verifyToken, userController_1.default.getUser, (req, res) => {
     return res.status(200).json(res.locals.user);
 });
+router.post('/updateProfile', authController_1.default.verifyToken, credentialsController_1.default.getCredentials, userController_1.default.updateUserProfile, (req, res) => {
+    return res.status(200).json(res.locals.user);
+});
+router.post('/updatePassword', authController_1.default.verifyToken, userController_1.default.updateUserPassword, (req, res) => {
+    return res.status(200).json(res.locals.success);
+});
 module.exports = router;

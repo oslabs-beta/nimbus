@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-interface UserData {
-  email: String;
+
+interface ProfileData {
   firstName: String;
   lastName: String;
-  password: String;
-  confirmation: String;
   arn: String;
   region: String;
 }
 
+interface PasswordData {
+  password: String;
+  confirmation: String;
+}
 
 const Settings = () => {
 
@@ -21,10 +23,15 @@ const Settings = () => {
   const [arn, setArn] = useState('');
   const [region, setRegion] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const passwordRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const confirmationRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const routes = {
     userDetails: '/dashboard/userDetails',
-    updateUserDetails: '/dashboard/updateUserDetails'
+    updateProfile: '/dashboard/updateProfile',
+    updatePassword: '/dashboard/updatePassword'
   }
 
   const getUserDetails = async () => {
@@ -53,10 +60,6 @@ const Settings = () => {
   useEffect(() => {
     getUserDetails();
   }, []);
-
-  const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
   
   const updateFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(e.target.value);
@@ -81,6 +84,11 @@ const Settings = () => {
   const updateRegion = (e: any) => {
     setRegion(e.target.value);
   };
+
+  const resetPasswords = () => {
+    passwordRef.current.value = "";
+    confirmationRef.current.value = "";
+  }
 
   const regionsOptions = [
     'us-east-2',
@@ -115,42 +123,94 @@ const Settings = () => {
 
   const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
 
-  const submitForm = (e: any) => {
+  const handleError = () => {
+    setErrorMessage('Some information is missing or incorrect');
+  };
+
+  const handleSuccess= () => {
+    setSuccessMessage('Your profile details are updated successfully');
+  };
+
+  const handlePasswordSuccess= () => {
+    setSuccessMessage('Password updated successfully');
+  };
+
+  const highlightInput = (errors: Array<String>): void => {
+    errors.forEach((el) => {
+      const input = document.querySelector<HTMLElement>(`#${el}`);
+      if (input) {
+        input.style.borderColor = 'red';
+      }
+    });
+  };
+
+  const submitProfileForm = (e: any) => {
     e.preventDefault();
-    const updatedUserData: UserData = {
-      email,
+    const updatedProfileData: ProfileData = {
       firstName,
       lastName,
-      password,
-      confirmation,
       arn,
       region,
     };
-    fetch(routes.updateUserDetails, {
+    fetch(routes.updateProfile, {
       method: 'POST',
       headers: { 
         'Content-Type': 'Application/JSON' ,
         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
         refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
       },
-      body: JSON.stringify(updatedUserData),
-    })
+      body: JSON.stringify(updatedProfileData),
+    }).then(res => res.json())
+      .then((result) => {
+        console.log('email form login:', result);
+        if (result.errMessage) {
+          handleError();
+          highlightInput(result.errors);
+        } else {
+          console.log('user info:', result);
+          handleSuccess();
+          setFirstName(result.firstName);
+          setLastName(result.lastName);
+          setArn(result.arn);
+          setRegion(result.region);
+        }
+      })
+  }
+
+  const submitPasswordForm = (e: any) => {
+    e.preventDefault();
+    const updatedPasswordData: PasswordData = {
+      password,
+      confirmation
+    };
+    fetch(routes.updatePassword, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'Application/JSON' ,
+        authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+      },
+      body: JSON.stringify(updatedPasswordData),
+    }).then(res => res.json())
+      .then((result) => {
+        console.log('email form login:', result);
+        if (result.errMessage) {
+          handleError();
+          highlightInput(result.errors);
+        } else if (result.successMessage) {
+          handlePasswordSuccess();
+          setPassword('');
+          setConfirmation('');
+          resetPasswords();
+        }
+      })
   }
 
     return (<div>
     Settings
-    <form onSubmit={submitForm}>
-      <label htmlFor='email'>Email</label>
-      <br></br>
-      <input
-        type='text'
-        id='email'
-        name='email'
-        onChange={updateEmail}
-        value={email}
-      ></input>
-      <br></br>
-      <label htmlFor='firstName'>First name</label>
+    <h3>Profile</h3>
+    <form onSubmit={submitProfileForm}>
+    <label htmlFor='firstName'>First name</label>
       <br></br>
       <input
         type='text'
@@ -170,24 +230,6 @@ const Settings = () => {
         value={lastName}
       ></input>
       <br></br>
-      <label htmlFor='password'>Update Password</label>
-      <br></br>
-      <input
-        type='password'
-        id='password'
-        name='password'
-        onChange={updatePassword}
-      ></input>
-      <br></br>
-      <label htmlFor='confirmation'>Confirm password</label>
-      <br></br>
-      <input
-        type='password'
-        id='confirmation'
-        name='confirmation'
-        onChange={updateConfirmation}
-      ></input>
-      <br></br>
       <div>
         <label htmlFor='arn'>ARN</label>
         <br></br>
@@ -202,12 +244,48 @@ const Settings = () => {
           ))}
         </select>
       </div>
+      <br></br>
+      <input type='submit' value='Save'></input>
+    </form>
+    <h3>Login Details</h3>
+    <form onSubmit={submitPasswordForm} >
+      <label htmlFor='email'>Email</label>
+      <br></br>
+      <input
+        type='text'
+        id='email'
+        name='email'
+        value={email}
+        disabled={true}
+      ></input>
+      <br></br>
+      <label htmlFor='password'>Update Password</label>
+      <br></br>
+      <input
+        type='password'
+        id='password'
+        name='password'
+        onChange={updatePassword}
+        ref={passwordRef}
+      ></input>
+      <br></br>
+      <label htmlFor='confirmation'>Confirm Password</label>
+      <br></br>
+      <input
+        type='password'
+        id='confirmation'
+        name='confirmation'
+        onChange={updateConfirmation}
+        ref={confirmationRef}
+      ></input>
+      <br></br>
 
       {/* Submit form */}
       <br></br>
       <input type='submit' value='Save'></input>
     </form>
     <div className='errorMessage'>{errorMessage}</div>
+    <div className='errorMessage'>{successMessage}</div>
   </div>)
 };
 

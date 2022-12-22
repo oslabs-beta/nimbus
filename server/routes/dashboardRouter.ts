@@ -66,8 +66,12 @@ router.get('/userDetails', authController.verifyToken, userController.getUser, (
     return res.status(200).json(res.locals.user);
 });
 
-router.post('/updateUserDetails', authController.verifyToken, credentialsController.getCredentials, userController.updateUser, (req: Request, res: Response) => {
+router.post('/updateProfile', authController.verifyToken, credentialsController.getCredentials, userController.updateUserProfile, (req: Request, res: Response) => {
     return res.status(200).json(res.locals.user);
+});
+
+router.post('/updatePassword', authController.verifyToken, userController.updateUserPassword, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.success);
 });
 
 module.exports = router

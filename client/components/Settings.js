@@ -42,8 +42,13 @@ const Settings = () => {
     const [arn, setArn] = (0, react_1.useState)('');
     const [region, setRegion] = (0, react_1.useState)('');
     const [errorMessage, setErrorMessage] = (0, react_1.useState)('');
+    const [successMessage, setSuccessMessage] = (0, react_1.useState)('');
+    const passwordRef = (0, react_1.useRef)();
+    const confirmationRef = (0, react_1.useRef)();
     const routes = {
         userDetails: '/dashboard/userDetails',
+        updateProfile: '/dashboard/updateProfile',
+        updatePassword: '/dashboard/updatePassword'
     };
     const getUserDetails = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
@@ -71,9 +76,6 @@ const Settings = () => {
     (0, react_1.useEffect)(() => {
         getUserDetails();
     }, []);
-    const updateEmail = (e) => {
-        setEmail(e.target.value);
-    };
     const updateFirstName = (e) => {
         setFirstName(e.target.value);
     };
@@ -91,6 +93,10 @@ const Settings = () => {
     };
     const updateRegion = (e) => {
         setRegion(e.target.value);
+    };
+    const resetPasswords = () => {
+        passwordRef.current.value = "";
+        confirmationRef.current.value = "";
     };
     const regionsOptions = [
         'us-east-2',
@@ -123,15 +129,89 @@ const Settings = () => {
         'us-gov-west-1',
     ];
     const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
-    const submitForm = () => {
+    const handleError = () => {
+        setErrorMessage('Some information is missing or incorrect');
+    };
+    const handleSuccess = () => {
+        setSuccessMessage('Your profile details are updated successfully');
+    };
+    const handlePasswordSuccess = () => {
+        setSuccessMessage('Password updated successfully');
+    };
+    const highlightInput = (errors) => {
+        errors.forEach((el) => {
+            const input = document.querySelector(`#${el}`);
+            if (input) {
+                input.style.borderColor = 'red';
+            }
+        });
+    };
+    const submitProfileForm = (e) => {
+        e.preventDefault();
+        const updatedProfileData = {
+            firstName,
+            lastName,
+            arn,
+            region,
+        };
+        fetch(routes.updateProfile, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON',
+                authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+                refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+            },
+            body: JSON.stringify(updatedProfileData),
+        }).then(res => res.json())
+            .then((result) => {
+            console.log('email form login:', result);
+            if (result.errMessage) {
+                handleError();
+                highlightInput(result.errors);
+            }
+            else {
+                console.log('user info:', result);
+                handleSuccess();
+                setFirstName(result.firstName);
+                setLastName(result.lastName);
+                setArn(result.arn);
+                setRegion(result.region);
+            }
+        });
+    };
+    const submitPasswordForm = (e) => {
+        e.preventDefault();
+        const updatedPasswordData = {
+            password,
+            confirmation
+        };
+        fetch(routes.updatePassword, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON',
+                authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+                refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+            },
+            body: JSON.stringify(updatedPasswordData),
+        }).then(res => res.json())
+            .then((result) => {
+            console.log('email form login:', result);
+            if (result.errMessage) {
+                handleError();
+                highlightInput(result.errors);
+            }
+            else if (result.successMessage) {
+                handlePasswordSuccess();
+                setPassword('');
+                setConfirmation('');
+                resetPasswords();
+            }
+        });
     };
     return (react_1.default.createElement("div", null,
         "Settings",
-        react_1.default.createElement("form", { onSubmit: submitForm },
-            react_1.default.createElement("label", { htmlFor: 'email' }, "Email"),
-            react_1.default.createElement("br", null),
-            react_1.default.createElement("input", { type: 'text', id: 'email', name: 'email', onChange: updateEmail, value: email }),
-            react_1.default.createElement("br", null),
+        react_1.default.createElement("h3", null, "Profile"),
+        react_1.default.createElement("form", { onSubmit: submitProfileForm },
             react_1.default.createElement("label", { htmlFor: 'firstName' }, "First name"),
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: 'text', id: 'firstName', name: 'firstName', onChange: updateFirstName, value: firstName }),
@@ -140,24 +220,33 @@ const Settings = () => {
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: 'text', id: 'lastName', name: 'lastName', onChange: updateLastName, value: lastName }),
             react_1.default.createElement("br", null),
-            react_1.default.createElement("label", { htmlFor: 'password' }, "Update Password"),
-            react_1.default.createElement("br", null),
-            react_1.default.createElement("input", { type: 'password', id: 'password', name: 'password', onChange: updatePassword }),
-            react_1.default.createElement("br", null),
-            react_1.default.createElement("label", { htmlFor: 'confirmation' }, "Confirm password"),
-            react_1.default.createElement("br", null),
-            react_1.default.createElement("input", { type: 'password', id: 'confirmation', name: 'confirmation', onChange: updateConfirmation }),
-            react_1.default.createElement("br", null),
             react_1.default.createElement("div", null,
                 react_1.default.createElement("label", { htmlFor: 'arn' }, "ARN"),
                 react_1.default.createElement("br", null),
                 react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, value: arn }),
                 react_1.default.createElement("br", null),
                 react_1.default.createElement("select", { onChange: updateRegion, value: region },
-                    react_1.default.createElement("option", { value: '' }, region),
+                    react_1.default.createElement("option", { value: region }, region),
                     filteredRegionsOptions.map((item, idx) => (react_1.default.createElement("option", { key: `region-${idx}`, value: item }, item))))),
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: 'submit', value: 'Save' })),
-        react_1.default.createElement("div", { className: 'errorMessage' }, errorMessage)));
+        react_1.default.createElement("h3", null, "Login Details"),
+        react_1.default.createElement("form", { onSubmit: submitPasswordForm },
+            react_1.default.createElement("label", { htmlFor: 'email' }, "Email"),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("input", { type: 'text', id: 'email', name: 'email', value: email, disabled: true }),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("label", { htmlFor: 'password' }, "Update Password"),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("input", { type: 'password', id: 'password', name: 'password', onChange: updatePassword, ref: passwordRef }),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("label", { htmlFor: 'confirmation' }, "Confirm Password"),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("input", { type: 'password', id: 'confirmation', name: 'confirmation', onChange: updateConfirmation, ref: confirmationRef }),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("input", { type: 'submit', value: 'Save' })),
+        react_1.default.createElement("div", { className: 'errorMessage' }, errorMessage),
+        react_1.default.createElement("div", { className: 'errorMessage' }, successMessage)));
 };
 exports.default = Settings;

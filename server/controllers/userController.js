@@ -126,8 +126,103 @@ const userController = {
             return next();
         });
     },
-    updateUser() {
+    updateUserProfile(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            const originalEmail = res.locals.email;
+            const { firstName, lastName, arn, region } = req.body;
+            const { arnValidation } = res.locals;
+            console.log(arn, arnValidation);
+            // Declare an array to store errors
+            const errors = [];
+            // Check if input fields are empty
+            for (const key in req.body) {
+                if (req.body[key].length === 0) {
+                    errors.push(key);
+                }
+            }
+            //Check if arn is validated
+            if (!arnValidation.validated) {
+                errors.push("arn");
+            }
+            // Send back errors
+            if (errors.length > 0) {
+                // res.locals.errors = errors;
+                return next({
+                    log: "Error caught in userController.createUser middleware function",
+                    status: 500,
+                    message: { errMessage: `Error found in user input`, errors: errors }
+                });
+            }
+            try {
+                // create a new user in database with hashedPass as password
+                const updatedUser = yield userModel_1.default.findOneAndUpdate({
+                    email: originalEmail
+                }, {
+                    firstName,
+                    lastName,
+                    arn,
+                    region
+                }, {
+                    new: true
+                });
+                console.log(updatedUser);
+                res.locals.user = updatedUser;
+                return next();
+            }
+            catch (err) {
+                return next({
+                    log: "Error caught in userController.updateUserProfile middleware function",
+                    status: 500,
+                    message: { errMessage: `Error updating user's profile`, errors: errors }
+                });
+            }
+        });
+    },
+    updateUserPassword(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const originalEmail = res.locals.email;
+            const { password, confirmation } = req.body;
+            // Declare an array to store errors
+            const errors = [];
+            // Check if input fields are empty
+            for (const key in req.body) {
+                if (req.body[key].length === 0) {
+                    errors.push(key);
+                }
+            }
+            // Check if password matches confirmation
+            if (password !== confirmation) {
+                errors.push("password", "confirmation");
+            }
+            // Send back errors
+            if (errors.length > 0) {
+                // res.locals.errors = errors;
+                return next({
+                    log: "Error caught in userController.createUser middleware function",
+                    status: 500,
+                    message: { errMessage: `Error found in user input`, errors: errors }
+                });
+            }
+            try {
+                const hashedPass = yield bcrypt.hash(password, SALT_WORK_FACTOR);
+                // create a new user in database with hashedPass as password
+                const updatedUser = yield userModel_1.default.findOneAndUpdate({
+                    email: originalEmail
+                }, {
+                    password: hashedPass,
+                }, {
+                    new: true
+                });
+                res.locals.success = { successMessage: 'Password updated!' };
+                return next();
+            }
+            catch (err) {
+                return next({
+                    log: "Error caught in userController.updateUserPassword middleware function",
+                    status: 500,
+                    message: { errMessage: `Error updating the password`, errors: errors }
+                });
+            }
         });
     },
 };
