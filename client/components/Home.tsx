@@ -3,14 +3,9 @@ import * as d3 from 'd3';
 import { Axis, Orient } from 'd3-axis-for-react';
 
 interface subMetrics {
-    values: number[] | undefined
-    timestamp: Date[] | undefined
+    values: number[]
+    timestamp: Date[]
   }
-
-const emptyData: subMetrics = {
-    values: undefined,
-    timestamp: undefined,
-}
 
 type RawData = {
   values: number,
@@ -20,19 +15,20 @@ type RawData = {
 type d3Data = Array<RawData>;
 
 const Home = () => {
-   // Declare dimensions for the graphs
-   const width = 600;
-   const height = 400;
-   const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-
-
-
+    // End of D3 experimentation
   const [invocationsData, setInvocations] = useState({});
   const [errorsData, setErrors] = useState({});
   const [throttlesData, setThrottles] = useState({});
   const [durationData, setDurations] = useState({});
 
   const route = '/dashboard/allMetrics'
+
+  // Declare dimensions for the graphs
+  const width = 600;
+  const height = 400;
+  const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+
+ 
 
   // Sends a GET request to the '/dashboard/allMetrics' route
   // Uses ReactHooks in order to change the states based on data received from AWS
@@ -64,7 +60,7 @@ const Home = () => {
         values: res.metrics.duration.values, 
         timestamp: res.metrics.duration.timestamp
     }));
-
+    
     } catch(error) {
       console.log(error);
     }
@@ -87,11 +83,10 @@ const Home = () => {
     getMetrics();
   }, []);
 
-
   
   return (
-  <div>Home
-
+  <div>
+    Home
   </div>
   );
 };

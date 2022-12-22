@@ -33,23 +33,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const emptyData = {
-    values: undefined,
-    timestamp: undefined,
-};
 const Home = () => {
-    // Initialize a variable in state to hold D3 data
-    // to do invocations only for now
-    const [d3Data, setD3Data] = (0, react_1.useState)([]);
-    // const [invocationsData, setInvocations] = useState(emptyData);
-    // const [errorsData, setErrors] = useState<subMetrics>(emptyData);
-    // const [throttlesData, setThrottles] = useState<subMetrics>(emptyData);
-    // const [durationData, setDurations] = useState<subMetrics>(emptyData);
+    // End of D3 experimentation
     const [invocationsData, setInvocations] = (0, react_1.useState)({});
     const [errorsData, setErrors] = (0, react_1.useState)({});
     const [throttlesData, setThrottles] = (0, react_1.useState)({});
     const [durationData, setDurations] = (0, react_1.useState)({});
     const route = '/dashboard/allMetrics';
+    // Declare dimensions for the graphs
+    const width = 600;
+    const height = 400;
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
     // Sends a GET request to the '/dashboard/allMetrics' route
     // Uses ReactHooks in order to change the states based on data received from AWS
     const getMetrics = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -99,18 +93,11 @@ const Home = () => {
     // Invokes the getMetrics function
     (0, react_1.useEffect)(() => {
         getMetrics();
+        console.log(invocationsData);
+        console.log(errorsData);
+        console.log(throttlesData);
+        console.log(durationData);
     }, []);
-    // useEffect(() => {
-    //   setD3Data(convertToD3Structure(invocationsData));
-    // }, [invocationsData]);
-    console.log(invocationsData, "INVOCATIONS");
-    console.log(errorsData, "ERRORS");
-    console.log(throttlesData, "THROTTLES");
-    console.log(durationData, "DURATION");
     return (react_1.default.createElement("div", null, "Home"));
 };
 exports.default = Home;
-// Declare dimensions for the graphs
-const width = 600;
-const height = 400;
-const margin = { top: 20, right: 30, bottom: 30, left: 40 };
