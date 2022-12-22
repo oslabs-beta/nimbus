@@ -25,7 +25,6 @@
     "@types/jsonwebtoken": "^8.5.9",
     "bcrypt": "^5.1.0",
     "chart.js": "^4.1.1",
-    "chartjs-adapter-moment": "^1.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "docker": "^1.0.0",
