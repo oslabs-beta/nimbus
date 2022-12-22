@@ -96,13 +96,9 @@ const Home = () => {
     }, []);
     return (react_1.default.createElement("div", null,
         " Home",
-        react_1.default.createElement(LineChart_1.default, { rawData: invocationsData }),
-        react_1.default.createElement(LineChart_1.default, { rawData: errorsData }),
-        react_1.default.createElement(LineChart_1.default, { rawData: throttlesData }),
-        react_1.default.createElement(LineChart_1.default, { rawData: durationData })));
+        react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }),
+        react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }),
+        react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }),
+        react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' })));
 };
-// rawData={invocationsData}
-// rawData={errorsData}
-// rawData={throttlesData}
-// rawData={durationData}
 exports.default = Home;

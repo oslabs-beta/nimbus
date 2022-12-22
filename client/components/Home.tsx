@@ -73,18 +73,13 @@ const Home = () => {
   
   return (
   <div> Home
-    <LineChart rawData={invocationsData}/>
-    <LineChart rawData={errorsData}/>
-    <LineChart rawData={throttlesData}/>
-    <LineChart rawData={durationData}/>
+    <LineChart rawData={invocationsData} label='Invocations'/>
+    <LineChart rawData={errorsData} label='Errors'/>
+    <LineChart rawData={throttlesData} label='Throttles'/>
+    <LineChart rawData={durationData} label='Duration'/>
   </div>
   );
 };
-
-// rawData={invocationsData}
-// rawData={errorsData}
-// rawData={throttlesData}
-// rawData={durationData}
 
 export default Home;
 
