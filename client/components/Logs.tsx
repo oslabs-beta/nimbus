@@ -51,7 +51,7 @@ const Logs = () => {
     let res;
     try {
       res = await fetch(`${routes.functions}`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'Application/JSON',
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,

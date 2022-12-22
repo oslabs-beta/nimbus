@@ -13,6 +13,9 @@ require('dotenv').config();
 type userController = {
     verifyUser: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
     createUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    updateUserProfile: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    updateUserPassword: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 
 const userController: userController = {
@@ -111,7 +114,128 @@ const userController: userController = {
         message: {errMessage: `Error inserting user to database`, errors: errors}
       })
     }
-  }
+  },
+
+  async getUser(req, res, next) {
+    const { email } = res.locals;
+    const user: any = await User.findOne({email});
+    res.locals.user = {
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      arn: user.arn,
+      region: user.region
+    }
+    return next();
+  },
+
+  async updateUserProfile(req, res, next) {
+    const originalEmail = res.locals.email;
+    const { firstName, lastName, arn, region } = req.body;
+    const { arnValidation } = res.locals;
+    console.log(arn, arnValidation);
+    // Declare an array to store errors
+    const errors: Array<"firstName" | "lastName" | "arn" | "region"> = [];
+    
+    type KeyType = "firstName" | "lastName" | "arn" | "region";
+
+    // Check if input fields are empty
+    for (const key in req.body) {
+      if (req.body[key as KeyType].length === 0) {
+        errors.push(key as KeyType);
+      }
+    }
+
+    //Check if arn is validated
+    if (!arnValidation.validated) {
+      errors.push("arn");
+    }
+
+    // Send back errors
+    if (errors.length > 0) {
+      // res.locals.errors = errors;
+      return next({
+        log: "Error caught in userController.createUser middleware function",
+        status: 500,
+        message: {errMessage: `Error found in user input`, errors: errors}
+      })
+    }
+    try {
+      // create a new user in database with hashedPass as password
+      const updatedUser = await User.findOneAndUpdate({
+          email: originalEmail
+      },
+      {
+        firstName,
+        lastName,
+        arn,
+        region
+      }, 
+      {
+        new: true
+      })
+      console.log(updatedUser);
+      res.locals.user = updatedUser;
+      return next();
+    } catch (err) {
+      return next({
+        log: "Error caught in userController.updateUserProfile middleware function",
+        status: 500,
+        message: {errMessage: `Error updating user's profile`, errors: errors}
+      })
+    }
+  },
+
+  async updateUserPassword(req, res, next) {
+    const originalEmail = res.locals.email;
+    const { password, confirmation } = req.body;
+    // Declare an array to store errors
+    const errors: Array< "password" | "confirmation" > = [];
+
+    type KeyType = "password" | "confirmation" ;
+
+    // Check if input fields are empty
+    for (const key in req.body) {
+      if (req.body[key as KeyType].length === 0) {
+        errors.push(key as KeyType);
+      }
+     }
+    // Check if password matches confirmation
+    if (password !== confirmation) {
+      errors.push("password", "confirmation");
+    }
+
+    // Send back errors
+    if (errors.length > 0) {
+      // res.locals.errors = errors;
+      return next({
+        log: "Error caught in userController.createUser middleware function",
+        status: 500,
+        message: {errMessage: `Error found in user input`, errors: errors}
+      })
+    }
+    try {
+      const hashedPass = await bcrypt.hash(password, SALT_WORK_FACTOR);
+      // create a new user in database with hashedPass as password
+      const updatedUser = await User.findOneAndUpdate({
+          email: originalEmail
+      },
+      {
+        password: hashedPass,
+      }, 
+      {
+        new: true
+      })
+      res.locals.success = {successMessage: 'Password updated!'};
+      return next();
+    } catch (err) {
+      return next({
+        log: "Error caught in userController.updateUserPassword middleware function",
+        status: 500,
+        message: {errMessage: `Error updating the password`, errors: errors}
+      })
+    }
+  },
 };
 
 export default userController;
