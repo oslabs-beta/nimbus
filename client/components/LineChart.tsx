@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Chart as ChartJS, CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { Chart , CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { Line } from "react-chartjs-2";
 
 type RawData = {
@@ -14,9 +14,9 @@ type LineChartProps = {
 
 const LineChart = (props: LineChartProps) => {
   
-  ChartJS.register(
+  // Registers plugins to be applied on all charts
+  Chart.register(
     CategoryScale,
-    TimeScale,
     LinearScale,
     PointElement,
     LineElement,
@@ -38,10 +38,10 @@ const LineChart = (props: LineChartProps) => {
       },
     ]
   };
-
+  
   return (
         <div> Total {props.label}
-            <Line data = {data}/>
+            <Line data = {data} />
         </div>
   );
 };

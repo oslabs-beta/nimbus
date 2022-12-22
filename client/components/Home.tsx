@@ -9,7 +9,6 @@ type RawData = {
 type d3Data = Array<RawData>;
 
 const Home = () => {
-    // End of D3 experimentation
   const [invocationsData, setInvocations] = useState<d3Data>([]);
   const [errorsData, setErrors] = useState<d3Data>([]);
   const [throttlesData, setThrottles] = useState<d3Data>([]);
@@ -53,6 +52,7 @@ const Home = () => {
     }
   }
 
+  // The data retrieved from the back end is converted to an array of objects to be compatible with D3
   const convertToD3Structure = (rawData: any) => {
     const output = [];
     for (let key in rawData.values) {

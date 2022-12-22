@@ -1,11 +1,13 @@
 const express = require('express') 
 import { Request, Response } from 'express'
+import apiController from '../controllers/aws/apiController';
 const router = express.Router()
 import authController from '../controllers/authController';
 import credentialsController from '../controllers/aws/credentialsController';
 import lambdaController from '../controllers/aws/lambdaController';
 import logsController from '../controllers/aws/logsController';
-import metricsController from '../controllers/aws/metricsController'
+import metricsController from '../controllers/aws/metricsController';
+import userController from '../controllers/userController';
 
 // All routes verify JWT Token to get email
     // Email is used to query the database for ARN
@@ -56,13 +58,24 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
     });
 });
 
-// // Add middleware for API Gateway
-// router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.post('/apiRelations', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
+    return res.status(200).json({
+        apiRelations: res.locals.apiRelations
+    });
+});
 
-// router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+
+//Settings
+router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.user);
+});
+
+router.post('/updateProfile', authController.verifyToken, credentialsController.getCredentials, userController.updateUserProfile, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.user);
+});
+
+router.post('/updatePassword', authController.verifyToken, userController.updateUserPassword, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.success);
+});
 
 module.exports = router
