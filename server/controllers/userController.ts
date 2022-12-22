@@ -13,6 +13,8 @@ require('dotenv').config();
 type userController = {
     verifyUser: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
     createUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    updateUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 
 const userController: userController = {
@@ -111,7 +113,24 @@ const userController: userController = {
         message: {errMessage: `Error inserting user to database`, errors: errors}
       })
     }
-  }
+  },
+
+  async getUser(req, res, next) {
+    const { email } = res.locals;
+    const user: any = await User.findOne({email});
+    res.locals.user = {
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      arn: user.arn,
+      region: user.region
+    }
+    return next();
+  },
+
+  async updateUser() {
+
+  },
 };
 
 export default userController;

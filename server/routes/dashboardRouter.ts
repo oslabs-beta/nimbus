@@ -5,7 +5,8 @@ import authController from '../controllers/authController';
 import credentialsController from '../controllers/aws/credentialsController';
 import lambdaController from '../controllers/aws/lambdaController';
 import logsController from '../controllers/aws/logsController';
-import metricsController from '../controllers/aws/metricsController'
+import metricsController from '../controllers/aws/metricsController';
+import userController from '../controllers/userController';
 
 // All routes verify JWT Token to get email
     // Email is used to query the database for ARN
@@ -60,8 +61,9 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
 //     return res.status(200).json();
 // });
 
-// router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+//Settings
+router.post('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.user);
+});
 
 module.exports = router
