@@ -1,5 +1,6 @@
 const express = require('express') 
 import { Request, Response } from 'express'
+import apiController from '../controllers/aws/apiController';
 const router = express.Router()
 import authController from '../controllers/authController';
 import credentialsController from '../controllers/aws/credentialsController';
@@ -55,10 +56,12 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
     });
 });
 
-// // Add middleware for API Gateway
-// router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.post('/apiRelations', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
+    return res.status(200).json({
+        apiRelations: res.locals.apiRelations
+    });
+});
+
 
 // router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
 //     return res.status(200).json();

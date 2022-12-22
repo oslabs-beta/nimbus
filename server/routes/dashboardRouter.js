@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
+const apiController_1 = __importDefault(require("../controllers/aws/apiController"));
 const router = express.Router();
 const authController_1 = __importDefault(require("../controllers/authController"));
 const credentialsController_1 = __importDefault(require("../controllers/aws/credentialsController"));
@@ -21,7 +22,7 @@ router.get('/allMetrics', authController_1.default.verifyToken, credentialsContr
 });
 router.post('/metricsByFunc', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, (req, res) => {
     return res.status(200).json({
-        metric: res.locals.metric,
+        metrics: res.locals.metrics,
     });
 });
 router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, (req, res) => {
@@ -39,10 +40,11 @@ router.post('/filteredLogs', authController_1.default.verifyToken, credentialsCo
         filteredLogs: res.locals.filteredLogs
     });
 });
-// // Add middleware for API Gateway
-// router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.post('/apiRelations', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIRelations, (req, res) => {
+    return res.status(200).json({
+        apiRelations: res.locals.apiRelations
+    });
+});
 // router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
 //     return res.status(200).json();
 // });
