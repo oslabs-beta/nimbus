@@ -111,6 +111,24 @@ const userController = {
                 });
             }
         });
-    }
+    },
+    getUser(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = res.locals;
+            const user = yield userModel_1.default.findOne({ email });
+            res.locals.user = {
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                arn: user.arn,
+                region: user.region
+            };
+            return next();
+        });
+    },
+    updateUser() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    },
 };
 exports.default = userController;

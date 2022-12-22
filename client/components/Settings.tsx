@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
+interface UserData {
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  confirmation: String;
+  arn: String;
+  region: String;
+}
+
+
 const Settings = () => {
 
   const [email, setEmail] = useState('');
@@ -13,6 +24,7 @@ const Settings = () => {
 
   const routes = {
     userDetails: '/dashboard/userDetails',
+    updateUserDetails: '/dashboard/updateUserDetails'
   }
 
   const getUserDetails = async () => {
@@ -39,7 +51,7 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    
+    getUserDetails();
   }, []);
 
   const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,8 +115,26 @@ const Settings = () => {
 
   const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
 
-  const submitForm = () => {
-
+  const submitForm = (e: any) => {
+    e.preventDefault();
+    const updatedUserData: UserData = {
+      email,
+      firstName,
+      lastName,
+      password,
+      confirmation,
+      arn,
+      region,
+    };
+    fetch(routes.updateUserDetails, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'Application/JSON' ,
+        authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+      },
+      body: JSON.stringify(updatedUserData),
+    })
   }
 
     return (<div>
@@ -140,7 +170,7 @@ const Settings = () => {
         value={lastName}
       ></input>
       <br></br>
-      <label htmlFor='password'>Password</label>
+      <label htmlFor='password'>Update Password</label>
       <br></br>
       <input
         type='password'
@@ -164,7 +194,7 @@ const Settings = () => {
         <input type='text' id='arn' name='arn' onChange={updateArn} value={arn}></input>
         <br></br>
         <select onChange={updateRegion} value={region}>
-          <option value=''>{region}</option>
+          <option value={region}>{region}</option>
           {filteredRegionsOptions.map((item, idx) => (
             <option key={`region-${idx}`} value={item}>
               {item}

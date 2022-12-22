@@ -62,7 +62,11 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
 // });
 
 //Settings
-router.post('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
+router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.user);
+});
+
+router.post('/updateUserDetails', authController.verifyToken, credentialsController.getCredentials, userController.updateUser, (req: Request, res: Response) => {
     return res.status(200).json(res.locals.user);
 });
 

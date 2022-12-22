@@ -97,7 +97,7 @@ const Logs = () => {
         console.log(reqBody);
         try {
             res = yield fetch(`${routes.logs}`, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'Application/JSON',
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,

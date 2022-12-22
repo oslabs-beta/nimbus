@@ -69,6 +69,7 @@ const Settings = () => {
         }
     });
     (0, react_1.useEffect)(() => {
+        getUserDetails();
     }, []);
     const updateEmail = (e) => {
         setEmail(e.target.value);
@@ -139,7 +140,7 @@ const Settings = () => {
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: 'text', id: 'lastName', name: 'lastName', onChange: updateLastName, value: lastName }),
             react_1.default.createElement("br", null),
-            react_1.default.createElement("label", { htmlFor: 'password' }, "Password"),
+            react_1.default.createElement("label", { htmlFor: 'password' }, "Update Password"),
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: 'password', id: 'password', name: 'password', onChange: updatePassword }),
             react_1.default.createElement("br", null),

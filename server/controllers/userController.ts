@@ -128,8 +128,71 @@ const userController: userController = {
     return next();
   },
 
-  async updateUser() {
+  async updateUser(req, res, next) {
+    const { originalEmail } = res.locals;
+    const { email, firstName, lastName, password, confirmation, arn, region } = req.body;
+    const { arnValidation } = res.locals;
+    console.log(arn, arnValidation);
+    // Declare an array to store errors
+    const errors: Array<"email" | "firstName" | "lastName" | "password" | "confirmation" | "arn" | "region"> = [];
+    
+    // Validate email:
+    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email) === false) {
+      errors.push("email");
+    }
+    type KeyType = "email" | "firstName" | "lastName" | "password" | "confirmation" | "arn" | "region";
+    // Check if input fields are empty
+    for (const key in req.body) {
+      if (req.body[key as KeyType].length === 0) {
+        errors.push(key as KeyType);
+      }
+     }
+    // Check if password matches confirmation
+    if (password !== confirmation) {
+      errors.push("password", "confirmation");
+    }
 
+    //Check if arn is validated
+    if (!arnValidation.validated) {
+      errors.push("arn");
+    }
+
+    // Send back errors
+    if (errors.length > 0) {
+      // res.locals.errors = errors;
+      return next({
+        log: "Error caught in userController.createUser middleware function",
+        status: 500,
+        message: {errMessage: `Error found in user input`, errors: errors}
+      })
+    }
+    try {
+      const hashedPass = await bcrypt.hash(password, SALT_WORK_FACTOR);
+      // create a new user in database with hashedPass as password
+      const updatedUser = await User.findOneAndUpdate({
+          email: originalEmail
+      },
+      {
+        firstName,
+        lastName,
+        email,
+        password: hashedPass,
+        arn,
+        region
+      }, 
+      {
+        new: true
+      })
+      console.log(updatedUser);
+      res.locals.user = updatedUser;
+      return next();
+    } catch (err) {
+      return next({
+        log: "Error caught in userController.signupUser middleware function",
+        status: 500,
+        message: {errMessage: `Error inserting user to database`, errors: errors}
+      })
+    }
   },
 };
 
