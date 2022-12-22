@@ -33,12 +33,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const emptyData = {
+    values: undefined,
+    timestamp: undefined,
+};
 const Home = () => {
+    // Initialize a variable in state to hold D3 data
+    // to do invocations only for now
+    const [d3Data, setD3Data] = (0, react_1.useState)([]);
+    // const [invocationsData, setInvocations] = useState(emptyData);
+    // const [errorsData, setErrors] = useState<subMetrics>(emptyData);
+    // const [throttlesData, setThrottles] = useState<subMetrics>(emptyData);
+    // const [durationData, setDurations] = useState<subMetrics>(emptyData);
     const [invocationsData, setInvocations] = (0, react_1.useState)({});
     const [errorsData, setErrors] = (0, react_1.useState)({});
     const [throttlesData, setThrottles] = (0, react_1.useState)({});
     const [durationData, setDurations] = (0, react_1.useState)({});
     const route = '/dashboard/allMetrics';
+    // Sends a GET request to the '/dashboard/allMetrics' route
+    // Uses ReactHooks in order to change the states based on data received from AWS
     const getMetrics = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -51,21 +64,53 @@ const Home = () => {
                 },
             });
             res = yield res.json();
-            setInvocations({ invocations: res.metrics.invocations, });
-            setErrors({ errors: res.metrics.errors });
-            setThrottles({ throttles: res.metrics.throttles });
-            setDurations({ duration: res.metrics.duration });
+            setInvocations(convertToD3Structure({
+                values: res.metrics.invocations.values,
+                timestamp: res.metrics.invocations.timestamp
+            }));
+            setErrors(convertToD3Structure({
+                values: res.metrics.errors.values,
+                timestamp: res.metrics.errors.timestamp
+            }));
+            setThrottles(convertToD3Structure({
+                values: res.metrics.throttles.values,
+                timestamp: res.metrics.throttles.timestamp
+            }));
+            setDurations(convertToD3Structure({
+                values: res.metrics.duration.values,
+                timestamp: res.metrics.duration.timestamp
+            }));
         }
         catch (error) {
             console.log(error);
         }
     });
+    const convertToD3Structure = (rawData) => {
+        const output = [];
+        for (let key of rawData.values) {
+            const subElement = {
+                values: rawData.values[key],
+                timestamp: rawData.timestamp[key],
+            };
+            output.push(subElement);
+        }
+        return output;
+    };
+    // Invokes the getMetrics function
     (0, react_1.useEffect)(() => {
         getMetrics();
     }, []);
-    return (react_1.default.createElement("div", null,
-        "Home",
-        react_1.default.createElement("ul", null,
-            react_1.default.createElement("li", null))));
+    // useEffect(() => {
+    //   setD3Data(convertToD3Structure(invocationsData));
+    // }, [invocationsData]);
+    console.log(invocationsData, "INVOCATIONS");
+    console.log(errorsData, "ERRORS");
+    console.log(throttlesData, "THROTTLES");
+    console.log(durationData, "DURATION");
+    return (react_1.default.createElement("div", null, "Home"));
 };
 exports.default = Home;
+// Declare dimensions for the graphs
+const width = 600;
+const height = 400;
+const margin = { top: 20, right: 30, bottom: 30, left: 40 };
