@@ -24,7 +24,7 @@ router.get('/allMetrics',
         });
 });
 
-router.post('/metricsByFunc', 
+router.get('/funcmetrics', 
     authController.verifyToken, 
     credentialsController.getCredentialsFromDB, 
     lambdaController.getFunctions, 
@@ -39,6 +39,7 @@ router.get('/functions',
     authController.verifyToken, 
     credentialsController.getCredentialsFromDB, 
     lambdaController.getFunctions, 
+    // metricsController.getMetricsByFunc, 
     (req: Request, res: Response) => {
         return res.status(200).json({
             functions: res.locals.functions
