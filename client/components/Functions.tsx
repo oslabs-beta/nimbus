@@ -7,7 +7,7 @@ const Functions = () => {
   // Grab each functions metrics when the component mounts
   const grabFuncsMetrics = async() => {
     let response;
-    response = await fetch('/dashboard/functions', {
+    response = await fetch('/dashboard/funcmetrics', {
       method: 'GET',
       headers: {
         'Content-Type': 'Application/JSON',

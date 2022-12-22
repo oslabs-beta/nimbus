@@ -24,25 +24,25 @@ router.get('/allMetrics',
         });
 });
 
-// router.post('/metricsByFunc', 
-//     authController.verifyToken, 
-//     credentialsController.getCredentialsFromDB, 
-//     lambdaController.getFunctions, 
-//     metricsController.getMetricsByFunc, 
-//     (req: Request, res: Response) => {
-//         return res.status(200).json({
-//             metrics: res.locals.metrics,
-//         });
-// });
-
-router.get('/functions', 
+router.get('/funcmetrics', 
     authController.verifyToken, 
     credentialsController.getCredentialsFromDB, 
     lambdaController.getFunctions, 
     metricsController.getMetricsByFunc, 
     (req: Request, res: Response) => {
         return res.status(200).json({
-            metrics: res.locals.metrics
+            metrics: res.locals.metrics,
+        });
+});
+
+router.get('/functions', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    lambdaController.getFunctions, 
+    // metricsController.getMetricsByFunc, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            functions: res.locals.functions
         });
 });
 
