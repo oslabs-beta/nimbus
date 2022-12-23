@@ -10,38 +10,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// "apiList": [
-//   {
-//       "apiName": "nimbusTest2",
-//       "apiId": "37cyh4ft82",
-//       "paths": [
-//           "/"
-//       ]
-//   }]
-// 1. iterate over the API List  (array of objects, and access APIName)
-// 2. for each apiName we want to push it to an array 
-// make instance of CloudWatch client passing in config
-// make instance of GetMetricDataCommand passing in input which is 
 const client_cloudwatch_1 = require("@aws-sdk/client-cloudwatch");
 require('dotenv').config();
 const apiMetricsController = {
+    // Gets metrics for each API in res.locals.apiList (from apiController.getAPIList)
     getAPIMetrics: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('getAPIMetrics INVOKED');
         // start a new CloudWatch client with provided credentials and region
         const cwClient = new client_cloudwatch_1.CloudWatchClient({
             region: res.locals.region,
             credentials: res.locals.credentials,
         });
+        // Declare output object
         const allApiMetrics = {};
         const metrics = ['Latency', 'Count', '5XXError', '4XXError'];
         for (let apiObj of res.locals.apiList) {
             const { apiName } = apiObj;
-            //const getCurrApiMetrics = async () => {
+            // Declare obj to store all the metrics of the current API
             const currApiMetrics = {};
             for (let metric of metrics) {
+                // Obtain input for GetMetricDataCommand using helper function: getCommandInput
                 const metricParams = getCommandInput(apiName, metric);
                 try {
+                    // Obtain the data for curr API and curr metric
                     const currMetricData = yield cwClient.send(new client_cloudwatch_1.GetMetricDataCommand(metricParams));
+                    // Declare an obj to store the timestamps and values aka x and y values for our graph
                     const timeValObj = {};
                     const results = currMetricData === null || currMetricData === void 0 ? void 0 : currMetricData.MetricDataResults;
                     if (results) {
@@ -52,15 +44,17 @@ const apiMetricsController = {
                 }
                 catch (err) {
                     console.log(err);
+                    next({
+                        log: "Error caught in apiMetricsController.getAPIMetrics middleware function",
+                        status: 500,
+                        message: { errMessage: `Error getting all API metrics`, err: err }
+                    });
                 }
             }
-            // return currApiMetrics;
-            //}
-            // allApiMetrics[apiName] = await getCurrApiMetrics();
             allApiMetrics[apiName] = currApiMetrics;
         }
-        console.log("allApiMetrics", allApiMetrics);
-        // res.locals.allApiMetrics = allApiMetrics
+        // console.log("allApiMetrics", allApiMetrics);
+        res.locals.allApiMetrics = allApiMetrics;
         return next();
     })
 };

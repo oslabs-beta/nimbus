@@ -54,7 +54,7 @@ router.get('/apiList', authController_1.default.verifyToken, credentialsControll
 // body: period
 router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
     return res.status(200).json({
-        apiList: res.locals.apiList
+        allApiMetrics: res.locals.allApiMetrics
     });
 });
 // router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
