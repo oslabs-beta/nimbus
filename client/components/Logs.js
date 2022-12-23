@@ -82,6 +82,7 @@ const Logs = () => {
             });
             // convert response to JS object
             res = yield res.json();
+            // console.log("RES.FUNCTIONS", res.functions);
             const funcArr = res.functions || ['unable to fetch lambda functions'];
             setFunctions(funcArr);
             setSelectedFunc(funcArr[0]);

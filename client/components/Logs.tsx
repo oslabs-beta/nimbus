@@ -61,7 +61,7 @@ const Logs = () => {
       // convert response to JS object
       res = await res.json();
     
-
+      // console.log("RES.FUNCTIONS", res.functions);
       const funcArr = res.functions || ['unable to fetch lambda functions'];
 
       setFunctions(funcArr);

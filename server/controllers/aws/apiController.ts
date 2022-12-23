@@ -129,9 +129,9 @@ const apiController = {
             return next();
         } catch (err) {
             next({
-                log: "Error caught in lambdaController.getAPIRelations middleware function",
+                log: "Error caught in apiController.getAPIRelations middleware function",
                 status: 500,
-                message: {errMessage: `Error getting API relations for the account`, errors: err}
+                message: {errMessage: `Error getting API relations for the account`, err: err}
             });
         }
 
@@ -164,14 +164,51 @@ const apiController = {
         // } catch (err) {
         //     console.log(err);
         //     return next({
-        //         log: "Error caught in lambdaController.getPolicy middleware function",
+        //         log: "Error caught in apiController.getAPIRelations middleware function",
         //         status: 500,
-        //         message: {errMessage: `Error getting functions for the account`, errors: err}
+        //         message: {errMessage: `Error getting relations for the account`, errors: err}
         //         });
         // }
         
 
+    },
+
+    async getAPIList(req: Request, res: Response, next: NextFunction) {
+        const apiClient = new APIGatewayClient({
+            region: res.locals.region, 
+            credentials: res.locals.credentials,
+        });
+
+        const apiList: API[] = []; 
+
+        try {
+            
+            const restAPIs: GetRestApisCommandOutput = await apiClient.send(new GetRestApisCommand({}));
+            //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
+            // const resources = await client.send(new GetResourceCommand({  }));
+            const restAPIsItems = restAPIs?.items;
+            
+            if (restAPIsItems !== undefined) {
+                for (const item of restAPIsItems) {
+                    const getResourcesInput: GetResourcesCommandInput = { restApiId: item.id };
+                    const resources = await apiClient.send(new GetResourcesCommand(getResourcesInput));
+                    const paths = resources?.items?.map(item => item.path);
+                    const apiDetails: API = {apiName: item.name, apiId: item.id, paths: paths};
+                    apiList.push(apiDetails);
+                }
+            }
+            res.locals.apiList = apiList;
+            return next();
+        
+        } catch (err) {
+            next({
+                log: "Error caught in apiController.getAPIList middleware function",
+                status: 500,
+                message: {errMessage: `Error getting API relations for the account`, err: err}
+            });
+        }
     }
+
 
 }
 
