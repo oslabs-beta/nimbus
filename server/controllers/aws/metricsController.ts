@@ -14,7 +14,7 @@ interface Metrics {
   duration: subMetrics
 }
 
-// Grab the Invocation, Error, Duration, and Throttle metrics
+// Grab the Invocation, Error, Duration, and Throttle metrics for all functions
 const metricsController = {
   async getAllMetrics(req: Request, res: Response, next: NextFunction) {
     try {
@@ -109,7 +109,7 @@ const metricsController = {
       })
     } 
   },
-  // Grab specific metrics from cloudwatch depending on user input 
+  // Grab specific metrics from cloudwatch depending on user input (seleted func)
   async getMetricsByFunc (req: Request, res: Response, next: NextFunction) {
     try {
       // Initiate client with credentials
@@ -117,10 +117,10 @@ const metricsController = {
         region: res.locals.region,
         credentials: res.locals.credentials
       })
-
       const metricData: MetricDataQuery[] = []
       // functions from lamda controller 
       res.locals.functions.forEach((functionName:string, i:number) => {
+        // get metrics for specific function
         const metricInvocationData = {
           Id: `i${i}`, 
           MetricStat: {
@@ -140,6 +140,7 @@ const metricsController = {
           Label: `${functionName} Total invocations of Lambda Function`
         }
         metricData.push(metricInvocationData)
+        // get error data for specific function
         const metricErrorData = {
           Id: `e${i}`, 
           MetricStat: {
@@ -198,7 +199,7 @@ const metricsController = {
         }
         metricData.push(metricDurationData)
       })
-
+      // input to get metric data command 
       const input: GetMetricDataCommandInput = {
         // Update StartTime and EndTime to be more dynamic from user
         "StartTime": new Date(new Date().setDate(new Date().getDate() - 7)),

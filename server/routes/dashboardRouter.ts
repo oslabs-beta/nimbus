@@ -7,6 +7,7 @@ import credentialsController from '../controllers/aws/credentialsController';
 import lambdaController from '../controllers/aws/lambdaController';
 import logsController from '../controllers/aws/logsController';
 import metricsController from '../controllers/aws/metricsController'
+import apiMetricsController from '../controllers/aws/apiMetricsController'
 
 // All routes verify JWT Token to get email
     // Email is used to query the database for ARN
@@ -61,6 +62,26 @@ router.post('/apiRelations', authController.verifyToken, credentialsController.g
         apiRelations: res.locals.apiRelations
     });
 });
+
+
+router.get('/apiList', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, (req: Request, res: Response) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+
+// body: period
+router.get('/apiMetrics', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    apiController.getAPIList, 
+    apiMetricsController.getAPIMetrics, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            allApiMetrics: res.locals.allApiMetrics
+        });
+});
+
 
 
 // router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {

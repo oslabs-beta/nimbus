@@ -107,7 +107,41 @@ const apiController = {
                 next({
                     log: "Error caught in lambdaController.getAPIRelations middleware function",
                     status: 500,
-                    message: { errMessage: `Error getting API relations for the account`, errors: err }
+                    message: { errMessage: `Error getting API relations for the account`, err: err }
+                });
+            }
+        });
+    },
+    getAPIList(req, res, next) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const apiClient = new client_api_gateway_1.APIGatewayClient({
+                region: res.locals.region,
+                credentials: res.locals.credentials,
+            });
+            const apiList = [];
+            try {
+                const restAPIs = yield apiClient.send(new client_api_gateway_1.GetRestApisCommand({}));
+                //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
+                // const resources = await client.send(new GetResourceCommand({  }));
+                const restAPIsItems = restAPIs === null || restAPIs === void 0 ? void 0 : restAPIs.items;
+                if (restAPIsItems !== undefined) {
+                    for (const item of restAPIsItems) {
+                        const getResourcesInput = { restApiId: item.id };
+                        const resources = yield apiClient.send(new client_api_gateway_1.GetResourcesCommand(getResourcesInput));
+                        const paths = (_a = resources === null || resources === void 0 ? void 0 : resources.items) === null || _a === void 0 ? void 0 : _a.map(item => item.path);
+                        const apiDetails = { apiName: item.name, apiId: item.id, paths: paths };
+                        apiList.push(apiDetails);
+                    }
+                }
+                res.locals.apiList = apiList;
+                return next();
+            }
+            catch (err) {
+                next({
+                    log: "Error caught in lambdaController.getAPIList middleware function",
+                    status: 500,
+                    message: { errMessage: `Error getting API relations for the account`, err: err }
                 });
             }
         });

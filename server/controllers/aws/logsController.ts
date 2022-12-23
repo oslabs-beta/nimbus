@@ -121,7 +121,7 @@ const logsController = {
       return next({
         log: "Error caught in logsController.getFilteredLogs middleware function",
         status: 500,
-        message: {errMessage: `Error getting filtered logs for this function`, errors: err}
+        message: {errMessage: `Error getting filtered logs for this function`, err: err}
       })
     }
   }

@@ -11,6 +11,7 @@ const credentialsController_1 = __importDefault(require("../controllers/aws/cred
 const lambdaController_1 = __importDefault(require("../controllers/aws/lambdaController"));
 const logsController_1 = __importDefault(require("../controllers/aws/logsController"));
 const metricsController_1 = __importDefault(require("../controllers/aws/metricsController"));
+const apiMetricsController_1 = __importDefault(require("../controllers/aws/apiMetricsController"));
 // All routes verify JWT Token to get email
 // Email is used to query the database for ARN
 // ARN is used to get credentials from client's AWS account
@@ -43,6 +44,17 @@ router.post('/filteredLogs', authController_1.default.verifyToken, credentialsCo
 router.post('/apiRelations', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIRelations, (req, res) => {
     return res.status(200).json({
         apiRelations: res.locals.apiRelations
+    });
+});
+router.get('/apiList', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, (req, res) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+// body: period
+router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
     });
 });
 // router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
