@@ -6,7 +6,8 @@ import authController from '../controllers/authController';
 import credentialsController from '../controllers/aws/credentialsController';
 import lambdaController from '../controllers/aws/lambdaController';
 import logsController from '../controllers/aws/logsController';
-import metricsController from '../controllers/aws/metricsController'
+import metricsController from '../controllers/aws/metricsController';
+import userController from '../controllers/userController';
 import apiMetricsController from '../controllers/aws/apiMetricsController'
 
 // All routes verify JWT Token to get email
@@ -24,7 +25,7 @@ router.get('/allMetrics',
         });
 });
 
-router.post('/metricsByFunc', 
+router.get('/funcmetrics', 
     authController.verifyToken, 
     credentialsController.getCredentialsFromDB, 
     lambdaController.getFunctions, 
@@ -39,6 +40,7 @@ router.get('/functions',
     authController.verifyToken, 
     credentialsController.getCredentialsFromDB, 
     lambdaController.getFunctions, 
+    // metricsController.getMetricsByFunc, 
     (req: Request, res: Response) => {
         return res.status(200).json({
             functions: res.locals.functions
@@ -84,8 +86,37 @@ router.get('/apiMetrics',
 
 
 
-// router.post('/settings', authController.verifyToken, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.get('/apiList', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, (req: Request, res: Response) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+
+// body: period
+router.get('/apiMetrics', 
+    authController.verifyToken, 
+    credentialsController.getCredentialsFromDB, 
+    apiController.getAPIList, 
+    apiMetricsController.getAPIMetrics, 
+    (req: Request, res: Response) => {
+        return res.status(200).json({
+            allApiMetrics: res.locals.allApiMetrics
+        });
+});
+
+
+
+//Settings
+router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.user);
+});
+
+router.post('/updateProfile', authController.verifyToken, credentialsController.getCredentials, userController.updateUserProfile, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.user);
+});
+
+router.post('/updatePassword', authController.verifyToken, userController.updateUserPassword, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.success);
+});
 
 module.exports = router
