@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_cloudwatch_1 = require("@aws-sdk/client-cloudwatch");
 require('dotenv').config();
-// Grab the Invocation, Error, Duration, and Throttle metrics
+// Grab the Invocation, Error, Duration, and Throttle metrics for all functions
 const metricsController = {
     getAllMetrics(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,7 +27,7 @@ const metricsController = {
                             MetricName: "Invocations",
                             Namespace: "AWS/Lambda",
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Invocations of Lambda Functions"
@@ -39,7 +39,7 @@ const metricsController = {
                             MetricName: "Errors",
                             Namespace: "AWS/Lambda"
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Errors of Lambda Functions"
@@ -51,7 +51,7 @@ const metricsController = {
                             MetricName: "Throttles",
                             Namespace: "AWS/Lambda"
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Throttles of Lambda Functions"
@@ -63,14 +63,14 @@ const metricsController = {
                             MetricName: "Duration",
                             Namespace: "AWS/Lambda"
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Duration of Lambda Functions"
                 };
                 const input = {
                     // Update StartTime and EndTime to be more dynamic from user
-                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 7)),
+                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
                     "EndTime": new Date(),
                     "MetricDataQueries": [metricInvocationData, metricErrorData, metricThrottlesData, metricDurationData],
                 };
@@ -109,7 +109,7 @@ const metricsController = {
             }
         });
     },
-    // Grab specific metrics from cloudwatch depending on user input 
+    // Grab specific metrics from cloudwatch depending on user input (seleted func)
     getMetricsByFunc(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -121,39 +121,41 @@ const metricsController = {
                 const metricData = [];
                 // functions from lamda controller 
                 res.locals.functions.forEach((functionName, i) => {
+                    // get metrics for specific function
                     const metricInvocationData = {
                         Id: `i${i}`,
                         MetricStat: {
                             Metric: {
                                 MetricName: "Invocations",
                                 Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total invocations of Lambda Function`
                     };
                     metricData.push(metricInvocationData);
+                    // get error data for specific function
                     const metricErrorData = {
                         Id: `e${i}`,
                         MetricStat: {
                             Metric: {
                                 MetricName: "Errors",
-                                Namespace: "AWS/Lambda"
+                                Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total errors of Lambda Function`
@@ -164,15 +166,15 @@ const metricsController = {
                         MetricStat: {
                             Metric: {
                                 MetricName: "Throttles",
-                                Namespace: "AWS/Lambda"
+                                Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total throttles of Lambda Function`
@@ -183,24 +185,25 @@ const metricsController = {
                         MetricStat: {
                             Metric: {
                                 MetricName: "Duration",
-                                Namespace: "AWS/Lambda"
+                                Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total duration of Lambda Function`
                     };
                     metricData.push(metricDurationData);
                 });
+                // input to get metric data command 
                 const input = {
                     // Update StartTime and EndTime to be more dynamic from user
-                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 7)),
+                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
                     "EndTime": new Date(),
                     "MetricDataQueries": metricData
                 };
@@ -208,6 +211,7 @@ const metricsController = {
                 const response = yield client.send(command);
                 // Create a metrics object to store the values and timestamps of specific metric
                 if (response.MetricDataResults) {
+                    console.log(response.MetricDataResults, "METRIC DATA RESULTS");
                     const parseData = (arr) => {
                         // declare an output object
                         const allFuncMetrics = {};

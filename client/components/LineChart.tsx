@@ -4,7 +4,7 @@ import { Line } from "react-chartjs-2";
 
 type RawData = {
   y: number,
-  x: Date,
+  x: string,
 }; 
 
 type LineChartProps = {
@@ -34,14 +34,15 @@ const LineChart = (props: LineChartProps) => {
         borderColor: [
           "rgb(75, 192, 192)",
         ],
-        tension: 0.1,
+        tension: 0.3,
       },
     ]
   };
   
   return (
-        <div> Total {props.label}
-            <Line data = {data} />
+        <div> 
+          Total {props.label}
+          <Line data = {data} />
         </div>
   );
 };

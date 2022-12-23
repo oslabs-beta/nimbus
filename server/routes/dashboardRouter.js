@@ -21,12 +21,14 @@ router.get('/allMetrics', authController_1.default.verifyToken, credentialsContr
         metrics: res.locals.metrics,
     });
 });
-router.post('/metricsByFunc', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, (req, res) => {
+router.get('/funcmetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, (req, res) => {
     return res.status(200).json({
         metrics: res.locals.metrics,
     });
 });
-router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, (req, res) => {
+router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, 
+// metricsController.getMetricsByFunc, 
+(req, res) => {
     return res.status(200).json({
         functions: res.locals.functions
     });
@@ -41,10 +43,11 @@ router.post('/filteredLogs', authController_1.default.verifyToken, credentialsCo
         filteredLogs: res.locals.filteredLogs
     });
 });
-// // Add middleware for API Gateway
-// router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.post('/apiRelations', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIRelations, (req, res) => {
+    return res.status(200).json({
+        apiRelations: res.locals.apiRelations
+    });
+});
 //Settings
 router.get('/userDetails', authController_1.default.verifyToken, userController_1.default.getUser, (req, res) => {
     return res.status(200).json(res.locals.user);
