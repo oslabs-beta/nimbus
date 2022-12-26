@@ -29,11 +29,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Login_js_1 = __importDefault(require("../components/Login.js"));
 const Register_js_1 = __importDefault(require("../components/Register.js"));
-const UserAuth = ({ handleUserLogin }) => {
+const UserAuth = ({ handleUserLogin, toggleTheme }) => {
     const [showLogin, setShowLogin] = (0, react_1.useState)(true);
     const swapAuthView = () => {
         setShowLogin((showLogin) => !showLogin);
     };
-    return (react_1.default.createElement("div", { className: "user-auth" }, showLogin === true ? react_1.default.createElement(Login_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView }) : react_1.default.createElement(Register_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView })));
+    return (react_1.default.createElement("div", { className: "user-auth" },
+        react_1.default.createElement("button", { onClick: toggleTheme, className: "btn" }, "Theme"),
+        showLogin === true ? react_1.default.createElement(Login_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView }) : react_1.default.createElement(Register_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView })));
 };
 exports.default = UserAuth;

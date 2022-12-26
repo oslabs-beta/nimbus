@@ -27,13 +27,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const react_daisyui_1 = require("react-daisyui");
 const UserAuth_1 = __importDefault(require("./UserAuth"));
 const UserDashboard_1 = __importDefault(require("./UserDashboard"));
 const App = () => {
     const [userLoggedIn, setUserLoggedIn] = (0, react_1.useState)(false);
+    const [theme, setTheme] = react_1.default.useState('myThemeDark');
     const handleUserLogin = () => {
         setUserLoggedIn((userLoggedIn) => !userLoggedIn);
     };
-    return (react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, { handleUserLogin: handleUserLogin })) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin }))));
+    const toggleTheme = () => {
+        setTheme(theme === 'myThemedark' ? 'myThemeLight' : 'myThemedark');
+    };
+    return (react_1.default.createElement(react_daisyui_1.Theme, { dataTheme: theme },
+        react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, { handleUserLogin: handleUserLogin, toggleTheme: toggleTheme })) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin, toggleTheme: toggleTheme })))));
 };
 exports.default = App;

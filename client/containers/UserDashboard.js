@@ -43,7 +43,7 @@ const Functions_1 = __importDefault(require("../components/Functions"));
 const Logs_1 = __importDefault(require("../components/Logs"));
 const Apis_1 = __importDefault(require("../components/Apis"));
 const Settings_1 = __importDefault(require("../components/Settings"));
-const UserDashboard = ({ handleUserLogin }) => {
+const UserDashboard = ({ handleUserLogin, toggleTheme }) => {
     const [data, setData] = (0, react_1.useState)([]);
     //   const swapAuthView = () => {
     //     setShowLogin((showLogin) => !showLogin);
@@ -69,6 +69,7 @@ const UserDashboard = ({ handleUserLogin }) => {
     });
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("button", { onClick: getData }, "DO I HAVE TOKEN"),
+        react_1.default.createElement("button", { onClick: toggleTheme, className: "btn" }, "Theme"),
         react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
             react_1.default.createElement(Layout_1.default, null),
             react_1.default.createElement(react_router_dom_1.Routes, null,

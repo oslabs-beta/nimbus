@@ -12,6 +12,7 @@ const lambdaController_1 = __importDefault(require("../controllers/aws/lambdaCon
 const logsController_1 = __importDefault(require("../controllers/aws/logsController"));
 const metricsController_1 = __importDefault(require("../controllers/aws/metricsController"));
 const userController_1 = __importDefault(require("../controllers/userController"));
+const apiMetricsController_1 = __importDefault(require("../controllers/aws/apiMetricsController"));
 // All routes verify JWT Token to get email
 // Email is used to query the database for ARN
 // ARN is used to get credentials from client's AWS account
@@ -21,12 +22,14 @@ router.get('/allMetrics', authController_1.default.verifyToken, credentialsContr
         metrics: res.locals.metrics,
     });
 });
-router.post('/metricsByFunc', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, (req, res) => {
+router.get('/funcmetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, (req, res) => {
     return res.status(200).json({
         metrics: res.locals.metrics,
     });
 });
-router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, (req, res) => {
+router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, 
+// metricsController.getMetricsByFunc, 
+(req, res) => {
     return res.status(200).json({
         functions: res.locals.functions
     });
@@ -41,10 +44,33 @@ router.post('/filteredLogs', authController_1.default.verifyToken, credentialsCo
         filteredLogs: res.locals.filteredLogs
     });
 });
-// // Add middleware for API Gateway
-// router.post('/apis', authController.verifyToken, credentialsController.getArnFromDB, (req: Request, res: Response) => {
-//     return res.status(200).json();
-// });
+router.post('/apiRelations', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIRelations, (req, res) => {
+    return res.status(200).json({
+        apiRelations: res.locals.apiRelations
+    });
+});
+router.get('/apiList', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, (req, res) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+// body: period
+router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
+    return res.status(200).json({
+        allApiMetrics: res.locals.allApiMetrics
+    });
+});
+router.get('/apiList', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, (req, res) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+// body: period
+router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
+    return res.status(200).json({
+        allApiMetrics: res.locals.allApiMetrics
+    });
+});
 //Settings
 router.get('/userDetails', authController_1.default.verifyToken, userController_1.default.getUser, (req, res) => {
     return res.status(200).json(res.locals.user);

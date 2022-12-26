@@ -38,7 +38,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const LineChart_1 = __importDefault(require("./LineChart"));
 const Home = () => {
-    // End of D3 experimentation
     const [invocationsData, setInvocations] = (0, react_1.useState)([]);
     const [errorsData, setErrors] = (0, react_1.useState)([]);
     const [throttlesData, setThrottles] = (0, react_1.useState)([]);
@@ -79,6 +78,7 @@ const Home = () => {
             console.log(error);
         }
     });
+    // The data retrieved from the back end is converted to an array of objects to be compatible with D3
     const convertToD3Structure = (rawData) => {
         const output = [];
         for (let key in rawData.values) {
