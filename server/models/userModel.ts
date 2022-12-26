@@ -33,10 +33,6 @@ const UserSchema = new Schema({
     type: String, 
     required: true
  }, 
- refreshToken: {
-   type: String,
-   // required: true
- },
  arn: {
    type: String, 
    required: true

@@ -27,7 +27,7 @@ const metricsController = {
                             MetricName: "Invocations",
                             Namespace: "AWS/Lambda",
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Invocations of Lambda Functions"
@@ -39,7 +39,7 @@ const metricsController = {
                             MetricName: "Errors",
                             Namespace: "AWS/Lambda"
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Errors of Lambda Functions"
@@ -51,7 +51,7 @@ const metricsController = {
                             MetricName: "Throttles",
                             Namespace: "AWS/Lambda"
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Throttles of Lambda Functions"
@@ -63,14 +63,14 @@ const metricsController = {
                             MetricName: "Duration",
                             Namespace: "AWS/Lambda"
                         },
-                        Period: 60,
+                        Period: 300,
                         Stat: "Sum",
                     },
                     Label: "Total Duration of Lambda Functions"
                 };
                 const input = {
                     // Update StartTime and EndTime to be more dynamic from user
-                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 7)),
+                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
                     "EndTime": new Date(),
                     "MetricDataQueries": [metricInvocationData, metricErrorData, metricThrottlesData, metricDurationData],
                 };
@@ -128,14 +128,14 @@ const metricsController = {
                             Metric: {
                                 MetricName: "Invocations",
                                 Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total invocations of Lambda Function`
@@ -147,15 +147,15 @@ const metricsController = {
                         MetricStat: {
                             Metric: {
                                 MetricName: "Errors",
-                                Namespace: "AWS/Lambda"
+                                Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total errors of Lambda Function`
@@ -166,15 +166,15 @@ const metricsController = {
                         MetricStat: {
                             Metric: {
                                 MetricName: "Throttles",
-                                Namespace: "AWS/Lambda"
+                                Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total throttles of Lambda Function`
@@ -185,15 +185,15 @@ const metricsController = {
                         MetricStat: {
                             Metric: {
                                 MetricName: "Duration",
-                                Namespace: "AWS/Lambda"
+                                Namespace: "AWS/Lambda",
+                                Dimensions: [
+                                    {
+                                        Name: 'FunctionName',
+                                        Value: `${functionName}`
+                                    },
+                                ],
                             },
-                            Dimensions: [
-                                {
-                                    Name: 'FunctionName',
-                                    Value: `${functionName}`
-                                },
-                            ],
-                            Period: 60,
+                            Period: 300,
                             Stat: "Sum",
                         },
                         Label: `${functionName} Total duration of Lambda Function`
@@ -203,7 +203,7 @@ const metricsController = {
                 // input to get metric data command 
                 const input = {
                     // Update StartTime and EndTime to be more dynamic from user
-                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 7)),
+                    "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
                     "EndTime": new Date(),
                     "MetricDataQueries": metricData
                 };
@@ -211,6 +211,7 @@ const metricsController = {
                 const response = yield client.send(command);
                 // Create a metrics object to store the values and timestamps of specific metric
                 if (response.MetricDataResults) {
+                    console.log(response.MetricDataResults, "METRIC DATA RESULTS");
                     const parseData = (arr) => {
                         // declare an output object
                         const allFuncMetrics = {};
