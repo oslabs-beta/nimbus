@@ -12,6 +12,7 @@ const lambdaController_1 = __importDefault(require("../controllers/aws/lambdaCon
 const logsController_1 = __importDefault(require("../controllers/aws/logsController"));
 const metricsController_1 = __importDefault(require("../controllers/aws/metricsController"));
 const userController_1 = __importDefault(require("../controllers/userController"));
+const apiMetricsController_1 = __importDefault(require("../controllers/aws/apiMetricsController"));
 // All routes verify JWT Token to get email
 // Email is used to query the database for ARN
 // ARN is used to get credentials from client's AWS account

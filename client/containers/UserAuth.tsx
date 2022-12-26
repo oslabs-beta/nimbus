@@ -5,9 +5,10 @@ import Register from "../components/Register.js";
 
 interface Props {
   handleUserLogin: () => void;
+  toggleTheme: () => void;
 }
 
-const UserAuth: React.FC<Props> = ({ handleUserLogin }: Props) => {
+const UserAuth: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
   const [showLogin, setShowLogin] = useState(true);
 
   const swapAuthView = () => {
@@ -16,6 +17,7 @@ const UserAuth: React.FC<Props> = ({ handleUserLogin }: Props) => {
 
   return (
     <div className="user-auth">
+      <button onClick={toggleTheme} className="btn">Theme</button>
       {showLogin === true ? <Login handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/> : <Register handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/>}
     </div>
   )

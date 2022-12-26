@@ -208,6 +208,24 @@ const metricsController = {
                     "MetricDataQueries": metricData
                 };
                 const command = new client_cloudwatch_1.GetMetricDataCommand(input);
+                const testInput = {
+                    Id: 'd213421',
+                    MetricStat: {
+                        Metric: {
+                            MetricName: "Duration",
+                            Namespace: "AWS/Lambda",
+                            Dimensions: [
+                                {
+                                    Name: 'FunctionName',
+                                    Value: `hello-world-python`
+                                },
+                            ],
+                        },
+                        Period: 60,
+                        Stat: "Sum",
+                    },
+                    Label: `hello-world-python Total duration of Lambda Function`
+                };
                 const response = yield client.send(command);
                 // Create a metrics object to store the values and timestamps of specific metric
                 if (response.MetricDataResults) {

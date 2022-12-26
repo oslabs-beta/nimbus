@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const client_1 = require("react-dom/client");
 const App_1 = __importDefault(require("./containers/App"));
-require("./styles.scss");
+require("./styles.css");
 const container = document.getElementById('root');
 const root = (0, client_1.createRoot)(container);
 root.render(react_1.default.createElement(react_1.default.StrictMode, null,

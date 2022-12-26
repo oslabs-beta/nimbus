@@ -20,9 +20,10 @@ interface FetchHeader {
 
 interface Props {
   handleUserLogin: () => void;
+  toggleTheme: () => void;
 }
 
-const UserDashboard: React.FC<Props> = ({ handleUserLogin }: Props) => {
+const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
   const [data, setData] = useState([]);
   //   const swapAuthView = () => {
   //     setShowLogin((showLogin) => !showLogin);
@@ -50,6 +51,7 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin }: Props) => {
   return (
     <>
       <button onClick={getData}>DO I HAVE TOKEN</button>
+      <button onClick={toggleTheme} className="btn">Theme</button>
       <Router>
         <Layout />
         <Routes>

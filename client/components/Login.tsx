@@ -55,7 +55,7 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
 
   return (
     <div>
-      Login
+      <h1 className="text-center text-gray-600">Login</h1>
       <form onSubmit={submitForm}>
         <label htmlFor="email">Email</label><br></br>
         <input 
@@ -75,10 +75,10 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
           >
         </input>
         <br></br>
-        <input type="submit" value="Submit"></input>
+        <input type="submit" value="Submit" className="btn btn-primary w-56"></input>
       </form>
       <div className="errorMessage">{errorMessage}</div>
-      <button onClick={swapAuthView}>Register</button>
+      <button className="btn btn-outline btn-accent w-56" onClick={swapAuthView}>Register</button>
     </div>
   )
 }

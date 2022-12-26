@@ -105,7 +105,7 @@ const apiController = {
             }
             catch (err) {
                 next({
-                    log: "Error caught in lambdaController.getAPIRelations middleware function",
+                    log: "Error caught in apiController.getAPIRelations middleware function",
                     status: 500,
                     message: { errMessage: `Error getting API relations for the account`, err: err }
                 });
@@ -139,7 +139,7 @@ const apiController = {
             }
             catch (err) {
                 next({
-                    log: "Error caught in lambdaController.getAPIList middleware function",
+                    log: "Error caught in apiController.getAPIList middleware function",
                     status: 500,
                     message: { errMessage: `Error getting API relations for the account`, err: err }
                 });

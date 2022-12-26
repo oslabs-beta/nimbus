@@ -66,7 +66,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
         });
     };
     return (react_1.default.createElement("div", null,
-        "Login",
+        react_1.default.createElement("h1", { className: "text-center text-gray-600" }, "Login"),
         react_1.default.createElement("form", { onSubmit: submitForm },
             react_1.default.createElement("label", { htmlFor: "email" }, "Email"),
             react_1.default.createElement("br", null),
@@ -76,8 +76,8 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
             react_1.default.createElement("br", null),
             react_1.default.createElement("input", { type: "password", id: "password", name: "password", onChange: updatePassword }),
             react_1.default.createElement("br", null),
-            react_1.default.createElement("input", { type: "submit", value: "Submit" })),
+            react_1.default.createElement("input", { type: "submit", value: "Submit", className: "btn btn-primary w-56" })),
         react_1.default.createElement("div", { className: "errorMessage" }, errorMessage),
-        react_1.default.createElement("button", { onClick: swapAuthView }, "Register")));
+        react_1.default.createElement("button", { className: "btn btn-outline btn-accent w-56", onClick: swapAuthView }, "Register")));
 };
 exports.default = Login;
