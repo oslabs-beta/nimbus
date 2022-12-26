@@ -18,12 +18,13 @@ const LineChart = (props) => {
                 borderColor: [
                     "rgb(75, 192, 192)",
                 ],
-                tension: 0.1,
+                tension: 0.3,
+                showLine: true
             },
         ]
     };
     return (react_1.default.createElement("div", null,
-        " Total ",
+        "Total ",
         props.label,
         react_1.default.createElement(react_chartjs_2_1.Line, { data: data })));
 };

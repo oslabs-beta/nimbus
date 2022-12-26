@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Function from './Function'
-
+import { v4 as uuidv4 } from 'uuid';
 
 const Functions = () => {
   const [funcMetrics, setFuncMetrics] = useState({})
@@ -24,9 +24,6 @@ const Functions = () => {
   }, [])  
 
   // Update to generate 4 charts of each metric
-  const generateChart = () => {
-    console.log('Generating Chart ...')
-  }
 
   return (
     <div>
@@ -43,13 +40,12 @@ const Functions = () => {
         <tbody>
           {/* Update the funcMetric parameter type */}
           {Object.entries(funcMetrics).map((funcMetric:any) => (
-            <tr onClick={generateChart}>
-              <Function funcName={funcMetric[0]}
+              <Function key={uuidv4()} 
+                funcName={funcMetric[0]}
                 invocations={funcMetric[1].invocations}
                 errors={funcMetric[1].errors}
                 throttles={funcMetric[1].throttles}
                 duration={funcMetric[1].duration}/>
-            </tr>
           ))}
         </tbody>
       </table>

@@ -3,7 +3,7 @@ import LineChart from './LineChart'
 
 type RawData = {
   y: number,
-  x: Date,
+  x: string,
 }; 
 
 type d3Data = Array<RawData>;
@@ -58,7 +58,7 @@ const Home = () => {
     for (let key in rawData.values) {
       const subElement: RawData = {
         y: rawData.values[key],
-        x: rawData.timestamp[key],
+        x: new Date(rawData.timestamp[key]).toLocaleString([], {year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute:'2-digit'}),
       };
       output.push(subElement);
     }

@@ -84,7 +84,7 @@ const Home = () => {
         for (let key in rawData.values) {
             const subElement = {
                 y: rawData.values[key],
-                x: rawData.timestamp[key],
+                x: new Date(rawData.timestamp[key]).toLocaleString([], { year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute: '2-digit' }),
             };
             output.push(subElement);
         }
