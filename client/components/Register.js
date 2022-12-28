@@ -159,7 +159,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
                 react_1.default.createElement("div", { className: 'card flex-shrink-0 w-full max-w-sm lg:max-w-lg shadow-2xl bg-base-100' },
                     react_1.default.createElement("div", { className: 'card-body' },
                         react_1.default.createElement("div", { className: '' },
-                            react_1.default.createElement("h3", { className: "text-center font-bold text-primary text-lg mb-3 " }, "Connect Your AWS Account"),
+                            react_1.default.createElement("h3", { className: "text-center font-bold text-primary text-xl mb-3" }, "Connect Your AWS Account"),
                             react_1.default.createElement("p", { className: "mb-2" },
                                 "Please follow the steps below to set up the connection to your AWS account. Click",
                                 ' ',

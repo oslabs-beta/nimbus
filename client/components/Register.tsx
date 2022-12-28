@@ -198,7 +198,7 @@ const Register: React.FC<Props> = ({
           <div className='card flex-shrink-0 w-full max-w-sm lg:max-w-lg shadow-2xl bg-base-100'>
             <div className='card-body'>
               <div className=''>
-                <h3 className="text-center font-bold text-primary text-lg mb-3 ">Connect Your AWS Account</h3>
+                <h3 className="text-center font-bold text-primary text-xl mb-3">Connect Your AWS Account</h3>
                 <p className="mb-2">
                     Please follow the steps below to set up the connection to your AWS
                     account. Click{' '}
