@@ -13,7 +13,7 @@ const App = () => {
   };
 
   const toggleTheme = () => {
-    setTheme(theme === 'myThemedark' ? 'myThemeLight' : 'myThemedark');
+    setTheme(theme === 'myThemeDark' ? 'myThemeLight' : 'myThemeDark');
   };
 
   return (

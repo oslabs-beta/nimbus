@@ -50,17 +50,26 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props)
   };
   return (
     <>
-      <button onClick={getData}>DO I HAVE TOKEN</button>
-      <button onClick={toggleTheme} className="btn">Theme</button>
+      {/*<button onClick={getData}>DO I HAVE TOKEN</button>
+      <button onClick={toggleTheme} className="btn">Theme</button>*/}
       <Router>
-        <Layout />
-        <Routes>
-          <Route path='/' element={<Home />}></Route>
-          <Route path='functions' element={<Functions />}></Route>
-          <Route path='logs' element={<Logs />}></Route>
-          <Route path='apis' element={<Apis />}></Route>
-          <Route path='settings' element={<Settings />} ></Route>
-        </Routes>
+        <div className="drawer drawer-mobile">
+          <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex flex-col items-center justify-center">
+            <Routes>
+              <Route path='/' element={<Home />}></Route>
+              <Route path='functions' element={<Functions />}></Route>
+              <Route path='logs' element={<Logs />}></Route>
+              <Route path='apis' element={<Apis />}></Route>
+              <Route path='settings' element={<Settings />} ></Route>
+            </Routes>
+            <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+          </div> 
+          <div className="drawer-side">
+            <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
+            <Layout />
+          </div>
+        </div>
       </Router>
     </> 
   );

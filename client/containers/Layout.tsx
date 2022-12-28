@@ -6,12 +6,12 @@ const Layout = () => {
   return (
     <div className='dashboard-layout'>
       <div className='dashboard-nav'>
-        <header>
+        {/*<header>
           <div className='menu-toggle'>=</div>
           <div className='brand-logo'>Nimbus</div>
-        </header>
+          </header>*/}
         <nav className='dashboard-nav-list'>
-          <ul>
+          <ul className='menu bg-base-100 w-56 rounded-box'>
             <li>
               <Link to='/'>Home</Link>
             </li>

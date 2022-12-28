@@ -9,11 +9,8 @@ const react_router_dom_1 = require("react-router-dom");
 const Layout = () => {
     return (react_1.default.createElement("div", { className: 'dashboard-layout' },
         react_1.default.createElement("div", { className: 'dashboard-nav' },
-            react_1.default.createElement("header", null,
-                react_1.default.createElement("div", { className: 'menu-toggle' }, "="),
-                react_1.default.createElement("div", { className: 'brand-logo' }, "Nimbus")),
             react_1.default.createElement("nav", { className: 'dashboard-nav-list' },
-                react_1.default.createElement("ul", null,
+                react_1.default.createElement("ul", { className: 'menu bg-base-100 w-56 rounded-box' },
                     react_1.default.createElement("li", null,
                         react_1.default.createElement(react_router_dom_1.Link, { to: '/' }, "Home")),
                     react_1.default.createElement("li", null,

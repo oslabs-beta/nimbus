@@ -37,7 +37,7 @@ const App = () => {
         setUserLoggedIn((userLoggedIn) => !userLoggedIn);
     };
     const toggleTheme = () => {
-        setTheme(theme === 'myThemedark' ? 'myThemeLight' : 'myThemedark');
+        setTheme(theme === 'myThemeDark' ? 'myThemeLight' : 'myThemeDark');
     };
     return (react_1.default.createElement(react_daisyui_1.Theme, { dataTheme: theme },
         react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, { handleUserLogin: handleUserLogin, toggleTheme: toggleTheme })) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin, toggleTheme: toggleTheme })))));
