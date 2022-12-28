@@ -94,8 +94,7 @@ const Home = () => {
     (0, react_1.useEffect)(() => {
         getMetrics();
     }, []);
-    return (react_1.default.createElement("div", null,
-        " Home",
+    return (react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full' },
         react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }),
         react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }),
         react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }),

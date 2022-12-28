@@ -72,7 +72,7 @@ const Home = () => {
 
   
   return (
-  <div> Home
+  <div className='grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full'>
     <LineChart rawData={invocationsData} label='Invocations'/>
     <LineChart rawData={errorsData} label='Errors'/>
     <LineChart rawData={throttlesData} label='Throttles'/>

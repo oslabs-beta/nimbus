@@ -16,7 +16,7 @@ const LineChart = (props) => {
                 data: props.rawData,
                 fill: false,
                 borderColor: [
-                    "rgb(75, 192, 192)",
+                    "#F471B5",
                 ],
                 tension: 0.3,
             },

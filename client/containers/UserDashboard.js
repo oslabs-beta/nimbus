@@ -68,19 +68,19 @@ const UserDashboard = ({ handleUserLogin, toggleTheme }) => {
         setData(res);
     });
     return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("div", { className: "drawer drawer-mobile" },
-            react_1.default.createElement("input", { id: "my-drawer-2", type: "checkbox", className: "drawer-toggle" }),
-            react_1.default.createElement("div", { className: "drawer-content flex flex-col items-center justify-center" },
-                react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
+        react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
+            react_1.default.createElement("div", { className: "drawer drawer-mobile" },
+                react_1.default.createElement("input", { id: "my-drawer-2", type: "checkbox", className: "drawer-toggle" }),
+                react_1.default.createElement("div", { className: "drawer-content flex flex-col items-center justify-center" },
                     react_1.default.createElement(react_router_dom_1.Routes, null,
                         react_1.default.createElement(react_router_dom_1.Route, { path: '/', element: react_1.default.createElement(Home_1.default, null) }),
                         react_1.default.createElement(react_router_dom_1.Route, { path: 'functions', element: react_1.default.createElement(Functions_1.default, null) }),
                         react_1.default.createElement(react_router_dom_1.Route, { path: 'logs', element: react_1.default.createElement(Logs_1.default, null) }),
                         react_1.default.createElement(react_router_dom_1.Route, { path: 'apis', element: react_1.default.createElement(Apis_1.default, null) }),
-                        react_1.default.createElement(react_router_dom_1.Route, { path: 'settings', element: react_1.default.createElement(Settings_1.default, null) }))),
-                react_1.default.createElement("label", { htmlFor: "my-drawer-2", className: "btn btn-primary drawer-button lg:hidden" }, "Open drawer")),
-            react_1.default.createElement("div", { className: "drawer-side" },
-                react_1.default.createElement("label", { htmlFor: "my-drawer-2", className: "drawer-overlay" }),
-                react_1.default.createElement(Layout_1.default, null)))));
+                        react_1.default.createElement(react_router_dom_1.Route, { path: 'settings', element: react_1.default.createElement(Settings_1.default, null) })),
+                    react_1.default.createElement("label", { htmlFor: "my-drawer-2", className: "btn btn-primary drawer-button lg:hidden" }, "Open drawer")),
+                react_1.default.createElement("div", { className: "drawer-side" },
+                    react_1.default.createElement("label", { htmlFor: "my-drawer-2", className: "drawer-overlay" }),
+                    react_1.default.createElement(Layout_1.default, null))))));
 };
 exports.default = UserDashboard;
