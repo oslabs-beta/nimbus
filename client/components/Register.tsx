@@ -140,9 +140,10 @@ const Register: React.FC<Props> = ({
   return (
     <div>
       <form onSubmit={submitForm}>
-        <div className="hero-content flex-col lg:flex-row px-12">
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="hero-content items-stretch flex-col lg:flex-row px-12 py-12">
+          <div className="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
             <div className='card-body'>
+              <h3 className="text-center font-bold text-primary text-xl mb-1">Register</h3>
               <div className="form-control">
                 <label htmlFor='email' className="label"><span className="label-text">Email</span></label>
                 <input
@@ -195,7 +196,7 @@ const Register: React.FC<Props> = ({
               </div>
             </div>
           </div>
-          <div className='card flex-shrink-0 w-full max-w-sm lg:max-w-lg shadow-2xl bg-base-100'>
+          <div className='card flex-shrink-0 w-full max-w-md lg:max-w-xl shadow-2xl bg-base-100'>
             <div className='card-body'>
               <div className=''>
                 <h3 className="text-center font-bold text-primary text-xl mb-3">Connect Your AWS Account</h3>
@@ -234,7 +235,7 @@ const Register: React.FC<Props> = ({
               </div>
               <div className="form-control">
                 <label htmlFor='arn' className='label'><span className="label-text">ARN</span></label>
-                <input type='text' id='arn' name='arn' onChange={updateArn} className="input input-bordered"></input>
+                <input type='text' id='arn' name='arn' onChange={updateArn} className="input input-bordered input-secondary"></input>
               </div>
               <div className="form-control">
                 <select onChange={updateRegion} value={region} className="select select-secondary w-full">
@@ -252,11 +253,19 @@ const Register: React.FC<Props> = ({
               <button onClick={swapAuthView} className="underline underline-offset-2 text-secondary">Switch to Login</button>
             </div>
           </div>
+          { (errorMessage !== '')
+            && 
+            <div className="alert alert-error shadow-lg fixed bottom-0 mt-1">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>{errorMessage}</span>
+              </div>
+            </div>
+          }
         </div>
-      </form>
-        <div className='errorMessage'>{errorMessage}</div>
-        
+      </form>  
     </div>
+
 
   );
 };

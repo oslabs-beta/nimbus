@@ -133,9 +133,10 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
     ];
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("form", { onSubmit: submitForm },
-            react_1.default.createElement("div", { className: "hero-content flex-col lg:flex-row px-12" },
-                react_1.default.createElement("div", { className: "card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100" },
+            react_1.default.createElement("div", { className: "hero-content items-stretch flex-col lg:flex-row px-12 py-12" },
+                react_1.default.createElement("div", { className: "card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100" },
                     react_1.default.createElement("div", { className: 'card-body' },
+                        react_1.default.createElement("h3", { className: "text-center font-bold text-primary text-xl mb-1" }, "Register"),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'email', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "Email")),
@@ -156,7 +157,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
                             react_1.default.createElement("label", { htmlFor: 'confirmation', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "Confirm Password")),
                             react_1.default.createElement("input", { type: 'password', id: 'confirmation', name: 'confirmation', onChange: updateConfirmation, className: "input input-bordered" })))),
-                react_1.default.createElement("div", { className: 'card flex-shrink-0 w-full max-w-sm lg:max-w-lg shadow-2xl bg-base-100' },
+                react_1.default.createElement("div", { className: 'card flex-shrink-0 w-full max-w-md lg:max-w-xl shadow-2xl bg-base-100' },
                     react_1.default.createElement("div", { className: 'card-body' },
                         react_1.default.createElement("div", { className: '' },
                             react_1.default.createElement("h3", { className: "text-center font-bold text-primary text-xl mb-3" }, "Connect Your AWS Account"),
@@ -176,14 +177,20 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'arn', className: 'label' },
                                 react_1.default.createElement("span", { className: "label-text" }, "ARN")),
-                            react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, className: "input input-bordered" })),
+                            react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, className: "input input-bordered input-secondary" })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("select", { onChange: updateRegion, value: region, className: "select select-secondary w-full" },
                                 react_1.default.createElement("option", { value: '' }, "Select AWS region"),
                                 regionsOptions.map((item, idx) => (react_1.default.createElement("option", { key: `region-${idx}`, value: item }, item))))),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("input", { type: 'submit', value: 'Submit', className: "btn btn-primary" })),
-                        react_1.default.createElement("button", { onClick: swapAuthView, className: "underline underline-offset-2 text-secondary" }, "Switch to Login"))))),
-        react_1.default.createElement("div", { className: 'errorMessage' }, errorMessage)));
+                        react_1.default.createElement("button", { onClick: swapAuthView, className: "underline underline-offset-2 text-secondary" }, "Switch to Login"))),
+                (errorMessage !== '')
+                    &&
+                        react_1.default.createElement("div", { className: "alert alert-error shadow-lg fixed bottom-0 mt-1" },
+                            react_1.default.createElement("div", null,
+                                react_1.default.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", className: "stroke-current flex-shrink-0 h-6 w-6", fill: "none", viewBox: "0 0 24 24" },
+                                    react_1.default.createElement("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: "2", d: "M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" })),
+                                react_1.default.createElement("span", null, errorMessage)))))));
 };
 exports.default = Register;

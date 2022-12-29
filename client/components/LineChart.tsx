@@ -41,7 +41,7 @@ const LineChart = (props: LineChartProps) => {
   
   return (
         <div> 
-          Total {props.label}
+          <h3 className="text-accent text-lg text-center font-bold">Total {props.label}</h3>
           <Line data = {data} />
         </div>
   );

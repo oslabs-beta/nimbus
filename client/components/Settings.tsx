@@ -208,7 +208,7 @@ const Settings = () => {
 
     return (
     <>
-      <div className='flex flex-col lg:flex-row w-full'>
+      <div className='flex flex-col lg:flex-row w-full mb-24'>
         <div className="lg:basis-1/2 lg:pl-20 lg:pr-8 px-20">
           <h3 className="text-xl text-secondary text-center font-bold">Profile</h3>
           <form onSubmit={submitProfileForm}>
@@ -297,21 +297,21 @@ const Settings = () => {
           </form>
         </div>
       </div>
-      { (errorMessage !== '' && successMessage === '')
-        && 
-        <div className="alert alert-error shadow-lg fixed top-0 lg:left-60 mt-1">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>{errorMessage}</span>
-          </div>
-        </div>
-      }
       { successMessage !== ''
         &&
-        <div className="alert alert-success shadow-lg fixed top-0 lg:left-60 mt-1">
+        <div className="alert alert-success shadow-lg fixed bottom-0 mt-1 self-start w-full">
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <span>{successMessage}</span>
+          </div>
+        </div>
+      }
+      { (errorMessage !== '' && successMessage === '')
+        && 
+        <div className="alert alert-error shadow-lg fixed bottom-0 mt-1 self-start w-full">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{errorMessage}</span>
           </div>
         </div>
       }
