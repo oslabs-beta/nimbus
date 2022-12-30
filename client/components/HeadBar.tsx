@@ -18,6 +18,7 @@ const HeadBar: React.FC<Props> = ({ toggleTheme, theme }: Props) => {
         <div className="navbar bg-primary flex-row justify-between">
             <a className="btn btn-ghost normal-case text-xl">nimbus</a>
             <div className="form-control">
+                
                 <label className="label cursor-pointer">
                     <span className="label-text">{theme === 'myThemeDark' ? 'Dark' : 'Light'}</span> 
                     <input type="checkbox" className="toggle ml-2" checked={checked} onClick={handleToggle} />

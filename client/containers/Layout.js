@@ -28,19 +28,16 @@ const react_router_dom_1 = require("react-router-dom");
 // import Link component from react router here
 const Layout = () => {
     const [selectedTab, setSelectedTab] = (0, react_1.useState)('Home');
-    return (react_1.default.createElement("div", { className: 'dashboard-layout' },
-        react_1.default.createElement("div", { className: 'dashboard-nav' },
-            react_1.default.createElement("nav", { className: 'dashboard-nav-list' },
-                react_1.default.createElement("ul", { className: 'menu bg-base-100 w-56' },
-                    react_1.default.createElement("li", { onClick: () => setSelectedTab('Home') },
-                        react_1.default.createElement(react_router_dom_1.Link, { to: '/', className: selectedTab === 'Home' ? 'active' : '' }, "Home")),
-                    react_1.default.createElement("li", { onClick: () => setSelectedTab('Functions') },
-                        react_1.default.createElement(react_router_dom_1.Link, { to: '/functions', className: selectedTab === 'Functions' ? 'active' : '' }, "Functions")),
-                    react_1.default.createElement("li", { onClick: () => setSelectedTab('Logs') },
-                        react_1.default.createElement(react_router_dom_1.Link, { to: '/logs', className: selectedTab === 'Logs' ? 'active' : '' }, "Logs")),
-                    react_1.default.createElement("li", { onClick: () => setSelectedTab('APIs') },
-                        react_1.default.createElement(react_router_dom_1.Link, { to: '/apis', className: selectedTab === 'APIs' ? 'active' : '' }, "APIs")),
-                    react_1.default.createElement("li", { onClick: () => setSelectedTab('Settings') },
-                        react_1.default.createElement(react_router_dom_1.Link, { to: '/settings', className: selectedTab === 'Settings' ? 'active' : '' }, "Settings")))))));
+    return (react_1.default.createElement("ul", { className: 'menu bg-gray-800 w-56 rounded-box lg:rounded-none h-fit lg:h-full' },
+        react_1.default.createElement("li", { onClick: () => setSelectedTab('Home') },
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/', className: selectedTab === 'Home' ? 'active' : '' }, "Home")),
+        react_1.default.createElement("li", { onClick: () => setSelectedTab('Functions') },
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/functions', className: selectedTab === 'Functions' ? 'active' : '' }, "Functions")),
+        react_1.default.createElement("li", { onClick: () => setSelectedTab('Logs') },
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/logs', className: selectedTab === 'Logs' ? 'active' : '' }, "Logs")),
+        react_1.default.createElement("li", { onClick: () => setSelectedTab('APIs') },
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/apis', className: selectedTab === 'APIs' ? 'active' : '' }, "APIs")),
+        react_1.default.createElement("li", { onClick: () => setSelectedTab('Settings') },
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/settings', className: selectedTab === 'Settings' ? 'active' : '' }, "Settings"))));
 };
 exports.default = Layout;

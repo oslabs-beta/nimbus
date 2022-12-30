@@ -209,7 +209,7 @@ const Settings = () => {
     return (
     <>
       <div className='flex flex-col lg:flex-row w-full mb-24'>
-        <div className="lg:basis-1/2 lg:pl-20 lg:pr-8 px-20">
+        <div className="lg:basis-1/2 lg:pl-20 lg:pr-8 px-20 mb-8">
           <h3 className="text-xl text-secondary text-center font-bold">Profile</h3>
           <form onSubmit={submitProfileForm}>
             <div className="form-control">
