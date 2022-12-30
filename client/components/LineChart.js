@@ -19,7 +19,6 @@ const LineChart = (props) => {
                     "rgb(75, 192, 192)",
                 ],
                 tension: 0.3,
-                showLine: true
             },
         ]
     };

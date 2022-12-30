@@ -49,6 +49,28 @@ router.post('/apiRelations', authController_1.default.verifyToken, credentialsCo
         apiRelations: res.locals.apiRelations
     });
 });
+router.get('/apiList', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, (req, res) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+// body: period
+router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
+    return res.status(200).json({
+        allApiMetrics: res.locals.allApiMetrics
+    });
+});
+router.get('/apiList', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, (req, res) => {
+    return res.status(200).json({
+        apiList: res.locals.apiList
+    });
+});
+// body: period
+router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
+    return res.status(200).json({
+        allApiMetrics: res.locals.allApiMetrics
+    });
+});
 //Settings
 router.get('/userDetails', authController_1.default.verifyToken, userController_1.default.getUser, (req, res) => {
     return res.status(200).json(res.locals.user);
