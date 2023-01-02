@@ -54,32 +54,54 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
 
 
   return (
-    <div>
-      <h1 className="text-center text-gray-600">Login</h1>
-      <form onSubmit={submitForm}>
-        <label htmlFor="email">Email</label><br></br>
-        <input 
-          type="text" 
-          id="email" 
-          name="email"
-          onChange={updateEmail}
-          >
-        </input>
-        <br></br>
-        <label htmlFor="password">Password</label><br></br>
-        <input 
-          type="password" 
-          id="password" 
-          name="password"
-          onChange={updatePassword}
-          >
-        </input>
-        <br></br>
-        <input type="submit" value="Submit" className="btn btn-primary w-56"></input>
-      </form>
-      <div className="errorMessage">{errorMessage}</div>
-      <button className="btn btn-outline btn-accent w-56" onClick={swapAuthView}>Register</button>
+    <div className="hero-content flex-col lg:flex-row-reverse px-12">
+      <div className="text-center lg:text-left lg:ml-5">
+        <h1 className="text-5xl font-bold">Login now!</h1>
+        <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+      </div>
+      <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="card-body">
+          <form onSubmit={submitForm}>
+            <div className="form-control">
+              <label htmlFor="email" className="label"><span className="label-text">Email</span></label>
+              <input 
+                type="text" 
+                id="email" 
+                name="email"
+                onChange={updateEmail}
+                className="input input-bordered"
+                >
+              </input>
+            </div>
+            <div className="form-control">
+              <label htmlFor="password" className="label"><span className="label-text">Password</span></label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password"
+                onChange={updatePassword}
+                className="input input-bordered"
+                >
+              </input>
+            </div>
+            <div className="form-control">
+              <input type="submit" value="Submit" className="btn btn-primary mt-5"></input>
+            </div>
+          </form>
+          <button className="btn btn-outline btn-secondary" onClick={swapAuthView}>Register</button>
+        </div>
+      </div>
+      { (errorMessage !== '')
+        && 
+        <div className="alert alert-error shadow-lg fixed bottom-0 mt-1">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{errorMessage}</span>
+          </div>
+        </div>
+      }
     </div>
+    
   )
 }
 

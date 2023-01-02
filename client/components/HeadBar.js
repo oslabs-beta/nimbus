@@ -22,18 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const Login_js_1 = __importDefault(require("../components/Login.js"));
-const Register_js_1 = __importDefault(require("../components/Register.js"));
-const UserAuth = ({ handleUserLogin, toggleTheme }) => {
-    const [showLogin, setShowLogin] = (0, react_1.useState)(true);
-    const swapAuthView = () => {
-        setShowLogin((showLogin) => !showLogin);
+const HeadBar = ({ toggleTheme, theme }) => {
+    const [checked, setChecked] = (0, react_1.useState)(false);
+    const handleToggle = () => {
+        toggleTheme();
+        setChecked(prev => !prev);
     };
-    return (react_1.default.createElement("div", { className: "user-auth hero min-h-screen bg-base-200" }, showLogin === true ? react_1.default.createElement(Login_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView }) : react_1.default.createElement(Register_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView })));
+    return (react_1.default.createElement("div", { className: "navbar bg-primary flex-row justify-between" },
+        react_1.default.createElement("a", { className: "btn btn-ghost normal-case text-xl" }, "nimbus"),
+        react_1.default.createElement("div", { className: "form-control" },
+            react_1.default.createElement("label", { className: "label cursor-pointer" },
+                react_1.default.createElement("span", { className: "label-text" }, theme === 'myThemeDark' ? 'Dark' : 'Light'),
+                react_1.default.createElement("input", { type: "checkbox", className: "toggle ml-2", checked: checked, onClick: handleToggle })))));
 };
-exports.default = UserAuth;
+exports.default = HeadBar;
