@@ -41,10 +41,30 @@ const Function = (props) => {
             setTotalDuration(Math.ceil(props.duration.values.reduce((acc, curr) => acc + curr)));
     });
     return (react_1.default.createElement(react_1.default.Fragment, null,
+<<<<<<< HEAD
+        react_1.default.createElement("tr", { onClick: generateChart },
+            react_1.default.createElement("td", { className: "bg-neutral text-center" }, props.funcName),
+            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalInvocations),
+            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalErrors),
+            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalThrottles),
+            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalDuration)),
+        isClicked &&
+            react_1.default.createElement("tr", null,
+                react_1.default.createElement("td", { className: "bg-neutral" }),
+                react_1.default.createElement("td", { className: "bg-neutral" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: invocations, label: 'Invocations' })),
+                react_1.default.createElement("td", { className: "bg-neutral" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: errors, label: 'Errors' })),
+                react_1.default.createElement("td", { className: "bg-neutral" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: throttles, label: 'Throttles' })),
+                react_1.default.createElement("td", { className: "bg-neutral" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: duration, label: 'Duration' })))));
+=======
         react_1.default.createElement("td", null, props.funcName),
         react_1.default.createElement("td", null, totalInvocations),
         react_1.default.createElement("td", null, totalErrors),
         react_1.default.createElement("td", null, totalThrottles),
         react_1.default.createElement("td", null, totalDuration)));
+>>>>>>> dev
 };
 exports.default = Function;
