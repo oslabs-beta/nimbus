@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { getAutomaticTypeDirectiveNames } from 'typescript';
 import { v4 as uuidv4 } from 'uuid';
+import ApiMetrics from './ApiMetrics';
+import ApiRelations from './ApiRelations';
 
 const Apis = () => {
   const [apiRelations, setApiRelations] = useState(null);
+  const [apiMetrics, setApiMetrics] = useState(null);
   const [selectedApi, setSelectedApi] = useState('');
-  const [showMetrics, setShowMetrics] = useState(true);
+  const [showInfo, setShowInfo] = useState('metrics');
 
-  const toggleDisplay = () => {
-    setShowMetrics(prev => !prev);
+  const toggleDisplay = (e:any) => {
+    if (e.target.value !== showInfo) {
+      setShowInfo(e.target.value);
+    }
+  }
+ 
+  const handleSelectedApi = (e:any) => {
+    setSelectedApi(() => e.target.value)
+    console.log(selectedApi);
   }
 
-
-  const getApiRelations = async () => {
+  const getApiRelations = async (signal:any) => {
     let res;
     try {
       res = await fetch('/dashboard/apiRelations', {
@@ -22,63 +31,110 @@ const Apis = () => {
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,
           refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
         },
+        signal
       });
       res = await res.json();
-    
-      // console.log("RES.FUNCTIONS", res.functions);
-      const apiRel = res.functions || ['unable to fetch api relations'];
-      setApiRelations(apiRel.apiRelations);
-
+      const apiRel = res.apiRelations || ['unable to fetch api relations'];
+      setApiRelations(apiRel);
     }
     catch(err){
       console.log("ERROR FROM GET API RELATIONS", err);
     }
   }
 
+  const getApiMetrics = async (signal:any) => {
+    let res;
+    try {
+      res = await fetch('/dashboard/apiMetrics', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'Application/JSON',
+          authorization: `BEARER ${localStorage.getItem('accessToken')}`,
+          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+        },
+        signal
+      });
+      res = await res.json();
+      let metrics:any;
+      if (res.allApiMetrics) {
+        metrics = res.allApiMetrics;
+        setSelectedApi(Object.keys(metrics)[0])
+      } 
+      else {
+        metrics = ['unable to fetch api metrics'];
+      }
+      setApiMetrics(metrics);
+    }
+    catch(err){
+      console.log("ERROR FROM GET API METRICS", err);
+    }
+  }
+
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     if (!apiRelations) {
-      getApiRelations();
+      getApiRelations(signal);
+      console.log("getApiRelations invoked")
+    }
+    
+    return () => {
+      controller.abort();
     }
   }, []);
 
-  const getApiElements = () => {
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    
+    if (!apiMetrics) {
+      getApiMetrics(signal);
+    }
+    return () => {
+      controller.abort();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("API METRICS", apiMetrics);
+    console.log("API RELATIONS", apiRelations);
+    console.log("showInfo", showInfo);
+  });
+
+  const getApiNames = () => {
     return (apiRelations as any).map((el:any) => {
       const currDivId = uuidv4();
       return (
-        <div 
+        <button 
           key={currDivId}
           id={currDivId}
+          value={el.apiName}
           style={{ fontWeight: selectedApi === el.apiName ? 'bold' : 'normal' }} 
           onClick={handleSelectedApi}
         >
           {el.apiName}
-          </div>
+          </button>
       )
     })
   };
-
-  const apiElements = apiRelations? getApiElements() : null;
-
-  const handleSelectedApi = (e:any) => {
-    setSelectedApi(() => e.target.value)
-  }
-
-
 
   return (
     <div>
       Apis
       <div style={{display:'flex'}}>
         <div style={{display:'flex', flexDirection:'column', flexGrow:'1'}}>
-          {apiElements}
+          {apiRelations ? getApiNames() : 'fetching apis'}
         </div>
         <div style={{display:'flex', flexDirection:'column', gap: '1rem', flexGrow:'3'}}> 
           <div>
-            <button onClick={toggleDisplay}>Metrics</button>
-            <button onClick={toggleDisplay}>Relations</button>
+            <button value={'metrics'} onClick={toggleDisplay}>Metrics</button>
+            <button value={'relations'} onClick={toggleDisplay}>Relations</button>
           </div>
           <div>
-            {showMetrics ? <ApiMetrics/> : <ApiRelations/>}
+            {/* {showMetrics === 'metrics' ? <ApiMetrics selectedApiMetrics={apiMetrics && selectedApi ? (apiMetrics as any).selectedApi : null}/> 
+            : <ApiRelations apiName={selectedApi}/>} */}
+            {showInfo === 'metrics' ? <ApiMetrics selectedApi={selectedApi} apiMetrics={apiMetrics}/> 
+            : <ApiRelations selectedApi={selectedApi} apiRelations={apiRelations}/>}
           </div>
         </div>
         
