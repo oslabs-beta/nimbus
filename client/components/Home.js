@@ -94,11 +94,18 @@ const Home = () => {
     (0, react_1.useEffect)(() => {
         getMetrics();
     }, []);
-    return (react_1.default.createElement("div", null,
-        " Home",
-        react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }),
-        react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }),
-        react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }),
-        react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' })));
+    return (react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
+        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card-body" },
+                react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),
+        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card-body" },
+                react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }))),
+        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card-body" },
+                react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }))),
+        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card-body" },
+                react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' })))));
 };
 exports.default = Home;

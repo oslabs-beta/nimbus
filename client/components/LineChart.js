@@ -16,16 +16,16 @@ const LineChart = (props) => {
                 data: props.rawData,
                 fill: false,
                 borderColor: [
-                    "rgb(75, 192, 192)",
+                    "#F471B5",
                 ],
                 tension: 0.3,
-                showLine: true
             },
         ]
     };
     return (react_1.default.createElement("div", null,
-        "Total ",
-        props.label,
+        react_1.default.createElement("h3", { className: "text-accent text-lg text-center font-bold" },
+            "Total ",
+            props.label),
         react_1.default.createElement(react_chartjs_2_1.Line, { data: data })));
 };
 exports.default = LineChart;

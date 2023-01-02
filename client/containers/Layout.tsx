@@ -1,36 +1,28 @@
-import React from 'react';
+import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
 // import Link component from react router here
 
 const Layout = () => {
+  const [selectedTab, setSelectedTab] = useState('Home');
+
   return (
-    <div className='dashboard-layout'>
-      <div className='dashboard-nav'>
-        <header>
-          <div className='menu-toggle'>=</div>
-          <div className='brand-logo'>Nimbus</div>
-        </header>
-        <nav className='dashboard-nav-list'>
-          <ul>
-            <li>
-              <Link to='/'>Home</Link>
-            </li>
-            <li>
-              <Link to='/functions'>Functions</Link>
-            </li>
-            <li>
-              <Link to='/logs'>Logs</Link>
-            </li>
-            <li>
-              <Link to='/apis'>APIs</Link>
-            </li>
-            <li>
-              <Link to='/settings'>Settings</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
+    <ul className='menu bg-gray-800 w-56 rounded-box lg:rounded-none h-fit lg:h-full'>
+      <li onClick={() => setSelectedTab('Home')}>
+        <Link to='/' className={selectedTab === 'Home' ? 'active' : ''}>Home</Link>
+      </li>
+      <li onClick={() => setSelectedTab('Functions')}>
+        <Link to='/functions' className={selectedTab === 'Functions' ? 'active' : ''}>Functions</Link>
+      </li>
+      <li onClick={() => setSelectedTab('Logs')}>
+        <Link to='/logs' className={selectedTab === 'Logs' ? 'active' : ''}>Logs</Link>
+      </li>
+      <li onClick={() => setSelectedTab('APIs')}>
+        <Link to='/apis' className={selectedTab === 'APIs' ? 'active' : ''}>APIs</Link>
+      </li>
+      <li onClick={() => setSelectedTab('Settings')}>
+        <Link to='/settings' className={selectedTab === 'Settings' ? 'active' : ''}>Settings</Link>
+      </li>
+    </ul>
   );
 };
 
