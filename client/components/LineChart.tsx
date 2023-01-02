@@ -40,10 +40,9 @@ const LineChart = (props: LineChartProps) => {
   };
   
   return (
-        <div> 
-          Total {props.label}
-          <Line data = {data} />
-        </div>
+    <div> 
+      <Line data = {data} />
+    </div>
   );
 };
 

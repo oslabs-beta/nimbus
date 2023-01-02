@@ -19,13 +19,10 @@ const LineChart = (props) => {
                     "rgb(75, 192, 192)",
                 ],
                 tension: 0.3,
-                showLine: true
             },
         ]
     };
-    return (react_1.default.createElement("div", null,
-        "Total ",
-        props.label,
+    return (react_1.default.createElement("div", { className: "h-[20%] w-[20%]" },
         react_1.default.createElement(react_chartjs_2_1.Line, { data: data })));
 };
 exports.default = LineChart;
