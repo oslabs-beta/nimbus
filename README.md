@@ -28,8 +28,8 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 <!-- FRONT END -->
 - <a href="#"><img src="./assets/electron-logo-color.png" alt="Electron" title="Electron" align="center" height="30" /></a>
 - <a href="#"><img src="./assets/react-logo-color.png" alt="React" title="React" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/chartjs-logo-color.png" alt="ChartJS" title="ChartJS" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/daisyui-logo-color.png" alt="DaisyUI" title="Electron" align="center" height="30" /></a>
+- <a href="#"><img src="./assets/chartjs-logo-color.svg" alt="ChartJS" title="ChartJS" align="center" height="30" /></a>
+- <a href="#"><img src="./assets/daisyui-logo-color.svg" alt="DaisyUI" title="DaisyUI" align="center" height="30" /></a>
 - <a href="#"><img src="./assets/tailwind-logo-color.png" alt="Tailwind" title="Tailwind" align="center" height="30" /></a>
 - <a href="#"><img src="./assets/ts-logo-long-blue.png" alt="Typescript" title="Typescript" align="center" height="30" /></a>
 
@@ -42,13 +42,6 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 - <a href="#"><img src="./assets/webpack-logo-color.png" alt="Webpack" title="Webpack" align="center" height="30" /></a>
 - <a href="#"><img src="./assets/aws-logo-color.png" alt="AWS" title="AWS" align="center" height="30" /></a>
 
-8. Node.js
-9. MongoDB 
-10. Docker ----- in progress
-11. Jest ----- in progress .. 
-12. React Testing Library ----- in progress .. 
-13. Webpack 
-14. AWS-SDK 
 ​
 ### License
 Distributed under the MIT License
