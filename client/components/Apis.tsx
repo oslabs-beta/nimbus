@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getAutomaticTypeDirectiveNames } from 'typescript';
 import { v4 as uuidv4 } from 'uuid';
 import ApiMetrics from './ApiMetrics';
 import ApiRelations from './ApiRelations';
+
 
 const Apis = () => {
   const [apiRelations, setApiRelations] = useState(null);
@@ -10,17 +10,20 @@ const Apis = () => {
   const [selectedApi, setSelectedApi] = useState('');
   const [showInfo, setShowInfo] = useState('metrics');
 
+  // Switch between metrics and relations
   const toggleDisplay = (e:any) => {
     if (e.target.value !== showInfo) {
       setShowInfo(e.target.value);
     }
   }
  
+  // Change the selected api
   const handleSelectedApi = (e:any) => {
     setSelectedApi(() => e.target.value)
     console.log(selectedApi);
   }
 
+  // Fetch Api relations data and set apiRelation state 
   const getApiRelations = async (signal:any) => {
     let res;
     try {
@@ -42,6 +45,8 @@ const Apis = () => {
     }
   }
 
+  // Get api metrics and setApiMetrics
+  // setSelectedApi to the first api in the metrics object
   const getApiMetrics = async (signal:any) => {
     let res;
     try {
@@ -70,6 +75,7 @@ const Apis = () => {
     }
   }
 
+  // Invoke getApiRelations if apiRelations if falsy
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -83,6 +89,7 @@ const Apis = () => {
     }
   }, []);
 
+  // Invoke getApiMetrics if apiMetrics if falsy
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -95,24 +102,20 @@ const Apis = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("API METRICS", apiMetrics);
-    console.log("API RELATIONS", apiRelations);
-    console.log("showInfo", showInfo);
-  });
-
+  // Get API names and create and array of button elements
   const getApiNames = () => {
-    return (apiRelations as any).map((el:any) => {
+    return Object.keys(apiMetrics as any).map((el:any) => {
+      console.log("getApiNames", el)
       const currDivId = uuidv4();
       return (
         <button 
           key={currDivId}
           id={currDivId}
-          value={el.apiName}
-          style={{ fontWeight: selectedApi === el.apiName ? 'bold' : 'normal' }} 
+          value={el}
+          style={{ fontWeight: selectedApi === el ? 'bold' : 'normal' }} 
           onClick={handleSelectedApi}
         >
-          {el.apiName}
+          {el}
           </button>
       )
     })
@@ -123,7 +126,7 @@ const Apis = () => {
       Apis
       <div style={{display:'flex'}}>
         <div style={{display:'flex', flexDirection:'column', flexGrow:'1'}}>
-          {apiRelations ? getApiNames() : 'fetching apis'}
+          {apiMetrics ? getApiNames() : 'fetching apis'}
         </div>
         <div style={{display:'flex', flexDirection:'column', gap: '1rem', flexGrow:'3'}}> 
           <div>
@@ -131,8 +134,6 @@ const Apis = () => {
             <button value={'relations'} onClick={toggleDisplay}>Relations</button>
           </div>
           <div>
-            {/* {showMetrics === 'metrics' ? <ApiMetrics selectedApiMetrics={apiMetrics && selectedApi ? (apiMetrics as any).selectedApi : null}/> 
-            : <ApiRelations apiName={selectedApi}/>} */}
             {showInfo === 'metrics' ? <ApiMetrics selectedApi={selectedApi} apiMetrics={apiMetrics}/> 
             : <ApiRelations selectedApi={selectedApi} apiRelations={apiRelations}/>}
           </div>

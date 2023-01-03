@@ -8,51 +8,27 @@ type Props = {
 };
 
 const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => {
+  const [message, setMessage] = useState('fetching data...')
 
-  // "apiName": "nimbusTest2",
-  //           "endpoints": {
-  //               "/": [
-  //                   {
-  //                       "method": "POST",
-  //                       "func": "myNextFunc"
-  //                   },
-  //                   {
-  //                       "method": "DELETE",
-  //                       "func": "myNewFunc2"
-  //                   },
-  //                   {
-  //                       "method": "GET",
-  //                       "func": "myGegeFunc"
-  //                   }
-  //               ]
-  //           }
+  // If data not found, set message
+  if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
+    setMessage('data not found');
+  }
 
-  const selectedApiRelations = typeof apiRelations[0] !== 'string' && selectedApi ? 
-    apiRelations.filter((apiRel:any) => apiRel.apiName === selectedApi) 
-    : null;
+  // Grab data for the selected API
+  const selectedApiRelations = apiRelations 
+                              && selectedApi 
+                              ? 
+                              apiRelations.filter((apiRel:any) => apiRel.apiName === selectedApi) 
+                              : null;
 
   console.log("selectedApiRelations", selectedApiRelations)
 
-  const endpoints = selectedApiRelations[0].endpoints || null;
+  // Get endpoints data
+  const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
   
   console.log("endpoints", endpoints)
-  // const displayRelations = () => {
-  //   let rels;
-  //   if (!selectedApiRelations) {
-  //     rels = null;
-  //   }
-  //   else {
-  //     rels = [];
-  //     selectedApiRelations.forEach((el:any) => {
-  //       rels.push(<div key={uuidv4()}>el</div>)
-  //     })
-  //   }
-  // }
-
-  // get endpoints 
-  // for each key in endpoints
-    // create a div
-
+ 
   return (
     <div>
       <div>Apis Relations</div>
@@ -80,7 +56,7 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
       })}
       </div> 
       : 
-      null}
+      message}
     </div>
   );
 };

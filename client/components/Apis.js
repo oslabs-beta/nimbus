@@ -44,15 +44,18 @@ const Apis = () => {
     const [apiMetrics, setApiMetrics] = (0, react_1.useState)(null);
     const [selectedApi, setSelectedApi] = (0, react_1.useState)('');
     const [showInfo, setShowInfo] = (0, react_1.useState)('metrics');
+    // Switch between metrics and relations
     const toggleDisplay = (e) => {
         if (e.target.value !== showInfo) {
             setShowInfo(e.target.value);
         }
     };
+    // Change the selected api
     const handleSelectedApi = (e) => {
         setSelectedApi(() => e.target.value);
         console.log(selectedApi);
     };
+    // Fetch Api relations data and set apiRelation state 
     const getApiRelations = (signal) => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -73,6 +76,8 @@ const Apis = () => {
             console.log("ERROR FROM GET API RELATIONS", err);
         }
     });
+    // Get api metrics and setApiMetrics
+    // setSelectedApi to the first api in the metrics object
     const getApiMetrics = (signal) => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -100,6 +105,7 @@ const Apis = () => {
             console.log("ERROR FROM GET API METRICS", err);
         }
     });
+    // Invoke getApiRelations if apiRelations if falsy
     (0, react_1.useEffect)(() => {
         const controller = new AbortController();
         const signal = controller.signal;
@@ -111,6 +117,7 @@ const Apis = () => {
             controller.abort();
         };
     }, []);
+    // Invoke getApiMetrics if apiMetrics if falsy
     (0, react_1.useEffect)(() => {
         const controller = new AbortController();
         const signal = controller.signal;
@@ -121,21 +128,18 @@ const Apis = () => {
             controller.abort();
         };
     }, []);
-    (0, react_1.useEffect)(() => {
-        console.log("API METRICS", apiMetrics);
-        console.log("API RELATIONS", apiRelations);
-        console.log("showInfo", showInfo);
-    });
+    // Get API names and create and array of button elements
     const getApiNames = () => {
-        return apiRelations.map((el) => {
+        return Object.keys(apiMetrics).map((el) => {
+            console.log("getApiNames", el);
             const currDivId = (0, uuid_1.v4)();
-            return (react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el.apiName, style: { fontWeight: selectedApi === el.apiName ? 'bold' : 'normal' }, onClick: handleSelectedApi }, el.apiName));
+            return (react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el, style: { fontWeight: selectedApi === el ? 'bold' : 'normal' }, onClick: handleSelectedApi }, el));
         });
     };
     return (react_1.default.createElement("div", null,
         "Apis",
         react_1.default.createElement("div", { style: { display: 'flex' } },
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', flexGrow: '1' } }, apiRelations ? getApiNames() : 'fetching apis'),
+            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', flexGrow: '1' } }, apiMetrics ? getApiNames() : 'fetching apis'),
             react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column', gap: '1rem', flexGrow: '3' } },
                 react_1.default.createElement("div", null,
                     react_1.default.createElement("button", { value: 'metrics', onClick: toggleDisplay }, "Metrics"),

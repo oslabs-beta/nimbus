@@ -1,48 +1,45 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
+const react_1 = __importStar(require("react"));
 const ApiRelations = ({ selectedApi, apiRelations }) => {
-    // "apiName": "nimbusTest2",
-    //           "endpoints": {
-    //               "/": [
-    //                   {
-    //                       "method": "POST",
-    //                       "func": "myNextFunc"
-    //                   },
-    //                   {
-    //                       "method": "DELETE",
-    //                       "func": "myNewFunc2"
-    //                   },
-    //                   {
-    //                       "method": "GET",
-    //                       "func": "myGegeFunc"
-    //                   }
-    //               ]
-    //           }
-    const selectedApiRelations = typeof apiRelations[0] !== 'string' && selectedApi ?
-        apiRelations.filter((apiRel) => apiRel.apiName === selectedApi)
+    const [message, setMessage] = (0, react_1.useState)('fetching data...');
+    // If data not found, set message
+    if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
+        setMessage('data not found');
+    }
+    // Grab data for the selected API
+    const selectedApiRelations = apiRelations
+        && selectedApi
+        ?
+            apiRelations.filter((apiRel) => apiRel.apiName === selectedApi)
         : null;
     console.log("selectedApiRelations", selectedApiRelations);
-    const endpoints = selectedApiRelations[0].endpoints || null;
+    // Get endpoints data
+    const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
     console.log("endpoints", endpoints);
-    // const displayRelations = () => {
-    //   let rels;
-    //   if (!selectedApiRelations) {
-    //     rels = null;
-    //   }
-    //   else {
-    //     rels = [];
-    //     selectedApiRelations.forEach((el:any) => {
-    //       rels.push(<div key={uuidv4()}>el</div>)
-    //     })
-    //   }
-    // }
-    // get endpoints 
-    // for each key in endpoints
-    // create a div
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("div", null, "Apis Relations"),
         endpoints ?
@@ -65,6 +62,6 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
                         }))));
                 }))
             :
-                null));
+                message));
 };
 exports.default = ApiRelations;

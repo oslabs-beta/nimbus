@@ -8,49 +8,23 @@ type Props = {
 };
 
 const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
+  const [message, setMessage] = useState('fetching data...');
 
-  // const selectedApiMetrics = selectedApi ? apiMetrics.selectedApi : null;
-  const data = {
-    "Latency": {
-        "timestamps": [
-            "2023-01-02T19:25:00.000Z"
-        ],
-        "values": [
-            299
-        ]
-    },
-    "Count": {
-        "timestamps": [
-            "2023-01-02T19:25:00.000Z"
-        ],
-        "values": [
-            5
-        ]
-    },
-    "5XXError": {
-        "timestamps": [
-            "2023-01-02T19:25:00.000Z"
-        ],
-        "values": [
-            0
-        ]
-    },
-    "4XXError": {
-        "timestamps": [
-            "2023-01-02T19:25:00.000Z"
-        ],
-        "values": [
-            0
-        ]
-    }
-}
+  // If data not found, set message
+  if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
+    setMessage('data not found')
+  }
 
+  // Make chart for each metric for the selected API
   const makeCharts = (selectedApiMetrics: any) => {
     if (!selectedApiMetrics) return;
+    // Declare array to store the LineChart elements
     const lineChartElements = [];
+    // Loop over each metric 
     for (let metric in selectedApiMetrics) {
       const timeValArr = [];
       const currMetricsObj = selectedApiMetrics[metric];
+      // Loop over data points: value and timestamp
       for (let i in currMetricsObj.values) {
         const subElement: any = {
           y: currMetricsObj.values[i],
@@ -58,7 +32,8 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
         };
         timeValArr.push(subElement);
       }
-      lineChartElements.push(<LineChart key={Math.floor(Math.random()*1000)} rawData={timeValArr} label={metric} />)
+      // Add lineChart element to array
+      lineChartElements.push(<LineChart key={metric} rawData={timeValArr} label={metric} />)
     }
     
     return lineChartElements;
@@ -67,6 +42,7 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
   
 
   let chartElements;
+  // Make chart if there is a selected API
   if (selectedApi) {
     console.log("apiMetrics.selectedApi", apiMetrics[selectedApi])
     chartElements = makeCharts(apiMetrics[selectedApi]);
@@ -77,7 +53,7 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
     <div>
       <div>Apis Metrics</div> 
       <div>
-      {chartElements ? chartElements : 'unable to fetch data'}
+      {chartElements ? chartElements : message}
       </div>
     </div>
   );
