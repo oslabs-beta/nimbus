@@ -5,9 +5,22 @@
 
 #### Technologies Used
 
-
+1. React - Hooks + Routers
+2. Electron
+3. Chart.js
+4. Daisy UI 
+5. Tailwind
+6. TypeScript
+7. Express
+8. Node.js
+9. MongoDB
+10. Docker ----- in progress
+11. Jest ----- in progress
+12. React Testing Library ----- in progress
 
 #### License
+
+Distributed under the MIT License
 
 #### Meet The Team
 
