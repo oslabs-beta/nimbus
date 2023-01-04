@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Function_1 = __importDefault(require("./Function"));
+const uuid_1 = require("uuid");
 const Functions = () => {
     const [funcMetrics, setFuncMetrics] = (0, react_1.useState)({});
     // Grab each functions metrics when the component mounts
@@ -57,28 +58,15 @@ const Functions = () => {
         grabFuncsMetrics();
     }, []);
     // Update to generate 4 charts of each metric
-    const generateChart = () => {
-        console.log('Generating Chart ...');
-    };
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("table", { className: "table" },
+        react_1.default.createElement("table", { className: "table w-[100%]" },
             react_1.default.createElement("thead", null,
                 react_1.default.createElement("tr", null,
-<<<<<<< HEAD
-                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Lambda Function"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Invocations"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Errors"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Throttles"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Duration (ms)"))),
+                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Lambda Function"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Invocations"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Errors"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Throttles"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Duration (ms)"))),
             react_1.default.createElement("tbody", null, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement(Function_1.default, { key: (0, uuid_1.v4)(), funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration })))))));
-=======
-                    react_1.default.createElement("th", null, "Lambda Function"),
-                    react_1.default.createElement("th", null, "Invocations"),
-                    react_1.default.createElement("th", null, "Errors"),
-                    react_1.default.createElement("th", null, "Throttles"),
-                    react_1.default.createElement("th", null, "Duration (ms)"))),
-            react_1.default.createElement("tbody", null, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement("tr", { onClick: generateChart },
-                react_1.default.createElement(Function_1.default, { funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration }))))))));
->>>>>>> dev
 };
 exports.default = Functions;

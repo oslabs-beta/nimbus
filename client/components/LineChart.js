@@ -22,14 +22,10 @@ const LineChart = (props) => {
             },
         ]
     };
-<<<<<<< HEAD
-    return (react_1.default.createElement("div", { className: "h-[20%] w-[20%]" },
-=======
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h3", { className: "text-accent text-lg text-center font-bold" },
             "Total ",
             props.label),
->>>>>>> dev
         react_1.default.createElement(react_chartjs_2_1.Line, { data: data })));
 };
 exports.default = LineChart;

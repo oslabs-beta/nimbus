@@ -42,6 +42,10 @@ const Home = () => {
     const [errorsData, setErrors] = (0, react_1.useState)([]);
     const [throttlesData, setThrottles] = (0, react_1.useState)([]);
     const [durationData, setDurations] = (0, react_1.useState)([]);
+    const [totalInvocations, setTotalInvocations] = (0, react_1.useState)(0);
+    const [totalErrors, setTotalErrors] = (0, react_1.useState)(0);
+    const [totalThrottles, setTotalThrottles] = (0, react_1.useState)(0);
+    const [averageDuration, setAverageDuration] = (0, react_1.useState)(0);
     const route = '/dashboard/allMetrics';
     // Sends a GET request to the '/dashboard/allMetrics' route
     // Uses ReactHooks in order to change the states based on data received from AWS
@@ -61,18 +65,22 @@ const Home = () => {
                 values: res.metrics.invocations.values,
                 timestamp: res.metrics.invocations.timestamp
             }));
+            setTotalInvocations(res.metrics.invocations.values.reduce((a, b) => a + b, 0));
             setErrors(convertToD3Structure({
                 values: res.metrics.errors.values,
                 timestamp: res.metrics.errors.timestamp
             }));
+            setTotalErrors(res.metrics.errors.values.reduce((a, b) => a + b, 0));
             setThrottles(convertToD3Structure({
                 values: res.metrics.throttles.values,
                 timestamp: res.metrics.throttles.timestamp
             }));
+            setTotalThrottles(res.metrics.throttles.values.reduce((a, b) => a + b, 0));
             setDurations(convertToD3Structure({
                 values: res.metrics.duration.values,
                 timestamp: res.metrics.duration.timestamp
             }));
+            setAverageDuration(res.metrics.duration.values.reduce((a, b) => a + b, 0) / res.metrics.duration.values.length);
         }
         catch (error) {
             console.log(error);
@@ -94,18 +102,36 @@ const Home = () => {
     (0, react_1.useEffect)(() => {
         getMetrics();
     }, []);
-    return (react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }))),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }))),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' })))));
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("div", { className: 'flex flex-row' },
+            react_1.default.createElement("div", { className: "card w-1/4 bg-secondary shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    "Total Invocations: ",
+                    totalInvocations)),
+            react_1.default.createElement("div", { className: "card w-1/4 bg-secondary shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    "Total Errors: ",
+                    totalErrors)),
+            react_1.default.createElement("div", { className: "card w-1/4 bg-secondary shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    "Total Throttles: ",
+                    totalThrottles)),
+            react_1.default.createElement("div", { className: "card w-1/4 bg-secondary shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    "Avergae Duration: ",
+                    averageDuration))),
+        react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }))),
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }))),
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' }))))));
 };
 exports.default = Home;
