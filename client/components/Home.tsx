@@ -81,35 +81,37 @@ const Home = () => {
   
   return (
   <>
-    <h2 className="text-2xl text-left text-primary">Your Dashboard</h2>
+    <div className='w-full px-14'>
+      <h2 className="text-4xl text-left text-primary mb-6 font-bold">DASHBOARD</h2>
+    </div>
     <div className='flex flex-row justify-between w-full mb-8 px-14'>
         <div className="card w-1/5 bg-secondary shadow-2xl mr-2">
           <div className="card-body p-2">
-            <p className='text-sm'>Total Invocations</p>
+            <p className='text-sm ml-1'>Total Invocations</p>
             <div className='w-full text-center text-3xl text-base-100 mb-2'>{totalInvocations.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
           </div>
         </div>
         <div className="card w-1/5 bg-secondary shadow-xl mx-2">
           <div className="card-body p-2">
-            <p className='text-sm'>Total Errors</p>
+            <p className='text-sm ml-1'>Total Errors</p>
             <div className='w-full text-center text-3xl text-base-100 mb-2'>{totalErrors.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
           </div>
         </div>
         <div className="card w-1/5 bg-secondary shadow-xl mx-2">
           <div className="card-body p-2">
-            <p className='text-sm'>Total Throttles</p>
+            <p className='text-sm ml-1'>Total Throttles</p>
             <div className='w-full text-center text-3xl text-base-100 mb-2'>{totalThrottles.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
           </div>
         </div>
         <div className="card w-1/5 bg-secondary shadow-xl mx-2">
           <div className="card-body p-2">
-            <p className='text-sm'>Avergae Duration</p>
-            <div className='w-full text-center text-3xl text-base-100 mb-2'>{averageDuration.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
+            <p className='text-sm ml-1'>Average Duration</p>
+            <div className='w-full text-center text-3xl text-base-100 mb-2'>{averageDuration.toLocaleString(undefined, {maximumFractionDigits:2})}<span className='text-sm'>ms</span></div>
           </div>
         </div>
         <div className="card w-1/5 bg-accent shadow-xl ml-2">
           <div className="card-body p-2">
-            <p className='text-sm'>Cost</p>
+            <p className='text-sm ml-1'>Cost</p>
             <div className='w-full text-center text-3xl text-base-100 mb-2'>${0}</div>
           </div>
         </div>
