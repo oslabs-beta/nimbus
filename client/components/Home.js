@@ -79,6 +79,10 @@ const Home = () => {
                 timestamp: res.allFuncMetrics.duration.timestamp
             }));
             setCost(calculateCost(res.cost));
+            setTotalInvocations(res.allFuncMetrics.invocations.values.reduce((a, b) => a + b, 0));
+            setTotalErrors(res.allFuncMetrics.errors.values.reduce((a, b) => a + b, 0));
+            setTotalThrottles(res.allFuncMetrics.throttles.values.reduce((a, b) => a + b, 0));
+            setAverageDuration(res.allFuncMetrics.duration.values.reduce((a, b) => a + b, 0) / res.allFuncMetrics.duration.values.length);
         }
         catch (error) {
             console.log(error);
@@ -134,7 +138,7 @@ const Home = () => {
                     react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Cost"),
                     react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' },
                         "$",
-                        0)))),
+                        cost.toLocaleString(undefined, { maximumFractionDigits: 2 }))))),
         react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
             react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },

@@ -58,6 +58,10 @@ const Home = () => {
         timestamp: res.allFuncMetrics.duration.timestamp
       }));
       setCost(calculateCost(res.cost));
+      setTotalInvocations(res.allFuncMetrics.invocations.values.reduce((a:number, b:number) => a + b, 0));
+      setTotalErrors(res.allFuncMetrics.errors.values.reduce((a:number, b:number) => a + b, 0));
+      setTotalThrottles(res.allFuncMetrics.throttles.values.reduce((a:number, b:number) => a + b, 0));
+      setAverageDuration(res.allFuncMetrics.duration.values.reduce((a:number, b:number) => a + b, 0) / res.allFuncMetrics.duration.values.length);
     } catch(error) {
       console.log(error);
     }
@@ -122,7 +126,7 @@ const Home = () => {
         <div className="card w-1/5 bg-accent shadow-xl ml-2">
           <div className="card-body p-2">
             <p className='text-sm ml-1'>Cost</p>
-            <div className='w-full text-center text-3xl text-base-100 mb-2'>${0}</div>
+            <div className='w-full text-center text-3xl text-base-100 mb-2'>${cost.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
           </div>
         </div>
     </div>
