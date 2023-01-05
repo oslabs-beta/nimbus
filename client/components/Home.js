@@ -43,6 +43,10 @@ const Home = () => {
     const [throttlesData, setThrottles] = (0, react_1.useState)([]);
     const [durationData, setDurations] = (0, react_1.useState)([]);
     const [cost, setCost] = (0, react_1.useState)(0);
+    const [totalInvocations, setTotalInvocations] = (0, react_1.useState)(0);
+    const [totalErrors, setTotalErrors] = (0, react_1.useState)(0);
+    const [totalThrottles, setTotalThrottles] = (0, react_1.useState)(0);
+    const [averageDuration, setAverageDuration] = (0, react_1.useState)(0);
     const route = '/dashboard/allMetrics';
     // Sends a GET request to the '/dashboard/allMetrics' route
     // Uses ReactHooks in order to change the states based on data received from AWS
@@ -75,6 +79,18 @@ const Home = () => {
                 timestamp: res.allFuncMetrics.duration.timestamp
             }));
             setCost(calculateCost(res.cost));
+            if (res.allFuncMetrics.invocations.values.length > 0) {
+                setTotalInvocations(res.allFuncMetrics.invocations.values.reduce((a, b) => a + b, 0));
+            }
+            if (res.allFuncMetrics.errors.values.length > 0) {
+                setTotalErrors(res.allFuncMetrics.errors.values.reduce((a, b) => a + b, 0));
+            }
+            if (res.allFuncMetrics.throttles.values.length > 0) {
+                setTotalThrottles(res.allFuncMetrics.throttles.values.reduce((a, b) => a + b, 0));
+            }
+            if (res.allFuncMetrics.duration.values.length > 0) {
+                setAverageDuration(res.allFuncMetrics.duration.values.reduce((a, b) => a + b, 0) / res.allFuncMetrics.duration.values.length);
+            }
         }
         catch (error) {
             console.log(error);
@@ -103,22 +119,46 @@ const Home = () => {
     (0, react_1.useEffect)(() => {
         getMetrics();
     }, []);
-    return (react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
-        react_1.default.createElement("div", null,
-            react_1.default.createElement("div", { className: "card bg-gray-800 shadow-xl" },
-                "Cost: $",
-                cost)),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }))),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }))),
-        react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-            react_1.default.createElement("div", { className: "card-body" },
-                react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' })))));
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("div", { className: 'w-full px-14' },
+            react_1.default.createElement("h2", { className: "text-4xl text-left text-primary mb-6 font-bold" }, "DASHBOARD")),
+        react_1.default.createElement("div", { className: 'flex flex-row justify-between w-full mb-8 px-14' },
+            react_1.default.createElement("div", { className: "card w-1/5 bg-secondary shadow-2xl mr-2" },
+                react_1.default.createElement("div", { className: "card-body p-2" },
+                    react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Invocations"),
+                    react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' }, totalInvocations.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
+            react_1.default.createElement("div", { className: "card w-1/5 bg-secondary shadow-xl mx-2" },
+                react_1.default.createElement("div", { className: "card-body p-2" },
+                    react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Errors"),
+                    react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' }, totalErrors.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
+            react_1.default.createElement("div", { className: "card w-1/5 bg-secondary shadow-xl mx-2" },
+                react_1.default.createElement("div", { className: "card-body p-2" },
+                    react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Throttles"),
+                    react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' }, totalThrottles.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
+            react_1.default.createElement("div", { className: "card w-1/5 bg-secondary shadow-xl mx-2" },
+                react_1.default.createElement("div", { className: "card-body p-2" },
+                    react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Average Duration"),
+                    react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' },
+                        averageDuration.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        react_1.default.createElement("span", { className: 'text-sm' }, "ms")))),
+            react_1.default.createElement("div", { className: "card w-1/5 bg-accent shadow-xl ml-2" },
+                react_1.default.createElement("div", { className: "card-body p-2" },
+                    react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Cost"),
+                    react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' },
+                        "$",
+                        cost.toLocaleString(undefined, { maximumFractionDigits: 2 }))))),
+        react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }))),
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }))),
+            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' }))))));
 };
 exports.default = Home;
