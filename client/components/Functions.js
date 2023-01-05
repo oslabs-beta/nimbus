@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Function_1 = __importDefault(require("./Function"));
+const uuid_1 = require("uuid");
 const Functions = () => {
     const [funcMetrics, setFuncMetrics] = (0, react_1.useState)({});
     // Grab each functions metrics when the component mounts
@@ -57,9 +58,6 @@ const Functions = () => {
         grabFuncsMetrics();
     }, []);
     // Update to generate 4 charts of each metric
-    const generateChart = () => {
-        console.log('Generating Chart ...');
-    };
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("table", { className: "table" },
             react_1.default.createElement("thead", null,

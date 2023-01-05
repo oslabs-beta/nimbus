@@ -22,13 +22,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const LineChart_1 = __importDefault(require("./LineChart"));
 const Function = (props) => {
+    const [isClicked, setIsClicked] = (0, react_1.useState)(false);
     const [totalInvocations, setTotalInvocations] = (0, react_1.useState)(0);
     const [totalErrors, setTotalErrors] = (0, react_1.useState)(0);
     const [totalThrottles, setTotalThrottles] = (0, react_1.useState)(0);
     const [totalDuration, setTotalDuration] = (0, react_1.useState)(0);
+    const [invocations, setInvocations] = (0, react_1.useState)([]);
+    const [errors, setErrors] = (0, react_1.useState)([]);
+    const [throttles, setThrottles] = (0, react_1.useState)([]);
+    const [duration, setDuration] = (0, react_1.useState)([]);
     (0, react_1.useEffect)(() => {
         // If our metric array has at least one value, accumulate the values
         if (props.invocations.values[0])
@@ -40,6 +49,29 @@ const Function = (props) => {
         if (props.duration.values[0])
             setTotalDuration(Math.ceil(props.duration.values.reduce((acc, curr) => acc + curr)));
     });
+    const convertToChartJSStructure = (rawData) => {
+        const output = [];
+        for (let key in rawData.values) {
+            const subElement = {
+                y: rawData.values[key],
+                x: new Date(rawData.timestamp[key]).toLocaleString([], { year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute: '2-digit' }),
+            };
+            output.push(subElement);
+        }
+        return output;
+    };
+    const generateChart = () => {
+        if (!isClicked) {
+            setInvocations(convertToChartJSStructure(props.invocations));
+            setErrors(convertToChartJSStructure(props.errors));
+            setThrottles(convertToChartJSStructure(props.throttles));
+            setDuration(convertToChartJSStructure(props.duration));
+            setIsClicked(true);
+        }
+        else {
+            setIsClicked(false);
+        }
+    };
     return (react_1.default.createElement(react_1.default.Fragment, null,
 <<<<<<< HEAD
         react_1.default.createElement("tr", { onClick: generateChart },
