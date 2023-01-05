@@ -52,7 +52,7 @@ const Functions = () => {
             },
         });
         response = yield response.json();
-        setFuncMetrics(response.metrics);
+        setFuncMetrics(response.eachFuncMetrics);
     });
     (0, react_1.useEffect)(() => {
         grabFuncsMetrics();

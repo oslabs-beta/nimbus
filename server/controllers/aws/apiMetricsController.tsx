@@ -106,7 +106,7 @@ const getCommandInput = (apiName:string, metricName:string, stat='Sum') => {
           MetricName: metricName,
           Dimensions: [{ Name: 'ApiName', Value: apiName }],
         },
-        Period: 60,
+        Period: 300,
         Stat: stat,
       },
     },

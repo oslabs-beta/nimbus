@@ -17,14 +17,15 @@ const apiMetricsController_1 = __importDefault(require("../controllers/aws/apiMe
 // Email is used to query the database for ARN
 // ARN is used to get credentials from client's AWS account
 // Credentials used to grab matrics
-router.get('/allMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, metricsController_1.default.getAllMetrics, (req, res) => {
+router.get('/allMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, metricsController_1.default.getAllMetrics, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, metricsController_1.default.getCostProps, (req, res) => {
     return res.status(200).json({
-        metrics: res.locals.metrics,
+        allFuncMetrics: res.locals.allFuncMetrics,
+        cost: res.locals.cost
     });
 });
 router.get('/funcmetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, (req, res) => {
     return res.status(200).json({
-        metrics: res.locals.metrics,
+        eachFuncMetrics: res.locals.eachFuncMetrics,
     });
 });
 router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, 

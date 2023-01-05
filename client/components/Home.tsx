@@ -6,6 +6,12 @@ type RawData = {
   x: string,
 }; 
 
+type costProps = {
+  memory: number[],
+  invocations: number[],
+  duration: number[]
+}
+
 type d3Data = Array<RawData>;
 
 const Home = () => {
@@ -13,6 +19,7 @@ const Home = () => {
   const [errorsData, setErrors] = useState<d3Data>([]);
   const [throttlesData, setThrottles] = useState<d3Data>([]);
   const [durationData, setDurations] = useState<d3Data>([]);
+  const [cost, setCost] = useState(0)
   const [totalInvocations, setTotalInvocations] = useState(0);
   const [totalErrors, setTotalErrors] = useState(0);
   const [totalThrottles, setTotalThrottles] = useState(0);
@@ -35,31 +42,27 @@ const Home = () => {
       });
       res = await res.json();
       setInvocations(convertToD3Structure({
-        values: res.metrics.invocations.values, 
-        timestamp: res.metrics.invocations.timestamp
+        values: res.allFuncMetrics.invocations.values, 
+        timestamp: res.allFuncMetrics.invocations.timestamp
       }));
-      setTotalInvocations(res.metrics.invocations.values.reduce((a: number, b: number) => a + b, 0));
       setErrors(convertToD3Structure({
-        values: res.metrics.errors.values, 
-        timestamp: res.metrics.errors.timestamp
+        values: res.allFuncMetrics.errors.values, 
+        timestamp: res.allFuncMetrics.errors.timestamp
       }));
-      setTotalErrors(res.metrics.errors.values.reduce((a: number, b: number) => a + b, 0));
       setThrottles(convertToD3Structure({
-        values: res.metrics.throttles.values, 
-        timestamp: res.metrics.throttles.timestamp
+        values: res.allFuncMetrics.throttles.values, 
+        timestamp: res.allFuncMetrics.throttles.timestamp
       }));
-      setTotalThrottles(res.metrics.throttles.values.reduce((a: number, b: number) => a + b, 0));
       setDurations(convertToD3Structure({
-        values: res.metrics.duration.values, 
-        timestamp: res.metrics.duration.timestamp
+        values: res.allFuncMetrics.duration.values, 
+        timestamp: res.allFuncMetrics.duration.timestamp
       }));
-      setAverageDuration(res.metrics.duration.values.reduce((a: number, b: number) => a + b, 0) / res.metrics.duration.values.length)
-    
+      setCost(calculateCost(res.cost));
     } catch(error) {
       console.log(error);
     }
   }
-
+  
   // The data retrieved from the back end is converted to an array of objects to be compatible with D3
   const convertToD3Structure = (rawData: any) => {
     const output = [];
@@ -73,11 +76,18 @@ const Home = () => {
     return output;
   };
   
+  const calculateCost = (costObj: costProps) => {
+    let totalCost = 0;
+    for (let i = 0; i < costObj.memory.length; i++) {
+      totalCost += costObj.memory[i] * 0.0009765625 * costObj.duration[i] * 0.001
+    }
+    return Math.round(totalCost * 100) / 100
+  }
+
   // Invokes the getMetrics function
   useEffect(() => {
     getMetrics();
   }, []);
-
   
   return (
   <>
@@ -144,6 +154,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
    

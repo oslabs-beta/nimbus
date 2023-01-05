@@ -18,7 +18,7 @@ const lambdaController = {
             const lambdaFunctions = commandResults?.Functions;
             const lambdaFunctionDetails = lambdaFunctions?.map(f => f.FunctionName);
             console.log(lambdaFunctionDetails);
-             res.locals.functions = lambdaFunctionDetails;
+            res.locals.functions = lambdaFunctionDetails;
             return next();
         } catch (err) {
             console.log(err);
