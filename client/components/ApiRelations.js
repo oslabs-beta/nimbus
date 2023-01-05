@@ -41,15 +41,11 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
     const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
     console.log("endpoints", endpoints);
     return (react_1.default.createElement("div", null, endpoints ?
-        react_1.default.createElement("div", null,
-            react_1.default.createElement("div", null, "Endpoints"),
-            Object.keys(endpoints).map((key) => {
-                return (react_1.default.createElement("div", { key: key },
-                    react_1.default.createElement("b", null,
-                        "'",
-                        key,
-                        "'"),
-                    react_1.default.createElement("ul", null, endpoints[key].map((item) => {
+        react_1.default.createElement("div", { className: 'flex flex-col gap-y-4' }, Object.keys(endpoints).map((key) => {
+            return (react_1.default.createElement("div", { className: 'card w-96 bg-gray-800 shadow-xl', key: key },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement("h2", { className: "card-title text-accent text-lg font-bold" }, key),
+                    react_1.default.createElement("ul", { className: 'list-disc' }, endpoints[key].map((item) => {
                         return (react_1.default.createElement("li", { key: item.method },
                             react_1.default.createElement("div", null,
                                 "Method: ",
@@ -57,8 +53,8 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
                             react_1.default.createElement("div", null,
                                 "Function: ",
                                 item.func)));
-                    }))));
-            }))
+                    })))));
+        }))
         :
             message));
 };

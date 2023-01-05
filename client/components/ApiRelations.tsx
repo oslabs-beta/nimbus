@@ -34,13 +34,14 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
       {/* <div>Apis Relations</div> */}
       {/* {if endpoints, render api relations, else render null} */}
       {endpoints ? 
-      <div>
-        <div>Endpoints</div>
+      <div className='flex flex-col gap-y-4'>
+        {/* <div>Endpoints</div> */}
         {Object.keys(endpoints).map((key) => {
         return (
-          <div key={key}>
-            <b>'{key}'</b>
-            <ul>
+          <div className='card w-96 bg-gray-800 shadow-xl' key={key}>
+            <div className="card-body">
+            <h2 className="card-title text-accent text-lg font-bold">{key}</h2>
+            <ul className='list-disc'>
             {endpoints[key].map((item:any) => {
               return (
                 <li key={item.method}>
@@ -50,7 +51,7 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
               );
             })}
             </ul>
-            
+            </div>
           </div>
         );
       })}

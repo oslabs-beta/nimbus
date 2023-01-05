@@ -134,19 +134,19 @@ const Apis = () => {
             console.log("getApiNames", el);
             const currDivId = (0, uuid_1.v4)();
             return (react_1.default.createElement("li", null,
-                react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el, style: { fontWeight: selectedApi === el ? 'bold' : 'normal' }, onClick: handleSelectedApi }, el)));
+                react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el, className: selectedApi === el ? 'active' : '', onClick: handleSelectedApi }, el)));
         });
     };
     return (react_1.default.createElement("div", { className: 'w-full' },
         react_1.default.createElement("div", { className: 'flex flex-row' },
-            react_1.default.createElement("ul", { className: 'menu bg-base-100 w-56 p-2 rounded-box' },
+            react_1.default.createElement("ul", { className: 'menu bg-base-100 grow-0 w-56 p-2 rounded-box' },
                 react_1.default.createElement("li", { className: 'menu-title' },
-                    react_1.default.createElement("span", null, "APIs")),
+                    react_1.default.createElement("span", { className: 'text-lg' }, "API list")),
                 apiMetrics ? getApiNames() : 'fetching apis'),
-            react_1.default.createElement("div", { className: 'flex flex-col justify-center gap-y-6' },
-                react_1.default.createElement("div", { className: 'flex flex-row justify-center gap-x-4' },
-                    react_1.default.createElement("button", { className: 'btn btn-ghost', value: 'metrics', onClick: toggleDisplay }, "Metrics"),
-                    react_1.default.createElement("button", { className: 'btn btn-ghost', value: 'relations', onClick: toggleDisplay }, "Relations")),
+            react_1.default.createElement("div", { className: 'flex flex-col grow justify-center gap-y-6' },
+                react_1.default.createElement("div", { className: 'flex flex-row w-full justify-center gap-x-4' },
+                    react_1.default.createElement("button", { className: `btn ${showInfo === 'metrics' ? 'btn-active' : ''} btn-ghost`, value: 'metrics', onClick: toggleDisplay }, "Metrics"),
+                    react_1.default.createElement("button", { className: `btn ${showInfo === 'metrics' ? '' : 'btn-active'} btn-ghost`, value: 'relations', onClick: toggleDisplay }, "Relations")),
                 react_1.default.createElement("div", { className: 'flex justify-center' }, showInfo === 'metrics' ? react_1.default.createElement(ApiMetrics_1.default, { selectedApi: selectedApi, apiMetrics: apiMetrics })
                     : react_1.default.createElement(ApiRelations_1.default, { selectedApi: selectedApi, apiRelations: apiRelations }))))));
 };
