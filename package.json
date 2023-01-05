@@ -2,11 +2,11 @@
   "name": "nimbus",
   "version": "1.0.0",
   "description": "",
-  "main": "./client/index.js",
+  "main": "electron/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/server.js",
-    "dev": "webpack serve --open --mode development & npm start",
+    "start": "nodemon server/server.js & electron electron/main.js",
+    "dev": "webpack serve --mode development & npm start",
     "build": "webpack --mode production"
   },
   "repository": {

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Theme } from 'react-daisyui'
 import UserAuth from './UserAuth';
 import UserDashboard from './UserDashboard';
+import HeadBar from '../components/HeadBar'
 
 const App = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -13,11 +14,12 @@ const App = () => {
   };
 
   const toggleTheme = () => {
-    setTheme(theme === 'myThemedark' ? 'myThemeLight' : 'myThemedark');
+    setTheme(theme === 'myThemeDark' ? 'myThemeLight' : 'myThemeDark');
   };
 
   return (
     <Theme dataTheme={theme}>
+      <HeadBar toggleTheme={toggleTheme} theme={theme}/>
       <div className='app'>
         {userLoggedIn ? (
           <UserDashboard handleUserLogin={handleUserLogin} toggleTheme={toggleTheme}/>

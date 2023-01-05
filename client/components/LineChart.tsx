@@ -32,7 +32,7 @@ const LineChart = (props: LineChartProps) => {
         data: props.rawData,
         fill: false,
         borderColor: [
-          "rgb(75, 192, 192)",
+          "#F471B5",
         ],
         tension: 0.3,
       },
@@ -41,7 +41,7 @@ const LineChart = (props: LineChartProps) => {
   
   return (
         <div> 
-          Total {props.label}
+          <h3 className="text-accent text-lg text-center font-bold">Total {props.label}</h3>
           <Line data = {data} />
         </div>
   );

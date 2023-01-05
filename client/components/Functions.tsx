@@ -27,14 +27,14 @@ const Functions = () => {
 
   return (
     <div>
-      <table>
+      <table className="table w-[100%]">
         <thead>
           <tr>
-            <th>Lambda Function</th>
-            <th>Invocations</th>
-            <th>Errors</th>
-            <th>Throttles</th>
-            <th>Duration (ms)</th>
+            <th className="bg-primary text-center w-[20%]">Lambda Function</th>
+            <th className="bg-primary text-center w-[20%]">Invocations</th>
+            <th className="bg-primary text-center w-[20%]">Errors</th>
+            <th className="bg-primary text-center w-[20%]">Throttles</th>
+            <th className="bg-primary text-center w-[20%]">Duration (ms)</th>
           </tr>
         </thead>
         <tbody>

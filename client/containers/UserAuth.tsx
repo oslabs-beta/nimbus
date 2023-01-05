@@ -16,8 +16,8 @@ const UserAuth: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
   }
 
   return (
-    <div className="user-auth">
-      <button onClick={toggleTheme} className="btn">Theme</button>
+    <div className="user-auth hero min-h-screen bg-base-200">
+      {/*<button onClick={toggleTheme} className="btn">Theme</button>*/}
       {showLogin === true ? <Login handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/> : <Register handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/>}
     </div>
   )

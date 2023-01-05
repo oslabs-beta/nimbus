@@ -69,26 +69,26 @@ const Function = (props: FunctionProps) => {
   
   return (
     <>
-      <tr onClick={generateChart}>
-        <td>{props.funcName}</td>
-        <td>{totalInvocations}</td>
-        <td>{totalErrors}</td>
-        <td>{totalThrottles}</td>
-        <td>{totalDuration}</td>
+      <tr className="hover:brightness-90" onClick={generateChart}>
+        <td className="bg-neutral text-center">{props.funcName}</td>
+        <td className="bg-neutral text-center">{totalInvocations}</td>
+        <td className="bg-neutral text-center">{totalErrors}</td>
+        <td className="bg-neutral text-center">{totalThrottles}</td>
+        <td className="bg-neutral text-center">{totalDuration}</td>
       </tr>
       {isClicked && 
         <tr>
-          <td></td>
-          <td>
+          <td className="bg-neutral"></td>
+          <td className="bg-neutral">
             <LineChart rawData={invocations} label='Invocations'/>
           </td>
-          <td>
+          <td className="bg-neutral">
             <LineChart rawData={errors} label='Errors'/>
           </td>
-          <td>
+          <td className="bg-neutral">
             <LineChart rawData={throttles} label='Throttles'/>
           </td>
-          <td>
+          <td className="bg-neutral">
             <LineChart rawData={duration} label='Duration'/>
           </td>
         </tr>}
