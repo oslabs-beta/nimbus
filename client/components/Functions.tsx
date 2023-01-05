@@ -26,7 +26,7 @@ const Functions = () => {
   // Update to generate 4 charts of each metric
 
   return (
-    <div>
+    <div className="w-[100%]">
       <table className="table w-[100%]">
         <thead>
           <tr>
@@ -37,7 +37,7 @@ const Functions = () => {
             <th className="bg-primary text-center w-[20%]">Duration (ms)</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="w-[100%]">
           {/* Update the funcMetric parameter type */}
           {Object.entries(funcMetrics).map((funcMetric:any) => (
               <Function key={uuidv4()} 

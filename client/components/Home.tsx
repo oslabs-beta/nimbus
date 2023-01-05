@@ -69,7 +69,7 @@ const Home = () => {
       };
       output.push(subElement);
     }
-    return output;
+    return output.reverse();
   };
   
   const calculateCost = (costObj: costProps) => {
