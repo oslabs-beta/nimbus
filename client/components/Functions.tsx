@@ -16,7 +16,7 @@ const Functions = () => {
       },
     })
     response = await response.json()
-    setFuncMetrics(response.metrics)
+    setFuncMetrics(response.eachFuncMetrics)
   }
 
   useEffect(() => {

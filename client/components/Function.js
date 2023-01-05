@@ -73,8 +73,7 @@ const Function = (props) => {
         }
     };
     return (react_1.default.createElement(react_1.default.Fragment, null,
-<<<<<<< HEAD
-        react_1.default.createElement("tr", { onClick: generateChart },
+        react_1.default.createElement("tr", { className: "hover:brightness-90", onClick: generateChart },
             react_1.default.createElement("td", { className: "bg-neutral text-center" }, props.funcName),
             react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalInvocations),
             react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalErrors),
@@ -91,12 +90,5 @@ const Function = (props) => {
                     react_1.default.createElement(LineChart_1.default, { rawData: throttles, label: 'Throttles' })),
                 react_1.default.createElement("td", { className: "bg-neutral" },
                     react_1.default.createElement(LineChart_1.default, { rawData: duration, label: 'Duration' })))));
-=======
-        react_1.default.createElement("td", null, props.funcName),
-        react_1.default.createElement("td", null, totalInvocations),
-        react_1.default.createElement("td", null, totalErrors),
-        react_1.default.createElement("td", null, totalThrottles),
-        react_1.default.createElement("td", null, totalDuration)));
->>>>>>> dev
 };
 exports.default = Function;
