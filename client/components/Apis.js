@@ -44,6 +44,7 @@ const Apis = () => {
     const [apiMetrics, setApiMetrics] = (0, react_1.useState)(null);
     const [selectedApi, setSelectedApi] = (0, react_1.useState)('');
     const [showInfo, setShowInfo] = (0, react_1.useState)('metrics');
+    console.log("api component rendered");
     // Switch between metrics and relations
     const toggleDisplay = (e) => {
         if (e.target.value !== showInfo) {
@@ -53,7 +54,6 @@ const Apis = () => {
     // Change the selected api
     const handleSelectedApi = (e) => {
         setSelectedApi(() => e.target.value);
-        console.log(selectedApi);
     };
     // Fetch Api relations data and set apiRelation state 
     const getApiRelations = (signal) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,6 +70,7 @@ const Apis = () => {
             });
             res = yield res.json();
             const apiRel = res.apiRelations || ['unable to fetch api relations'];
+            console.log("res.apiRelations", res.apiRelations);
             setApiRelations(apiRel);
         }
         catch (err) {
@@ -131,7 +132,6 @@ const Apis = () => {
     // Get API names and create and array of button elements
     const getApiNames = () => {
         return Object.keys(apiMetrics).map((el) => {
-            console.log("getApiNames", el);
             const currDivId = (0, uuid_1.v4)();
             return (react_1.default.createElement("li", null,
                 react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el, className: selectedApi === el ? 'active' : '', onClick: handleSelectedApi }, el)));
@@ -140,9 +140,9 @@ const Apis = () => {
     return (react_1.default.createElement("div", { className: 'w-full' },
         react_1.default.createElement("div", { className: 'flex flex-row' },
             react_1.default.createElement("ul", { className: 'menu bg-base-100 grow-0 w-56 p-2 rounded-box' },
-                react_1.default.createElement("li", { className: 'menu-title' },
+                react_1.default.createElement("li", { key: 'menu-title', className: 'menu-title' },
                     react_1.default.createElement("span", { className: 'text-lg' }, "API list")),
-                apiMetrics ? getApiNames() : 'fetching apis'),
+                apiMetrics ? getApiNames() : ''),
             react_1.default.createElement("div", { className: 'flex flex-col grow justify-center gap-y-6' },
                 react_1.default.createElement("div", { className: 'flex flex-row w-full justify-center gap-x-4' },
                     react_1.default.createElement("button", { className: `btn ${showInfo === 'metrics' ? 'btn-active' : ''} btn-ghost`, value: 'metrics', onClick: toggleDisplay }, "Metrics"),

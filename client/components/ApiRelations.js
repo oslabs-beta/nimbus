@@ -28,7 +28,9 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
     if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
-        setMessage('data not found');
+        if (message !== 'data not found') {
+            setMessage('data not found');
+        }
     }
     // Grab data for the selected API
     const selectedApiRelations = apiRelations

@@ -3,12 +3,15 @@ import { v4 as uuidv4 } from 'uuid';
 import ApiMetrics from './ApiMetrics';
 import ApiRelations from './ApiRelations';
 
+type View = 'metrics' | 'relations'
 
 const Apis = () => {
   const [apiRelations, setApiRelations] = useState(null);
   const [apiMetrics, setApiMetrics] = useState(null);
-  const [selectedApi, setSelectedApi] = useState('');
-  const [showInfo, setShowInfo] = useState('metrics');
+  const [selectedApi, setSelectedApi] = useState<string>('');
+  const [showInfo, setShowInfo] = useState<View>('metrics');
+
+  console.log("api component rendered")
 
   // Switch between metrics and relations
   const toggleDisplay = (e:any) => {
@@ -20,7 +23,6 @@ const Apis = () => {
   // Change the selected api
   const handleSelectedApi = (e:any) => {
     setSelectedApi(() => e.target.value)
-    console.log(selectedApi);
   }
 
   // Fetch Api relations data and set apiRelation state 
@@ -38,6 +40,7 @@ const Apis = () => {
       });
       res = await res.json();
       const apiRel = res.apiRelations || ['unable to fetch api relations'];
+      console.log("res.apiRelations", res.apiRelations)
       setApiRelations(apiRel);
     }
     catch(err){
@@ -105,7 +108,6 @@ const Apis = () => {
   // Get API names and create and array of button elements
   const getApiNames = () => {
     return Object.keys(apiMetrics as any).map((el:any) => {
-      console.log("getApiNames", el)
       const currDivId = uuidv4();
       return (
         <li><button 
@@ -126,10 +128,10 @@ const Apis = () => {
     <div className='w-full'>
       <div className='flex flex-row'>
         <ul className='menu bg-base-100 grow-0 w-56 p-2 rounded-box'>
-          <li className='menu-title'>
+          <li key={'menu-title'} className='menu-title'>
             <span className='text-lg'>API list</span>
           </li>
-          {apiMetrics ? getApiNames() : 'fetching apis'}
+          {apiMetrics ? getApiNames() : ''}
         </ul>
         <div className='flex flex-col grow justify-center gap-y-6'> 
           <div className='flex flex-row w-full justify-center gap-x-4'>

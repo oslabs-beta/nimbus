@@ -7,12 +7,16 @@ type Props = {
   apiRelations: any;
 };
 
+type Message = 'fetching data...' | 'data not found';
+
 const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => {
-  const [message, setMessage] = useState('fetching data...')
+  const [message, setMessage] = useState<Message>('fetching data...')
 
   // If data not found, set message
   if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
-    setMessage('data not found');
+    if (message !== 'data not found') {
+      setMessage('data not found');
+    }
   }
 
   // Grab data for the selected API
@@ -22,7 +26,6 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
                               apiRelations.filter((apiRel:any) => apiRel.apiName === selectedApi) 
                               : null;
 
-  console.log("selectedApiRelations", selectedApiRelations)
 
   // Get endpoints data
   const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
@@ -31,11 +34,9 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
  
   return (
     <div>
-      {/* <div>Apis Relations</div> */}
-      {/* {if endpoints, render api relations, else render null} */}
+      {/* {if endpoints is truthy, render api relations, else render null} */}
       {endpoints ? 
       <div className='flex flex-col gap-y-4'>
-        {/* <div>Endpoints</div> */}
         {Object.keys(endpoints).map((key) => {
         return (
           <div className='card w-96 bg-gray-800 shadow-xl' key={key}>
