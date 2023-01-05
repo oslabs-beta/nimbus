@@ -53,7 +53,13 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
                 timeValArr.push(subElement);
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement(LineChart_1.default, { key: metric, rawData: timeValArr, label: metric }));
+            lineChartElements.push(
+            // <div className="card w-full bg-gray-800 shadow-xl">
+            //   <div className="card-body">
+            react_1.default.createElement(LineChart_1.default, { key: metric, rawData: timeValArr, label: metric })
+            //* </div>
+            //</div> *
+            );
         }
         return lineChartElements;
     };
@@ -64,7 +70,6 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
         chartElements = makeCharts(apiMetrics[selectedApi]);
     }
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("div", null, "Apis Metrics"),
-        react_1.default.createElement("div", null, chartElements ? chartElements : message)));
+        react_1.default.createElement("div", { className: 'flex flex-wrap' }, chartElements ? chartElements : message)));
 };
 exports.default = ApiMetrics;

@@ -40,28 +40,26 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
     // Get endpoints data
     const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
     console.log("endpoints", endpoints);
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("div", null, "Apis Relations"),
-        endpoints ?
-            react_1.default.createElement("div", null,
-                react_1.default.createElement("div", null, "Endpoints"),
-                Object.keys(endpoints).map((key) => {
-                    return (react_1.default.createElement("div", { key: key },
-                        react_1.default.createElement("b", null,
-                            "'",
-                            key,
-                            "'"),
-                        react_1.default.createElement("ul", null, endpoints[key].map((item) => {
-                            return (react_1.default.createElement("li", { key: item.method },
-                                react_1.default.createElement("div", null,
-                                    "Method: ",
-                                    item.method),
-                                react_1.default.createElement("div", null,
-                                    "Function: ",
-                                    item.func)));
-                        }))));
-                }))
-            :
-                message));
+    return (react_1.default.createElement("div", null, endpoints ?
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("div", null, "Endpoints"),
+            Object.keys(endpoints).map((key) => {
+                return (react_1.default.createElement("div", { key: key },
+                    react_1.default.createElement("b", null,
+                        "'",
+                        key,
+                        "'"),
+                    react_1.default.createElement("ul", null, endpoints[key].map((item) => {
+                        return (react_1.default.createElement("li", { key: item.method },
+                            react_1.default.createElement("div", null,
+                                "Method: ",
+                                item.method),
+                            react_1.default.createElement("div", null,
+                                "Function: ",
+                                item.func)));
+                    }))));
+            }))
+        :
+            message));
 };
 exports.default = ApiRelations;

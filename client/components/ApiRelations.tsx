@@ -31,7 +31,7 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
  
   return (
     <div>
-      <div>Apis Relations</div>
+      {/* <div>Apis Relations</div> */}
       {/* {if endpoints, render api relations, else render null} */}
       {endpoints ? 
       <div>

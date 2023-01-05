@@ -108,7 +108,7 @@ const Apis = () => {
       console.log("getApiNames", el)
       const currDivId = uuidv4();
       return (
-        <button 
+        <li><button 
           key={currDivId}
           id={currDivId}
           value={el}
@@ -117,21 +117,24 @@ const Apis = () => {
         >
           {el}
           </button>
+        </li>
       )
     })
   };
 
   return (
     <div>
-      Apis
-      <div style={{display:'flex'}}>
-        <div style={{display:'flex', flexDirection:'column', flexGrow:'1'}}>
+      <div className='flex flex-row'>
+        <ul className='menu bg-base-100 w-56 p-2 rounded-box'>
+          <li className='menu-title'>
+            <span>APIs</span>
+          </li>
           {apiMetrics ? getApiNames() : 'fetching apis'}
-        </div>
-        <div style={{display:'flex', flexDirection:'column', gap: '1rem', flexGrow:'3'}}> 
-          <div>
-            <button value={'metrics'} onClick={toggleDisplay}>Metrics</button>
-            <button value={'relations'} onClick={toggleDisplay}>Relations</button>
+        </ul>
+        <div className='flex flex-col content-center gap-y-6'> 
+          <div className='flex flex-row content-center gap-x-4'>
+            <button className='btn btn-ghost' value={'metrics'} onClick={toggleDisplay}>Metrics</button>
+            <button className='btn btn-ghost' value={'relations'} onClick={toggleDisplay}>Relations</button>
           </div>
           <div>
             {showInfo === 'metrics' ? <ApiMetrics selectedApi={selectedApi} apiMetrics={apiMetrics}/> 
