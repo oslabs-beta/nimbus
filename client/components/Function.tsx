@@ -37,13 +37,13 @@ const Function = (props: FunctionProps) => {
 
   useEffect(() => {
     // If our metric array has at least one value, accumulate the values
-    if (props.invocations.values.length > 1) setTotalInvocations(props.invocations.values.reduce((acc: number, curr: number):number => acc + curr))
-    if (props.errors.values.length > 1) setTotalErrors(props.errors.values.reduce((acc: number, curr: number):number => acc + curr))
-    if (props.throttles.values.length > 1) setTotalThrottles(props.throttles.values.reduce((acc: number, curr: number):number => acc + curr))
-    if (props.duration.values.length > 1) setTotalDuration(Math.ceil(props.duration.values.reduce((acc: number, curr: number):number => acc + curr)/props.duration.values.length))
+    if (props.invocations.values.length > 0) setTotalInvocations(props.invocations.values.reduce((acc: number, curr: number):number => acc + curr))
+    if (props.errors.values.length > 0) setTotalErrors(props.errors.values.reduce((acc: number, curr: number):number => acc + curr))
+    if (props.throttles.values.length > 0) setTotalThrottles(props.throttles.values.reduce((acc: number, curr: number):number => acc + curr))
+    if (props.duration.values.length > 0) setTotalDuration(Math.ceil(props.duration.values.reduce((acc: number, curr: number):number => acc + curr)/props.duration.values.length))
   }, [])
 
-  const convertToChartJSStructure = (rawData: any) => {
+  const convertToChartJSStructure = (rawData: Data) => {
     const output = [];
     for (let key in rawData.values) {
       const subElement: RawData = {
