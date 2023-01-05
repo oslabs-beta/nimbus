@@ -58,10 +58,19 @@ const Home = () => {
         timestamp: res.allFuncMetrics.duration.timestamp
       }));
       setCost(calculateCost(res.cost));
-      setTotalInvocations(res.allFuncMetrics.invocations.values.reduce((a:number, b:number) => a + b, 0));
-      setTotalErrors(res.allFuncMetrics.errors.values.reduce((a:number, b:number) => a + b, 0));
-      setTotalThrottles(res.allFuncMetrics.throttles.values.reduce((a:number, b:number) => a + b, 0));
-      setAverageDuration(res.allFuncMetrics.duration.values.reduce((a:number, b:number) => a + b, 0) / res.allFuncMetrics.duration.values.length);
+      if (res.allFuncMetrics.invocations.values.length > 0) {
+        setTotalInvocations(res.allFuncMetrics.invocations.values.reduce((a:number, b:number) => a + b, 0));
+      }
+      if (res.allFuncMetrics.errors.values.length > 0) {
+        setTotalErrors(res.allFuncMetrics.errors.values.reduce((a:number, b:number) => a + b, 0));
+      }
+      if (res.allFuncMetrics.throttles.values.length > 0) {
+        setTotalThrottles(res.allFuncMetrics.throttles.values.reduce((a:number, b:number) => a + b, 0));
+      }
+      if (res.allFuncMetrics.duration.values.length > 0) {
+        setAverageDuration(res.allFuncMetrics.duration.values.reduce((a:number, b:number) => a + b, 0) / res.allFuncMetrics.duration.values.length);
+      }
+      
     } catch(error) {
       console.log(error);
     }
