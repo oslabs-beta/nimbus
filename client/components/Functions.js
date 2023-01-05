@@ -58,8 +58,8 @@ const Functions = () => {
         grabFuncsMetrics();
     }, []);
     // Update to generate 4 charts of each metric
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("table", { className: "table w-[100%]" },
+    return (react_1.default.createElement("div", { className: "w-[100%]" },
+        react_1.default.createElement("table", { className: "table w-[100%] mx-5" },
             react_1.default.createElement("thead", null,
                 react_1.default.createElement("tr", null,
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Lambda Function"),
@@ -67,6 +67,6 @@ const Functions = () => {
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Errors"),
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Throttles"),
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Duration (ms)"))),
-            react_1.default.createElement("tbody", null, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement(Function_1.default, { key: (0, uuid_1.v4)(), funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration })))))));
+            react_1.default.createElement("tbody", { className: "w-[100%]" }, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement(Function_1.default, { key: (0, uuid_1.v4)(), funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration })))))));
 };
 exports.default = Functions;

@@ -275,26 +275,6 @@ const metricsController = {
                     region: res.locals.region,
                     credentials: res.locals.credentials
                 });
-                // const memory:{[key: string]: number} = {};
-                // const invocations:{[key: string]: number} = {};
-                // const duration:{[key: string]: number} = {};
-                // for (const funcName of res.locals.functions) {
-                //   const command = new GetFunctionConfigurationCommand({FunctionName: funcName});
-                //   const response = await client.send(command)
-                //   if (response.MemorySize) {
-                //     memory[funcName] = response.MemorySize
-                //     if (res.locals.eachFuncMetrics[funcName].invocations.values.length > 0) {
-                //       invocations[funcName] = res.locals.eachFuncMetrics[funcName].invocations.values.reduce((acc: number, curr: number) => acc + curr)
-                //     } else {
-                //       invocations[funcName] = res.locals.eachFuncMetrics[funcName].invocations.values[0]
-                //     }
-                //     if (res.locals.eachFuncMetrics[funcName].duration.values.length > 0) {
-                //       duration[funcName] = res.locals.eachFuncMetrics[funcName].duration.values.reduce((acc: number, curr: number) => acc + curr)
-                //     } else {
-                //       duration[funcName] = res.locals.eachFuncMetrics[funcName].duration.values[0]
-                //     }
-                //   }
-                // }
                 const memory = [];
                 const invocations = [];
                 const duration = [];
@@ -326,7 +306,7 @@ const metricsController = {
             }
             catch (err) {
                 return next({
-                    log: "Error caught in metricsController.getCost middleware function",
+                    log: "Error caught in metricsController.getCostProps middleware function",
                     status: 500,
                     message: { err: "Error grabbing cost for all Lambda Function" }
                 });

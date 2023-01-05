@@ -40,15 +40,15 @@ const Function = (props) => {
     const [duration, setDuration] = (0, react_1.useState)([]);
     (0, react_1.useEffect)(() => {
         // If our metric array has at least one value, accumulate the values
-        if (props.invocations.values[0])
+        if (props.invocations.values.length > 1)
             setTotalInvocations(props.invocations.values.reduce((acc, curr) => acc + curr));
-        if (props.errors.values[0])
+        if (props.errors.values.length > 1)
             setTotalErrors(props.errors.values.reduce((acc, curr) => acc + curr));
-        if (props.throttles.values[0])
+        if (props.throttles.values.length > 1)
             setTotalThrottles(props.throttles.values.reduce((acc, curr) => acc + curr));
-        if (props.duration.values[0])
-            setTotalDuration(Math.ceil(props.duration.values.reduce((acc, curr) => acc + curr)));
-    });
+        if (props.duration.values.length > 1)
+            setTotalDuration(Math.ceil(props.duration.values.reduce((acc, curr) => acc + curr) / props.duration.values.length));
+    }, []);
     const convertToChartJSStructure = (rawData) => {
         const output = [];
         for (let key in rawData.values) {
@@ -58,7 +58,7 @@ const Function = (props) => {
             };
             output.push(subElement);
         }
-        return output;
+        return output.reverse();
     };
     const generateChart = () => {
         if (!isClicked) {
@@ -73,22 +73,22 @@ const Function = (props) => {
         }
     };
     return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("tr", { className: "hover:brightness-90", onClick: generateChart },
-            react_1.default.createElement("td", { className: "bg-neutral text-center" }, props.funcName),
-            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalInvocations),
-            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalErrors),
-            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalThrottles),
-            react_1.default.createElement("td", { className: "bg-neutral text-center" }, totalDuration)),
+        react_1.default.createElement("tr", { className: "hover:brightness-90 w-[100%]", onClick: generateChart },
+            react_1.default.createElement("td", { className: "bg-neutral text-center w-[20%]" }, props.funcName),
+            react_1.default.createElement("td", { className: "bg-neutral text-center w-[20%]" }, totalInvocations),
+            react_1.default.createElement("td", { className: "bg-neutral text-center w-[20%]" }, totalErrors),
+            react_1.default.createElement("td", { className: "bg-neutral text-center w-[20%]" }, totalThrottles),
+            react_1.default.createElement("td", { className: "bg-neutral text-center w-[20%]" }, totalDuration)),
         isClicked &&
-            react_1.default.createElement("tr", null,
-                react_1.default.createElement("td", { className: "bg-neutral" }),
-                react_1.default.createElement("td", { className: "bg-neutral" },
+            react_1.default.createElement("tr", { className: "w-[100%]" },
+                react_1.default.createElement("td", { className: "bg-neutral w-[20%]" }),
+                react_1.default.createElement("td", { className: "bg-neutral w-[20%]" },
                     react_1.default.createElement(LineChart_1.default, { rawData: invocations, label: 'Invocations' })),
-                react_1.default.createElement("td", { className: "bg-neutral" },
+                react_1.default.createElement("td", { className: "bg-neutral w-[20%]" },
                     react_1.default.createElement(LineChart_1.default, { rawData: errors, label: 'Errors' })),
-                react_1.default.createElement("td", { className: "bg-neutral" },
+                react_1.default.createElement("td", { className: "bg-neutral w-[20%]" },
                     react_1.default.createElement(LineChart_1.default, { rawData: throttles, label: 'Throttles' })),
-                react_1.default.createElement("td", { className: "bg-neutral" },
+                react_1.default.createElement("td", { className: "bg-neutral w-[20%]" },
                     react_1.default.createElement(LineChart_1.default, { rawData: duration, label: 'Duration' })))));
 };
 exports.default = Function;
