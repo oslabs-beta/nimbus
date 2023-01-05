@@ -123,7 +123,7 @@ const Apis = () => {
   };
 
   return (
-    <div>
+    <div className='w-full'>
       <div className='flex flex-row'>
         <ul className='menu bg-base-100 w-56 p-2 rounded-box'>
           <li className='menu-title'>
@@ -131,12 +131,12 @@ const Apis = () => {
           </li>
           {apiMetrics ? getApiNames() : 'fetching apis'}
         </ul>
-        <div className='flex flex-col content-center gap-y-6'> 
-          <div className='flex flex-row content-center gap-x-4'>
+        <div className='flex flex-col justify-center gap-y-6'> 
+          <div className='flex flex-row justify-center gap-x-4'>
             <button className='btn btn-ghost' value={'metrics'} onClick={toggleDisplay}>Metrics</button>
             <button className='btn btn-ghost' value={'relations'} onClick={toggleDisplay}>Relations</button>
           </div>
-          <div>
+          <div className='flex justify-center'>
             {showInfo === 'metrics' ? <ApiMetrics selectedApi={selectedApi} apiMetrics={apiMetrics}/> 
             : <ApiRelations selectedApi={selectedApi} apiRelations={apiRelations}/>}
           </div>

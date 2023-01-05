@@ -59,7 +59,7 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
   return (
     <div>
       {/* <div>Apis Metrics</div>  */}
-      <div className='flex flex-wrap'>
+      <div className='flex justify-center flex-wrap'>
         {chartElements ? chartElements : message}
       </div>
     </div>

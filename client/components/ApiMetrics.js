@@ -70,6 +70,6 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
         chartElements = makeCharts(apiMetrics[selectedApi]);
     }
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("div", { className: 'flex flex-wrap' }, chartElements ? chartElements : message)));
+        react_1.default.createElement("div", { className: 'flex justify-center flex-wrap' }, chartElements ? chartElements : message)));
 };
 exports.default = ApiMetrics;

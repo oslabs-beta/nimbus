@@ -137,17 +137,17 @@ const Apis = () => {
                 react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el, style: { fontWeight: selectedApi === el ? 'bold' : 'normal' }, onClick: handleSelectedApi }, el)));
         });
     };
-    return (react_1.default.createElement("div", null,
+    return (react_1.default.createElement("div", { className: 'w-full' },
         react_1.default.createElement("div", { className: 'flex flex-row' },
             react_1.default.createElement("ul", { className: 'menu bg-base-100 w-56 p-2 rounded-box' },
                 react_1.default.createElement("li", { className: 'menu-title' },
                     react_1.default.createElement("span", null, "APIs")),
                 apiMetrics ? getApiNames() : 'fetching apis'),
-            react_1.default.createElement("div", { className: 'flex flex-col content-center gap-y-6' },
-                react_1.default.createElement("div", { className: 'flex flex-row content-center gap-x-4' },
+            react_1.default.createElement("div", { className: 'flex flex-col justify-center gap-y-6' },
+                react_1.default.createElement("div", { className: 'flex flex-row justify-center gap-x-4' },
                     react_1.default.createElement("button", { className: 'btn btn-ghost', value: 'metrics', onClick: toggleDisplay }, "Metrics"),
                     react_1.default.createElement("button", { className: 'btn btn-ghost', value: 'relations', onClick: toggleDisplay }, "Relations")),
-                react_1.default.createElement("div", null, showInfo === 'metrics' ? react_1.default.createElement(ApiMetrics_1.default, { selectedApi: selectedApi, apiMetrics: apiMetrics })
+                react_1.default.createElement("div", { className: 'flex justify-center' }, showInfo === 'metrics' ? react_1.default.createElement(ApiMetrics_1.default, { selectedApi: selectedApi, apiMetrics: apiMetrics })
                     : react_1.default.createElement(ApiRelations_1.default, { selectedApi: selectedApi, apiRelations: apiRelations }))))));
 };
 exports.default = Apis;
