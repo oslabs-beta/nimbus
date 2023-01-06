@@ -67,7 +67,6 @@ router.get('/apiMetrics', authController.verifyToken, credentialsController.getC
     });
 });
 
-
 router.get('/apiList', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, (req: Request, res: Response) => {
     return res.status(200).json({
         apiList: res.locals.apiList
