@@ -19,7 +19,6 @@ type userController = {
 }
 
 const userController: userController = {
-
   async verifyUser(req, res, next) {
     const { email, password } = req.body;
 
@@ -44,7 +43,7 @@ const userController: userController = {
           message: {err: 'Wrong password'}
         });
       } 
-      res.locals.email = email
+      res.locals.email = email;
       return next(); 
       // all other errors, invoke global error handler
     } catch (err) {

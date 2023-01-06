@@ -15,42 +15,26 @@ import apiMetricsController from '../controllers/aws/apiMetricsController'
     // ARN is used to get credentials from client's AWS account
     // Credentials used to grab matrics
 
-router.get('/allMetrics', 
-    authController.verifyToken, 
-    credentialsController.getCredentialsFromDB, 
-    metricsController.getAllMetrics, 
-    lambdaController.getFunctions,
-    metricsController.getMetricsByFunc, 
-    metricsController.getCostProps,
-    (req: Request, res: Response) => {
-        return res.status(200).json({
-            allFuncMetrics: res.locals.allFuncMetrics,
-            cost: res.locals.cost
-        });
+router.get('/allMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, metricsController.getAllMetrics, lambdaController.getFunctions, metricsController.getMetricsByFunc, metricsController.getCostProps, (req: Request, res: Response) => {
+    return res.status(200).json({
+        allFuncMetrics: res.locals.allFuncMetrics,
+        cost: res.locals.cost
+    });
 });
 
-router.get('/funcmetrics', 
-    authController.verifyToken, 
-    credentialsController.getCredentialsFromDB, 
-    lambdaController.getFunctions, 
-    metricsController.getMetricsByFunc, 
-    (req: Request, res: Response) => {
-        return res.status(200).json({
-            eachFuncMetrics: res.locals.eachFuncMetrics,
-        });
+router.get('/funcmetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, metricsController.getMetricsByFunc, (req: Request, res: Response) => {
+    return res.status(200).json({
+        eachFuncMetrics: res.locals.eachFuncMetrics,
+    });
 });
 
-router.get('/functions', 
-    authController.verifyToken, 
-    credentialsController.getCredentialsFromDB, 
-    lambdaController.getFunctions, 
-    // metricsController.getMetricsByFunc, 
-    (req: Request, res: Response) => {
-        return res.status(200).json({
-            functions: res.locals.functions
-        });
+router.get('/functions', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, (req: Request, res: Response) => {
+    return res.status(200).json({
+        functions: res.locals.functions
+    });
 });
 
+// Handles POST Requests to get Logs for all functions and the ability to filter
 router.post('/allLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getAllLogs, (req: Request, res: Response) => {
     return res.status(200).json({
         logs: res.locals.logs
@@ -63,6 +47,7 @@ router.post('/filteredLogs', authController.verifyToken, credentialsController.g
     });
 });
 
+// Handles GET/POST Requests to grab API Metrics + Relationships
 router.post('/apiRelations', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
     return res.status(200).json({
         apiRelations: res.locals.apiRelations
@@ -76,18 +61,11 @@ router.get('/apiList', authController.verifyToken, credentialsController.getCred
     });
 });
 
-// body: period
-router.get('/apiMetrics', 
-    authController.verifyToken, 
-    credentialsController.getCredentialsFromDB, 
-    apiController.getAPIList, 
-    apiMetricsController.getAPIMetrics, 
-    (req: Request, res: Response) => {
-        return res.status(200).json({
-            allApiMetrics: res.locals.allApiMetrics
-        });
+router.get('/apiMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, apiMetricsController.getAPIMetrics, (req: Request, res: Response) => {
+    return res.status(200).json({
+        allApiMetrics: res.locals.allApiMetrics
+    });
 });
-
 
 
 router.get('/apiList', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, (req: Request, res: Response) => {
@@ -96,21 +74,13 @@ router.get('/apiList', authController.verifyToken, credentialsController.getCred
     });
 });
 
-// body: period
-router.get('/apiMetrics', 
-    authController.verifyToken, 
-    credentialsController.getCredentialsFromDB, 
-    apiController.getAPIList, 
-    apiMetricsController.getAPIMetrics, 
-    (req: Request, res: Response) => {
-        return res.status(200).json({
-            allApiMetrics: res.locals.allApiMetrics
-        });
+router.get('/apiMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, apiMetricsController.getAPIMetrics, (req: Request, res: Response) => {
+    return res.status(200).json({
+        allApiMetrics: res.locals.allApiMetrics
+    });
 });
 
-
-
-//Settings
+//Handles GET/POST requests to the Settings Tab
 router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
     return res.status(200).json(res.locals.user);
 });
@@ -123,4 +93,4 @@ router.post('/updatePassword', authController.verifyToken, userController.update
     return res.status(200).json(res.locals.success);
 });
 
-module.exports = router
+module.exports = router;

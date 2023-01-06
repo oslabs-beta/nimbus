@@ -9,7 +9,6 @@ const authRouter = require('./routes/authRouter');
 const dashboardRouter = require('./routes/dashboardRouter');
 
 app.use('/', authRouter);
-
 app.use('/dashboard', dashboardRouter);
 
 // Handle all remaining endpoints that are not defined in the server/routers
