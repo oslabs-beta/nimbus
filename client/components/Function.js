@@ -40,13 +40,13 @@ const Function = (props) => {
     const [duration, setDuration] = (0, react_1.useState)([]);
     (0, react_1.useEffect)(() => {
         // If our metric array has at least one value, accumulate the values
-        if (props.invocations.values.length > 1)
+        if (props.invocations.values.length > 0)
             setTotalInvocations(props.invocations.values.reduce((acc, curr) => acc + curr));
-        if (props.errors.values.length > 1)
+        if (props.errors.values.length > 0)
             setTotalErrors(props.errors.values.reduce((acc, curr) => acc + curr));
-        if (props.throttles.values.length > 1)
+        if (props.throttles.values.length > 0)
             setTotalThrottles(props.throttles.values.reduce((acc, curr) => acc + curr));
-        if (props.duration.values.length > 1)
+        if (props.duration.values.length > 0)
             setTotalDuration(Math.ceil(props.duration.values.reduce((acc, curr) => acc + curr) / props.duration.values.length));
     }, []);
     const convertToChartJSStructure = (rawData) => {
@@ -54,7 +54,7 @@ const Function = (props) => {
         for (let key in rawData.values) {
             const subElement = {
                 y: rawData.values[key],
-                x: new Date(rawData.timestamp[key]).toLocaleString([], { year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute: '2-digit' }),
+                x: new Date(rawData.timestamp[key]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
             };
             output.push(subElement);
         }

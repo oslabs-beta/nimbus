@@ -50,7 +50,7 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
             for (let i in currMetricsObj.values) {
                 const subElement = {
                     y: currMetricsObj.values[i],
-                    x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute: '2-digit' }),
+                    x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
                 };
                 timeValArr.push(subElement);
             }
