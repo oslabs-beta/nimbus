@@ -96,9 +96,9 @@ const Apis = () => {
                 metrics = res.allApiMetrics;
                 setSelectedApi(Object.keys(metrics)[0]);
             }
-            else {
-                metrics = ['unable to fetch api metrics'];
-            }
+            // else {
+            //   metrics = '';
+            // }
             setApiMetrics(metrics);
         }
         catch (err) {

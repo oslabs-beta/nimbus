@@ -96,17 +96,17 @@ router.get('/apiList', authController.verifyToken, credentialsController.getCred
     });
 });
 
-// body: period
-router.get('/apiMetrics', 
-    authController.verifyToken, 
-    credentialsController.getCredentialsFromDB, 
-    apiController.getAPIList, 
-    apiMetricsController.getAPIMetrics, 
-    (req: Request, res: Response) => {
-        return res.status(200).json({
-            allApiMetrics: res.locals.allApiMetrics
-        });
-});
+// // body: period
+// router.get('/apiMetrics', 
+//     authController.verifyToken, 
+//     credentialsController.getCredentialsFromDB, 
+//     apiController.getAPIList, 
+//     apiMetricsController.getAPIMetrics, 
+//     (req: Request, res: Response) => {
+//         return res.status(200).json({
+//             allApiMetrics: res.locals.allApiMetrics
+//         });
+// });
 
 
 

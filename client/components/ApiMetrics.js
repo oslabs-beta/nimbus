@@ -31,7 +31,8 @@ const LineChart_1 = __importDefault(require("./LineChart"));
 const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
-    if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
+    // if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
+    if (typeof apiMetrics === 'undefined') {
         if (message !== 'data not found') {
             setMessage('data not found');
         }
@@ -55,7 +56,7 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
                 timeValArr.push(subElement);
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-gray-800 shadow-xl" },
+            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-76 bg-gray-800 shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { key: `${metric}-chart`, rawData: timeValArr, label: metric }))));
         }

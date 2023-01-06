@@ -13,13 +13,13 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
   const [message, setMessage] = useState<Message>('fetching data...')
 
   // If data not found, set message
-  if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
+  if (apiRelations === undefined) {
     if (message !== 'data not found') {
       setMessage('data not found');
     }
   }
 
-  // Grab data for the selected API
+  // Grab data for the selected API; if not found set to null
   const selectedApiRelations = apiRelations 
                               && selectedApi 
                               ? 
@@ -34,7 +34,7 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
  
   return (
     <div>
-      {/* {if endpoints is truthy, render api relations, else render null} */}
+      {/* {if endpoints is truthy, render api relations, else render message} */}
       {endpoints ? 
       <div className='flex flex-col gap-y-4'>
         {Object.keys(endpoints).map((key) => {
