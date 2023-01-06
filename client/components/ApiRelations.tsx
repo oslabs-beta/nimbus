@@ -7,12 +7,16 @@ type Props = {
   apiRelations: any;
 };
 
+type Message = 'fetching data...' | 'data not found';
+
 const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => {
-  const [message, setMessage] = useState('fetching data...')
+  const [message, setMessage] = useState<Message>('fetching data...')
 
   // If data not found, set message
   if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
-    setMessage('data not found');
+    if (message !== 'data not found') {
+      setMessage('data not found');
+    }
   }
 
   // Grab data for the selected API
@@ -22,7 +26,6 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
                               apiRelations.filter((apiRel:any) => apiRel.apiName === selectedApi) 
                               : null;
 
-  console.log("selectedApiRelations", selectedApiRelations)
 
   // Get endpoints data
   const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
@@ -31,26 +34,31 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
  
   return (
     <div>
-      <div>Apis Relations</div>
-      {/* {if endpoints, render api relations, else render null} */}
+      {/* {if endpoints is truthy, render api relations, else render null} */}
       {endpoints ? 
-      <div>
-        <div>Endpoints</div>
+      <div className='flex flex-col gap-y-4'>
         {Object.keys(endpoints).map((key) => {
         return (
-          <div key={key}>
-            <b>'{key}'</b>
-            <ul>
+          <div className='card w-96 bg-gray-800 shadow-xl' key={key}>
+            <div className="card-body">
+            <h2 className="card-title text-accent text-lg font-bold">{key}</h2>
+            <ul className=''>
             {endpoints[key].map((item:any) => {
               return (
-                <li key={item.method}>
-                  <div>Method: {item.method}</div> 
-                  <div>Function: {item.func}</div>
+                <li key={item.method} className='my-2'>
+                    <div className='bg-gray-700 py-2 px-4 rounded-lg border-0'>
+                  <div>
+                    Method: {item.method} 
+                    <svg  className="inline" style={{width:'1.5rem', fill: '#9ca3af', margin: '0rem .5rem'}} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ArrowForwardIcon" aria-label="fontSize large"><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></svg>
+                    Function: {item.func}
+                  </div> 
+                  </div>
+                  
                 </li>
               );
             })}
             </ul>
-            
+            </div>
           </div>
         );
       })}

@@ -32,7 +32,9 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
     if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
-        setMessage('data not found');
+        if (message !== 'data not found') {
+            setMessage('data not found');
+        }
     }
     // Make chart for each metric for the selected API
     const makeCharts = (selectedApiMetrics) => {
@@ -53,7 +55,9 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
                 timeValArr.push(subElement);
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement(LineChart_1.default, { key: metric, rawData: timeValArr, label: metric }));
+            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card-body" },
+                    react_1.default.createElement(LineChart_1.default, { key: `${metric}-chart`, rawData: timeValArr, label: metric }))));
         }
         return lineChartElements;
     };
@@ -64,7 +68,6 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
         chartElements = makeCharts(apiMetrics[selectedApi]);
     }
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("div", null, "Apis Metrics"),
-        react_1.default.createElement("div", null, chartElements ? chartElements : message)));
+        react_1.default.createElement("div", { className: 'flex justify-center flex-wrap gap-3' }, chartElements ? chartElements : message)));
 };
 exports.default = ApiMetrics;

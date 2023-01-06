@@ -3,12 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import ApiMetrics from './ApiMetrics';
 import ApiRelations from './ApiRelations';
 
+type View = 'metrics' | 'relations'
 
 const Apis = () => {
   const [apiRelations, setApiRelations] = useState(null);
   const [apiMetrics, setApiMetrics] = useState(null);
-  const [selectedApi, setSelectedApi] = useState('');
-  const [showInfo, setShowInfo] = useState('metrics');
+  const [selectedApi, setSelectedApi] = useState<string>('');
+  const [showInfo, setShowInfo] = useState<View>('metrics');
 
   // Switch between metrics and relations
   const toggleDisplay = (e:any) => {
@@ -20,11 +21,10 @@ const Apis = () => {
   // Change the selected api
   const handleSelectedApi = (e:any) => {
     setSelectedApi(() => e.target.value)
-    console.log(selectedApi);
   }
 
   // Fetch Api relations data and set apiRelation state 
-  const getApiRelations = async (signal:any) => {
+  const getApiRelations = async (signal:AbortSignal) => {
     let res;
     try {
       res = await fetch('/dashboard/apiRelations', {
@@ -38,6 +38,7 @@ const Apis = () => {
       });
       res = await res.json();
       const apiRel = res.apiRelations || ['unable to fetch api relations'];
+      console.log("res.apiRelations", res.apiRelations)
       setApiRelations(apiRel);
     }
     catch(err){
@@ -47,7 +48,7 @@ const Apis = () => {
 
   // Get api metrics and setApiMetrics
   // setSelectedApi to the first api in the metrics object
-  const getApiMetrics = async (signal:any) => {
+  const getApiMetrics = async (signal:AbortSignal) => {
     let res;
     try {
       res = await fetch('/dashboard/apiMetrics', {
@@ -104,36 +105,44 @@ const Apis = () => {
 
   // Get API names and create and array of button elements
   const getApiNames = () => {
-    return Object.keys(apiMetrics as any).map((el:any) => {
-      console.log("getApiNames", el)
-      const currDivId = uuidv4();
+    return Object.keys(apiMetrics as any).map((el:string) => {
       return (
-        <button 
-          key={currDivId}
-          id={currDivId}
-          value={el}
-          style={{ fontWeight: selectedApi === el ? 'bold' : 'normal' }} 
-          onClick={handleSelectedApi}
-        >
-          {el}
+        <li key={uuidv4()}>
+          <button
+            value={el}
+            className={selectedApi === el ? 'active' : ''}
+            onClick={handleSelectedApi}
+          >
+            {el}
           </button>
+        </li>
       )
     })
   };
 
   return (
-    <div>
-      Apis
-      <div style={{display:'flex'}}>
-        <div style={{display:'flex', flexDirection:'column', flexGrow:'1'}}>
-          {apiMetrics ? getApiNames() : 'fetching apis'}
-        </div>
-        <div style={{display:'flex', flexDirection:'column', gap: '1rem', flexGrow:'3'}}> 
-          <div>
-            <button value={'metrics'} onClick={toggleDisplay}>Metrics</button>
-            <button value={'relations'} onClick={toggleDisplay}>Relations</button>
+    <div className='w-full'>
+      <div className='flex flex-row'>
+        <ul className='menu bg-base-100 grow-0 w-56 p-2 rounded-box'>
+          <li key={'menu-title'} className='menu-title'>
+            <span className='text-lg'>API list</span>
+          </li>
+          {apiMetrics ? getApiNames() : ''}
+        </ul>
+        <div className='flex flex-col grow justify-center gap-y-6'> 
+          <div className='flex flex-row w-full justify-center gap-x-4'>
+            <button 
+              className={`btn ${showInfo === 'metrics' ? 'btn-active' : ''} btn-ghost`} 
+              value={'metrics'} 
+              onClick={toggleDisplay}
+            >Metrics</button>
+            <button 
+              className={`btn ${showInfo === 'metrics' ? '' : 'btn-active'} btn-ghost`} 
+              value={'relations'} 
+              onClick={toggleDisplay}
+            >Relations</button>
           </div>
-          <div>
+          <div className='flex justify-center'>
             {showInfo === 'metrics' ? <ApiMetrics selectedApi={selectedApi} apiMetrics={apiMetrics}/> 
             : <ApiRelations selectedApi={selectedApi} apiRelations={apiRelations}/>}
           </div>
