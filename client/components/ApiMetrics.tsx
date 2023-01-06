@@ -18,9 +18,9 @@ type Message = 'fetching data...' | 'data not found';
 
 const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
   const [message, setMessage] = useState<Message>('fetching data...');
-
+  
   // If data not found, set message
-  if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
+  if (apiMetrics === undefined) {
     if (message !== 'data not found') {
       setMessage('data not found')
     }
@@ -45,15 +45,13 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
       }
       // Add lineChart element to array
       lineChartElements.push(
-        <div key={metric} className="card w-72 bg-gray-800 shadow-xl">
+        <div key={metric} className="card w-76 bg-gray-800 shadow-xl">
           <div className="card-body">
             <LineChart key={`${metric}-chart`} rawData={timeValArr} label={metric} />
            </div>
         </div> 
       )
-    
     }
-    
     return lineChartElements;
   }
 
