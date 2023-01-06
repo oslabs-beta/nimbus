@@ -42,12 +42,18 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
           <div className='card w-96 bg-gray-800 shadow-xl' key={key}>
             <div className="card-body">
             <h2 className="card-title text-accent text-lg font-bold">{key}</h2>
-            <ul className='list-disc'>
+            <ul className=''>
             {endpoints[key].map((item:any) => {
               return (
-                <li key={item.method}>
-                  <div>Method: {item.method}</div> 
-                  <div>Function: {item.func}</div>
+                <li key={item.method} className='my-2'>
+                    <div className='bg-gray-700 py-2 px-4 rounded-lg border-0'>
+                  <div>
+                    Method: {item.method} 
+                    <svg  className="inline" style={{width:'1.5rem', fill: '#9ca3af', margin: '0rem .5rem'}} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ArrowForwardIcon" aria-label="fontSize large"><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></svg>
+                    Function: {item.func}
+                  </div> 
+                  </div>
+                  
                 </li>
               );
             })}

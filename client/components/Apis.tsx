@@ -11,8 +11,6 @@ const Apis = () => {
   const [selectedApi, setSelectedApi] = useState<string>('');
   const [showInfo, setShowInfo] = useState<View>('metrics');
 
-  console.log("api component rendered")
-
   // Switch between metrics and relations
   const toggleDisplay = (e:any) => {
     if (e.target.value !== showInfo) {
@@ -26,7 +24,7 @@ const Apis = () => {
   }
 
   // Fetch Api relations data and set apiRelation state 
-  const getApiRelations = async (signal:any) => {
+  const getApiRelations = async (signal:AbortSignal) => {
     let res;
     try {
       res = await fetch('/dashboard/apiRelations', {
@@ -50,7 +48,7 @@ const Apis = () => {
 
   // Get api metrics and setApiMetrics
   // setSelectedApi to the first api in the metrics object
-  const getApiMetrics = async (signal:any) => {
+  const getApiMetrics = async (signal:AbortSignal) => {
     let res;
     try {
       res = await fetch('/dashboard/apiMetrics', {
@@ -107,17 +105,15 @@ const Apis = () => {
 
   // Get API names and create and array of button elements
   const getApiNames = () => {
-    return Object.keys(apiMetrics as any).map((el:any) => {
-      const currDivId = uuidv4();
+    return Object.keys(apiMetrics as any).map((el:string) => {
       return (
-        <li><button 
-          key={currDivId}
-          id={currDivId}
-          value={el}
-          className={selectedApi === el ? 'active' : ''}
-          onClick={handleSelectedApi}
-        >
-          {el}
+        <li key={uuidv4()}>
+          <button
+            value={el}
+            className={selectedApi === el ? 'active' : ''}
+            onClick={handleSelectedApi}
+          >
+            {el}
           </button>
         </li>
       )

@@ -38,7 +38,6 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
         ?
             apiRelations.filter((apiRel) => apiRel.apiName === selectedApi)
         : null;
-    console.log("selectedApiRelations", selectedApiRelations);
     // Get endpoints data
     const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
     console.log("endpoints", endpoints);
@@ -47,14 +46,16 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
             return (react_1.default.createElement("div", { className: 'card w-96 bg-gray-800 shadow-xl', key: key },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement("h2", { className: "card-title text-accent text-lg font-bold" }, key),
-                    react_1.default.createElement("ul", { className: 'list-disc' }, endpoints[key].map((item) => {
-                        return (react_1.default.createElement("li", { key: item.method },
-                            react_1.default.createElement("div", null,
-                                "Method: ",
-                                item.method),
-                            react_1.default.createElement("div", null,
-                                "Function: ",
-                                item.func)));
+                    react_1.default.createElement("ul", { className: '' }, endpoints[key].map((item) => {
+                        return (react_1.default.createElement("li", { key: item.method, className: 'my-2' },
+                            react_1.default.createElement("div", { className: 'bg-gray-700 py-2 px-4 rounded-lg border-0' },
+                                react_1.default.createElement("div", null,
+                                    "Method: ",
+                                    item.method,
+                                    react_1.default.createElement("svg", { className: "inline", style: { width: '1.5rem', fill: '#9ca3af', margin: '0rem .5rem' }, focusable: "false", "aria-hidden": "true", viewBox: "0 0 24 24", "data-testid": "ArrowForwardIcon", "aria-label": "fontSize large" },
+                                        react_1.default.createElement("path", { d: "m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" })),
+                                    "Function: ",
+                                    item.func))));
                     })))));
         }))
         :

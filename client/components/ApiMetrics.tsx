@@ -7,12 +7,23 @@ type Props = {
   apiMetrics: any;
 };
 
+// interface SelectedApiMetrics {
+//   Latency: { timestamps: Date[], values: number[] },
+//   Count: { timestamps: Date[], values: number[] },
+//   '5XXError': { timestamps: Date[], values: number[] },
+//   '4XXError': { timestamps: Date[], values: number[] }
+// }
+
+type Message = 'fetching data...' | 'data not found';
+
 const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
-  const [message, setMessage] = useState('fetching data...');
+  const [message, setMessage] = useState<Message>('fetching data...');
 
   // If data not found, set message
   if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
-    setMessage('data not found')
+    if (message !== 'data not found') {
+      setMessage('data not found')
+    }
   }
 
   // Make chart for each metric for the selected API

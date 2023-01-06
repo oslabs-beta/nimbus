@@ -44,7 +44,6 @@ const Apis = () => {
     const [apiMetrics, setApiMetrics] = (0, react_1.useState)(null);
     const [selectedApi, setSelectedApi] = (0, react_1.useState)('');
     const [showInfo, setShowInfo] = (0, react_1.useState)('metrics');
-    console.log("api component rendered");
     // Switch between metrics and relations
     const toggleDisplay = (e) => {
         if (e.target.value !== showInfo) {
@@ -132,9 +131,8 @@ const Apis = () => {
     // Get API names and create and array of button elements
     const getApiNames = () => {
         return Object.keys(apiMetrics).map((el) => {
-            const currDivId = (0, uuid_1.v4)();
-            return (react_1.default.createElement("li", null,
-                react_1.default.createElement("button", { key: currDivId, id: currDivId, value: el, className: selectedApi === el ? 'active' : '', onClick: handleSelectedApi }, el)));
+            return (react_1.default.createElement("li", { key: (0, uuid_1.v4)() },
+                react_1.default.createElement("button", { value: el, className: selectedApi === el ? 'active' : '', onClick: handleSelectedApi }, el)));
         });
     };
     return (react_1.default.createElement("div", { className: 'w-full' },

@@ -32,7 +32,9 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
     if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
-        setMessage('data not found');
+        if (message !== 'data not found') {
+            setMessage('data not found');
+        }
     }
     // Make chart for each metric for the selected API
     const makeCharts = (selectedApiMetrics) => {
