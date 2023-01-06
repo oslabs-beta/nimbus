@@ -13,7 +13,7 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
   const [message, setMessage] = useState<Message>('fetching data...')
 
   // If data not found, set message
-  if (apiRelations === undefined) {
+  if (apiRelations === undefined || selectedApi === '') {
     if (message !== 'data not found') {
       setMessage('data not found');
     }

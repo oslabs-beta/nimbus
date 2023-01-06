@@ -31,8 +31,7 @@ const LineChart_1 = __importDefault(require("./LineChart"));
 const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
-    // if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
-    if (typeof apiMetrics === 'undefined') {
+    if (apiMetrics === undefined) {
         if (message !== 'data not found') {
             setMessage('data not found');
         }

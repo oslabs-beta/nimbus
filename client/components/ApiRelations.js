@@ -27,12 +27,12 @@ const react_1 = __importStar(require("react"));
 const ApiRelations = ({ selectedApi, apiRelations }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
-    if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
+    if (apiRelations === undefined || selectedApi === '') {
         if (message !== 'data not found') {
             setMessage('data not found');
         }
     }
-    // Grab data for the selected API
+    // Grab data for the selected API; if not found set to null
     const selectedApiRelations = apiRelations
         && selectedApi
         ?

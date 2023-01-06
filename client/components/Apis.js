@@ -68,7 +68,8 @@ const Apis = () => {
                 signal
             });
             res = yield res.json();
-            const apiRel = res.apiRelations || ['unable to fetch api relations'];
+            // const apiRel = res.apiRelations || ['unable to fetch api relations'];
+            const apiRel = res.apiRelations || undefined;
             console.log("res.apiRelations", res.apiRelations);
             setApiRelations(apiRel);
         }
@@ -96,9 +97,6 @@ const Apis = () => {
                 metrics = res.allApiMetrics;
                 setSelectedApi(Object.keys(metrics)[0]);
             }
-            // else {
-            //   metrics = '';
-            // }
             setApiMetrics(metrics);
         }
         catch (err) {
