@@ -42,6 +42,11 @@ const Home = () => {
     const [errorsData, setErrors] = (0, react_1.useState)([]);
     const [throttlesData, setThrottles] = (0, react_1.useState)([]);
     const [durationData, setDurations] = (0, react_1.useState)([]);
+    const [cost, setCost] = (0, react_1.useState)(0);
+    const [totalInvocations, setTotalInvocations] = (0, react_1.useState)(0);
+    const [totalErrors, setTotalErrors] = (0, react_1.useState)(0);
+    const [totalThrottles, setTotalThrottles] = (0, react_1.useState)(0);
+    const [averageDuration, setAverageDuration] = (0, react_1.useState)(0);
     const route = '/dashboard/allMetrics';
     // Sends a GET request to the '/dashboard/allMetrics' route
     // Uses ReactHooks in order to change the states based on data received from AWS
@@ -58,21 +63,34 @@ const Home = () => {
             });
             res = yield res.json();
             setInvocations(convertToD3Structure({
-                values: res.metrics.invocations.values,
-                timestamp: res.metrics.invocations.timestamp
+                values: res.allFuncMetrics.invocations.values,
+                timestamp: res.allFuncMetrics.invocations.timestamp
             }));
             setErrors(convertToD3Structure({
-                values: res.metrics.errors.values,
-                timestamp: res.metrics.errors.timestamp
+                values: res.allFuncMetrics.errors.values,
+                timestamp: res.allFuncMetrics.errors.timestamp
             }));
             setThrottles(convertToD3Structure({
-                values: res.metrics.throttles.values,
-                timestamp: res.metrics.throttles.timestamp
+                values: res.allFuncMetrics.throttles.values,
+                timestamp: res.allFuncMetrics.throttles.timestamp
             }));
             setDurations(convertToD3Structure({
-                values: res.metrics.duration.values,
-                timestamp: res.metrics.duration.timestamp
+                values: res.allFuncMetrics.duration.values,
+                timestamp: res.allFuncMetrics.duration.timestamp
             }));
+            setCost(calculateCost(res.cost));
+            if (res.allFuncMetrics.invocations.values.length > 0) {
+                setTotalInvocations(res.allFuncMetrics.invocations.values.reduce((a, b) => a + b, 0));
+            }
+            if (res.allFuncMetrics.errors.values.length > 0) {
+                setTotalErrors(res.allFuncMetrics.errors.values.reduce((a, b) => a + b, 0));
+            }
+            if (res.allFuncMetrics.throttles.values.length > 0) {
+                setTotalThrottles(res.allFuncMetrics.throttles.values.reduce((a, b) => a + b, 0));
+            }
+            if (res.allFuncMetrics.duration.values.length > 0) {
+                setAverageDuration(res.allFuncMetrics.duration.values.reduce((a, b) => a + b, 0) / res.allFuncMetrics.duration.values.length);
+            }
         }
         catch (error) {
             console.log(error);
@@ -88,13 +106,24 @@ const Home = () => {
             };
             output.push(subElement);
         }
-        return output;
+        return output.reverse();
+    };
+    const calculateCost = (costObj) => {
+        let totalCost = 0;
+        for (let i = 0; i < costObj.memory.length; i++) {
+            totalCost += costObj.memory[i] * 0.0009765625 * costObj.duration[i] * 0.001;
+        }
+        return Math.round(totalCost * 100) / 100;
     };
     // Invokes the getMetrics function
     (0, react_1.useEffect)(() => {
         getMetrics();
     }, []);
     return (react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("div", { className: "card bg-gray-800 shadow-xl" },
+                "Cost: $",
+                cost)),
         react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
             react_1.default.createElement("div", { className: "card-body" },
                 react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),

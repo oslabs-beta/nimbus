@@ -19,9 +19,13 @@ router.get('/allMetrics',
     authController.verifyToken, 
     credentialsController.getCredentialsFromDB, 
     metricsController.getAllMetrics, 
+    lambdaController.getFunctions,
+    metricsController.getMetricsByFunc, 
+    metricsController.getCostProps,
     (req: Request, res: Response) => {
         return res.status(200).json({
-            metrics: res.locals.metrics,
+            allFuncMetrics: res.locals.allFuncMetrics,
+            cost: res.locals.cost
         });
 });
 
@@ -32,7 +36,7 @@ router.get('/funcmetrics',
     metricsController.getMetricsByFunc, 
     (req: Request, res: Response) => {
         return res.status(200).json({
-            metrics: res.locals.metrics,
+            eachFuncMetrics: res.locals.eachFuncMetrics,
         });
 });
 
