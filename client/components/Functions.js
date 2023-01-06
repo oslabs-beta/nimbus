@@ -62,11 +62,21 @@ const Functions = () => {
         react_1.default.createElement("table", { className: "table w-[100%] mx-5" },
             react_1.default.createElement("thead", null,
                 react_1.default.createElement("tr", null,
-                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Lambda Function"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Invocations"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Errors"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Throttles"),
-                    react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Duration (ms)"))),
-            react_1.default.createElement("tbody", { className: "w-[100%]" }, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement(Function_1.default, { key: (0, uuid_1.v4)(), funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration })))))));
+<<<<<<< HEAD
+                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Lambda Function"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Invocations"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Errors"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Throttles"),
+                    react_1.default.createElement("th", { className: "bg-primary text-center" }, "Duration (ms)"))),
+            react_1.default.createElement("tbody", null, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement(Function_1.default, { key: (0, uuid_1.v4)(), funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration })))))));
+=======
+                    react_1.default.createElement("th", null, "Lambda Function"),
+                    react_1.default.createElement("th", null, "Invocations"),
+                    react_1.default.createElement("th", null, "Errors"),
+                    react_1.default.createElement("th", null, "Throttles"),
+                    react_1.default.createElement("th", null, "Duration (ms)"))),
+            react_1.default.createElement("tbody", null, Object.entries(funcMetrics).map((funcMetric) => (react_1.default.createElement("tr", { onClick: generateChart },
+                react_1.default.createElement(Function_1.default, { funcName: funcMetric[0], invocations: funcMetric[1].invocations, errors: funcMetric[1].errors, throttles: funcMetric[1].throttles, duration: funcMetric[1].duration }))))))));
+>>>>>>> dev
 };
 exports.default = Functions;
