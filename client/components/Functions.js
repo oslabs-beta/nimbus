@@ -59,7 +59,7 @@ const Functions = () => {
     }, []);
     // Update to generate 4 charts of each metric
     return (react_1.default.createElement("div", { className: "w-[100%]" },
-        react_1.default.createElement("table", { className: "table w-[100%] mx-5" },
+        react_1.default.createElement("table", { className: "table w-[100%]" },
             react_1.default.createElement("thead", null,
                 react_1.default.createElement("tr", null,
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Lambda Function"),
