@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
-
+import React, { useEffect, useState, useRef, Dispatch, SetStateAction } from 'react';
 
 interface ProfileData {
   firstName: String;
@@ -13,15 +12,24 @@ interface PasswordData {
   confirmation: String;
 }
 
-const Settings = () => {
+type SettingsProps = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmation: string;
+  arn: string;
+  region: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+  setFirstName: Dispatch<SetStateAction<string>>;
+  setLastName: Dispatch<SetStateAction<string>>;
+  setPassword: Dispatch<SetStateAction<string>>;
+  setConfirmation: Dispatch<SetStateAction<string>>;
+  setArn: Dispatch<SetStateAction<string>>;
+  setRegion: Dispatch<SetStateAction<string>>;
+}
 
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('AAA');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmation, setConfirmation] = useState('');
-  const [arn, setArn] = useState('');
-  const [region, setRegion] = useState('');
+const Settings = (props: SettingsProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -29,60 +37,32 @@ const Settings = () => {
   const confirmationRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const routes = {
-    userDetails: '/dashboard/userDetails',
     updateProfile: '/dashboard/updateProfile',
     updatePassword: '/dashboard/updatePassword'
   }
-
-  const getUserDetails = async () => {
-    let res;
-    try {
-      res = await fetch(`${routes.userDetails}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'Application/JSON',
-          authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-        },
-      });
-      // convert response to JS object
-      res = await res.json();
-      setEmail(res.email);
-      setFirstName(res.firstName);
-      setLastName(res.lastName);
-      setArn(res.arn);
-      setRegion(res.region);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
   
   const updateFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstName(e.target.value);
+    props.setFirstName(e.target.value);
   };
   
   const updateLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value);
+    props.setLastName(e.target.value);
   };
   
   const updatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    props.setPassword(e.target.value);
   };
   
   const updateConfirmation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmation(e.target.value);
+    props.setConfirmation(e.target.value);
   };
   
   const updateArn = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setArn(e.target.value);
+    props.setArn(e.target.value);
   };
   
   const updateRegion = (e: any) => {
-    setRegion(e.target.value);
+    props.setRegion(e.target.value);
   };
 
   const resetPasswords = () => {
@@ -121,7 +101,7 @@ const Settings = () => {
     'us-gov-west-1',
   ];
 
-  const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
+  const filteredRegionsOptions = regionsOptions.filter(r => r !== props.region);
 
   const handleError = () => {
     setErrorMessage('Some information is missing or incorrect!');
@@ -147,10 +127,10 @@ const Settings = () => {
   const submitProfileForm = (e: any) => {
     e.preventDefault();
     const updatedProfileData: ProfileData = {
-      firstName,
-      lastName,
-      arn,
-      region,
+      firstName: props.firstName,
+      lastName: props.lastName,
+      arn: props.arn,
+      region: props.region,
     };
     fetch(routes.updateProfile, {
       method: 'POST',
@@ -169,10 +149,10 @@ const Settings = () => {
         } else {
           console.log('user info:', result);
           handleSuccess();
-          setFirstName(result.firstName);
-          setLastName(result.lastName);
-          setArn(result.arn);
-          setRegion(result.region);
+          props.setFirstName(result.firstName);
+          props.setLastName(result.lastName);
+          props.setArn(result.arn);
+          props.setRegion(result.region);
         }
       })
   }
@@ -180,8 +160,8 @@ const Settings = () => {
   const submitPasswordForm = (e: any) => {
     e.preventDefault();
     const updatedPasswordData: PasswordData = {
-      password,
-      confirmation
+      password: props.password,
+      confirmation: props.confirmation
     };
     fetch(routes.updatePassword, {
       method: 'POST',
@@ -199,8 +179,8 @@ const Settings = () => {
           highlightInput(result.errors);
         } else if (result.successMessage) {
           handlePasswordSuccess();
-          setPassword('');
-          setConfirmation('');
+          props.setPassword('');
+          props.setConfirmation('');
           resetPasswords();
         }
       })
@@ -219,7 +199,7 @@ const Settings = () => {
                 id='firstName'
                 name='firstName'
                 onChange={updateFirstName}
-                value={firstName}
+                value={props.firstName}
                 className="input input-bordered"
               ></input>
             </div>
@@ -230,18 +210,18 @@ const Settings = () => {
                 id='lastName'
                 name='lastName'
                 onChange={updateLastName}
-                value={lastName}
+                value={props.lastName}
                 className="input input-bordered"
               ></input>
             </div>
             <div className="form-control">
               <label htmlFor='arn' className="label"><span className="label-text">ARN</span></label>
-              <input type='text' id='arn' name='arn' onChange={updateArn} value={arn} className="input input-bordered"></input>
+              <input type='text' id='arn' name='arn' onChange={updateArn} value={props.arn} className="input input-bordered"></input>
             </div>
             <div className='form-control'>
             <label htmlFor='region' className="label"><span className="label-text">Region</span></label>
-              <select onChange={updateRegion} value={region} className="select select-secondary w-full">
-                <option value={region}>{region}</option>
+              <select onChange={updateRegion} value={props.region} className="select select-secondary w-full">
+                <option value={props.region}>{props.region}</option>
                 {filteredRegionsOptions.map((item, idx) => (
                   <option key={`region-${idx}`} value={item}>
                     {item}
@@ -264,7 +244,7 @@ const Settings = () => {
                 type='text'
                 id='email'
                 name='email'
-                value={email}
+                value={props.email}
                 disabled={true}
                 className="input input-bordered disabled:bg-neutral-800 disabled:text-slate-400"
               ></input>
