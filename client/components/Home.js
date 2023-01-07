@@ -134,14 +134,23 @@ const Home = (props) => {
     // The data retrieved from the back end is converted to an array of objects to be compatible with D3
     const convertToD3Structure = (rawData) => {
         const output = [];
-        for (let key in rawData.values) {
+        for (let i = rawData.values.length - 1; i >= 0; i--) {
             const subElement = {
-                y: rawData.values[key],
-                x: new Date(rawData.timestamp[key]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
+                y: rawData.values[i],
+                x: new Date(rawData.timestamp[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
             };
+            while (rawData.timestamp[i] < rawData.timestamp[i + 1]) {
+                const date = new Date(rawData.timestamp[i]);
+                date.setDate(date.getDate() + 1);
+                const subElement = {
+                    y: 0,
+                    x: date.toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
+                };
+                output.push(subElement);
+            }
             output.push(subElement);
         }
-        return output.reverse();
+        return output;
     };
     const calculateCost = (costObj) => {
         let totalCost = 0;
@@ -163,7 +172,7 @@ const Home = (props) => {
                         "Welcome to Your Dashboard, ",
                         props.firstName)))),
         react_1.default.createElement("div", { className: "flex flex-col lg:flex-row w-full mb-8 px-14 h-fit" },
-            react_1.default.createElement("div", { className: 'grid grid-cols-2 gap-2 w-full lg:w-2/5 mr-8 lg:h-72 pb-8 lg:p-0' },
+            react_1.default.createElement("div", { className: 'grid grid-cols-2 gap-2 w-full lg:w-2/5 mr-8 h-72 mb-9 lg:mb-0' },
                 react_1.default.createElement("div", { className: "card bg-secondary shadow-2xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Invocations"),
@@ -190,7 +199,7 @@ const Home = (props) => {
                             cost.toLocaleString(undefined, { maximumFractionDigits: 2 }))))),
             react_1.default.createElement("div", { className: "w-full lg:w-3/5" },
                 react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
-                    react_1.default.createElement("div", { className: "card-body lg:h-72 flex flex-col justify-center" },
+                    react_1.default.createElement("div", { className: "card-body h-72 flex flex-col justify-center" },
                         react_1.default.createElement("p", { className: 'text-sm' }, "Invocations by Functions"),
                         react_1.default.createElement(DonutChart_1.default, { rawData: invocationsByFunc }))))),
         react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },

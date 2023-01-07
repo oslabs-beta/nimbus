@@ -51,14 +51,21 @@ const Function = (props) => {
     }, []);
     const convertToChartJSStructure = (rawData) => {
         const output = [];
-        for (let key in rawData.values) {
+        // for (let key in rawData.values) {
+        //   const subElement: RawData = {
+        //     y: rawData.values[key],
+        //     x: new Date(rawData.timestamp[key]).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"}),
+        //   };
+        //   output.push(subElement);
+        // }
+        for (let i = rawData.values.length - 1; i >= 0; i--) {
             const subElement = {
-                y: rawData.values[key],
-                x: new Date(rawData.timestamp[key]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
+                y: rawData.values[i],
+                x: new Date(rawData.timestamp[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
             };
             output.push(subElement);
         }
-        return output.reverse();
+        return output;
     };
     const generateChart = () => {
         if (!isClicked) {

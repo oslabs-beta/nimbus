@@ -36,14 +36,27 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
       const timeValArr = [];
       const currMetricsObj = selectedApiMetrics[metric];
       // Loop over data points: value and timestamp
-      for (let i in currMetricsObj.values) {
+      for (let i = currMetricsObj.values.length - 1; i >= 0; i--) {
         const subElement: any = {
           y: currMetricsObj.values[i],
           x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"}),
         };
         timeValArr.push(subElement);
+        // Get the date of the current iteration
+        let date = new Date(currMetricsObj.timestamps[i])
+        // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
+        if ((date.getTime() + 1) < (new Date (currMetricsObj.timestamps[i - 1])).getTime()) {
+          date.setDate(date.getDate() + 1)
+          while (date.getTime() < (new Date (currMetricsObj.timestamps[i - 1])).getTime()) {
+            const subElement: any = {
+              y: 0,
+              x: new Date(date).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"})
+            }
+            timeValArr.push(subElement);
+            date.setDate(date.getDate() + 1)
+          }
+        }
       }
-      timeValArr.reverse()
       // Add lineChart element to array
       lineChartElements.push(
         <div key={metric} className="card w-72 bg-gray-800 shadow-xl">

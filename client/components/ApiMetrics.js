@@ -47,7 +47,7 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
             const timeValArr = [];
             const currMetricsObj = selectedApiMetrics[metric];
             // Loop over data points: value and timestamp
-            for (let i in currMetricsObj.values) {
+            for (let i = currMetricsObj.values.length - 1; i >= 0; i--) {
                 const subElement = {
                     y: currMetricsObj.values[i],
                     x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
