@@ -24,7 +24,7 @@ const App = () => {
       <HeadBar toggleTheme={toggleTheme} theme={theme}/>
       <div className='app'>
         {userLoggedIn ? (
-          <UserDashboard />
+          <UserDashboard handleUserLogin={handleUserLogin} toggleTheme={toggleTheme}/>
         ) : (
           <UserAuth handleUserLogin={handleUserLogin} toggleTheme={toggleTheme}/>
         )}

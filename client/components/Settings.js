@@ -35,6 +35,7 @@ const Settings = (props) => {
         updateProfile: '/dashboard/updateProfile',
         updatePassword: '/dashboard/updatePassword'
     };
+    // Update state on change
     const updateFirstName = (e) => {
         props.setFirstName(e.target.value);
     };
@@ -89,6 +90,7 @@ const Settings = (props) => {
         'us-gov-west-1',
     ];
     const filteredRegionsOptions = regionsOptions.filter(r => r !== props.region);
+    // Set error and success messages
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect!');
     };

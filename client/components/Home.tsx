@@ -116,7 +116,7 @@ const Home = (props: HomeProps) => {
 }
 
   // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-  const convertToD3Structure = (rawData: any) => {
+  const convertToChartJSStructure = (rawData: any) => {
     const output = [];
     for (let key in rawData.values) {
       const subElement: RawData = {

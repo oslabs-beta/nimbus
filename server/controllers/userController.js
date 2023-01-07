@@ -25,7 +25,6 @@ const userController = {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                // Find user with input email from database
                 const user = yield userModel_1.default.findOne({ email });
                 // If the user does not exist in the database, invoke global error handler
                 if (!user) {
