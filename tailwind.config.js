@@ -13,11 +13,12 @@ module.exports = {
     themes: [
       {
         myThemeDark: {  
-          "primary": "#6868AC",  
-          "secondary": "#475378", 
-          "accent": "#F471B5",
-          "neutral": "#1D283A",
-          "base-100": "#111827",
+          "primary": "#623cad",  
+          "secondary": "#3a3279", 
+          "accent": "#ae6db0",
+          "neutral": "#232343",
+          "base-100": "#1b1b41",
+          "base-300": "#e4d5ff",
           "info": "#0CA6E9",
           "success": "#2BD4BD",
           "warning": "#F4C152",

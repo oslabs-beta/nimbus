@@ -39,7 +39,7 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
       <div className='flex flex-col gap-y-4'>
         {Object.keys(endpoints).map((key) => {
         return (
-          <div className='card w-96 bg-base-150 shadow-xl' key={key}>
+          <div className='card w-96 bg-neutral shadow-xl' key={key}>
             <div className="card-body">
             <h2 className="card-title text-pink-300 text-lg font-bold">{key}</h2>
             <ul className=''>
