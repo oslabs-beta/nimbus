@@ -24,8 +24,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+// HeadBar component
 const HeadBar = ({ toggleTheme, theme }) => {
     const [checked, setChecked] = (0, react_1.useState)(false);
+    // Toggle theme (light/dark)
     const handleToggle = () => {
         toggleTheme();
         setChecked(prev => !prev);
@@ -34,7 +36,7 @@ const HeadBar = ({ toggleTheme, theme }) => {
         react_1.default.createElement("a", { className: "btn btn-ghost normal-case text-xl" }, "nimbus"),
         react_1.default.createElement("div", { className: "form-control" },
             react_1.default.createElement("label", { className: "label cursor-pointer" },
-                react_1.default.createElement("span", { className: "label-text" }, theme === 'myThemeDark' ? 'Dark' : 'Light'),
+                react_1.default.createElement("span", { className: "label-text" }, theme === 'myThemeDark' ? 'Light' : 'Dark'),
                 react_1.default.createElement("input", { type: "checkbox", className: "toggle ml-2", checked: checked, onClick: handleToggle })))));
 };
 exports.default = HeadBar;

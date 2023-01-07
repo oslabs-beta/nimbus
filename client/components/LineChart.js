@@ -9,6 +9,7 @@ const react_chartjs_2_1 = require("react-chartjs-2");
 const LineChart = (props) => {
     // Registers plugins to be applied on all charts
     chart_js_1.Chart.register(chart_js_1.CategoryScale, chart_js_1.LinearScale, chart_js_1.PointElement, chart_js_1.LineElement, chart_js_1.Title, chart_js_1.Tooltip, chart_js_1.Legend);
+    // Set chart data
     const data = {
         datasets: [
             {

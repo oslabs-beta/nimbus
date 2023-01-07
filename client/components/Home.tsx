@@ -14,6 +14,7 @@ type costProps = {
 
 type d3Data = Array<RawData>;
 
+// Component to display aggregate metrics for all functions
 const Home = () => {
   const [invocationsData, setInvocations] = useState<d3Data>([]);
   const [errorsData, setErrors] = useState<d3Data>([]);
@@ -28,7 +29,7 @@ const Home = () => {
   const route = '/dashboard/allMetrics'
 
   // Sends a GET request to the '/dashboard/allMetrics' route
-  // Uses ReactHooks in order to change the states based on data received from AWS
+  // Uses ReactHooks to change the states based on data received from AWS
   const getMetrics = async () => {
     let res;
     try {
@@ -41,19 +42,20 @@ const Home = () => {
         },
       });
       res = await res.json();
-      setInvocations(convertToD3Structure({
+      // Convert the data to a format that Chart JS can use and set the states to the new data
+      setInvocations(convertToChartJSStructure({
         values: res.allFuncMetrics.invocations.values, 
         timestamp: res.allFuncMetrics.invocations.timestamp
       }));
-      setErrors(convertToD3Structure({
+      setErrors(convertToChartJSStructure({
         values: res.allFuncMetrics.errors.values, 
         timestamp: res.allFuncMetrics.errors.timestamp
       }));
-      setThrottles(convertToD3Structure({
+      setThrottles(convertToChartJSStructure({
         values: res.allFuncMetrics.throttles.values, 
         timestamp: res.allFuncMetrics.throttles.timestamp
       }));
-      setDurations(convertToD3Structure({
+      setDurations(convertToChartJSStructure({
         values: res.allFuncMetrics.duration.values, 
         timestamp: res.allFuncMetrics.duration.timestamp
       }));
@@ -76,8 +78,8 @@ const Home = () => {
     }
   }
   
-  // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-  const convertToD3Structure = (rawData: any) => {
+  // Converts the data from AWS to a format that Chart JS can use
+  const convertToChartJSStructure = (rawData: any) => {
     const output = [];
     for (let key in rawData.values) {
       const subElement: RawData = {
@@ -89,6 +91,7 @@ const Home = () => {
     return output.reverse();
   };
   
+  // Calculates the running cost of all functions
   const calculateCost = (costObj: costProps) => {
     let totalCost = 0;
     for (let i = 0; i < costObj.memory.length; i++) {

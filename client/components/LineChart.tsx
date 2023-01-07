@@ -25,6 +25,7 @@ const LineChart = (props: LineChartProps) => {
     Legend 
   );
 
+  // Set chart data
   const data = {
     datasets: [
       {

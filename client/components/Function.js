@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const LineChart_1 = __importDefault(require("./LineChart"));
+// Component to display a single function's metrics
 const Function = (props) => {
     const [isClicked, setIsClicked] = (0, react_1.useState)(false);
     const [totalInvocations, setTotalInvocations] = (0, react_1.useState)(0);
@@ -49,6 +50,7 @@ const Function = (props) => {
         if (props.duration.values.length > 0)
             setTotalDuration(Math.ceil(props.duration.values.reduce((acc, curr) => acc + curr) / props.duration.values.length));
     }, []);
+    // Create a function to convert our raw data into a format that ChartJS can use
     const convertToChartJSStructure = (rawData) => {
         const output = [];
         for (let key in rawData.values) {
@@ -60,6 +62,7 @@ const Function = (props) => {
         }
         return output.reverse();
     };
+    // Generate the chart when the user clicks on the row
     const generateChart = () => {
         if (!isClicked) {
             setInvocations(convertToChartJSStructure(props.invocations));

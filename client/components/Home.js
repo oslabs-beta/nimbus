@@ -37,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const LineChart_1 = __importDefault(require("./LineChart"));
+// Component to display aggregate metrics for all functions
 const Home = () => {
     const [invocationsData, setInvocations] = (0, react_1.useState)([]);
     const [errorsData, setErrors] = (0, react_1.useState)([]);
@@ -49,7 +50,7 @@ const Home = () => {
     const [averageDuration, setAverageDuration] = (0, react_1.useState)(0);
     const route = '/dashboard/allMetrics';
     // Sends a GET request to the '/dashboard/allMetrics' route
-    // Uses ReactHooks in order to change the states based on data received from AWS
+    // Uses ReactHooks to change the states based on data received from AWS
     const getMetrics = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -62,19 +63,20 @@ const Home = () => {
                 },
             });
             res = yield res.json();
-            setInvocations(convertToD3Structure({
+            // Convert the data to a format that Chart JS can use and set the states to the new data
+            setInvocations(convertToChartJSStructure({
                 values: res.allFuncMetrics.invocations.values,
                 timestamp: res.allFuncMetrics.invocations.timestamp
             }));
-            setErrors(convertToD3Structure({
+            setErrors(convertToChartJSStructure({
                 values: res.allFuncMetrics.errors.values,
                 timestamp: res.allFuncMetrics.errors.timestamp
             }));
-            setThrottles(convertToD3Structure({
+            setThrottles(convertToChartJSStructure({
                 values: res.allFuncMetrics.throttles.values,
                 timestamp: res.allFuncMetrics.throttles.timestamp
             }));
-            setDurations(convertToD3Structure({
+            setDurations(convertToChartJSStructure({
                 values: res.allFuncMetrics.duration.values,
                 timestamp: res.allFuncMetrics.duration.timestamp
             }));
@@ -96,8 +98,8 @@ const Home = () => {
             console.log(error);
         }
     });
-    // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-    const convertToD3Structure = (rawData) => {
+    // Converts the data from AWS to a format that Chart JS can use
+    const convertToChartJSStructure = (rawData) => {
         const output = [];
         for (let key in rawData.values) {
             const subElement = {
@@ -108,6 +110,7 @@ const Home = () => {
         }
         return output.reverse();
     };
+    // Calculates the running cost of all functions
     const calculateCost = (costObj) => {
         let totalCost = 0;
         for (let i = 0; i < costObj.memory.length; i++) {

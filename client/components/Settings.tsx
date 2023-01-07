@@ -25,15 +25,18 @@ const Settings = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  // Create refs for password and confirmation
   const passwordRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const confirmationRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
+  // Store routes in object
   const routes = {
     userDetails: '/dashboard/userDetails',
     updateProfile: '/dashboard/updateProfile',
     updatePassword: '/dashboard/updatePassword'
   }
 
+  // Get user details
   const getUserDetails = async () => {
     let res;
     try {
@@ -57,10 +60,12 @@ const Settings = () => {
     }
   }
 
+  // Get user details on page load
   useEffect(() => {
     getUserDetails();
   }, []);
   
+  // Update state on change
   const updateFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(e.target.value);
   };
@@ -85,6 +90,7 @@ const Settings = () => {
     setRegion(e.target.value);
   };
 
+  // Reset password fields
   const resetPasswords = () => {
     passwordRef.current.value = "";
     confirmationRef.current.value = "";
@@ -123,6 +129,7 @@ const Settings = () => {
 
   const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
 
+  // Set error and success messages
   const handleError = () => {
     setErrorMessage('Some information is missing or incorrect!');
   };
@@ -135,6 +142,7 @@ const Settings = () => {
     setSuccessMessage('Password updated successfully');
   };
 
+  // Highlight erroneusly filled fields in red
   const highlightInput = (errors: Array<String>): void => {
     errors.forEach((el) => {
       const input = document.querySelector<HTMLElement>(`#${el}`);
@@ -144,6 +152,7 @@ const Settings = () => {
     });
   };
 
+  // Update profile
   const submitProfileForm = (e: any) => {
     e.preventDefault();
     const updatedProfileData: ProfileData = {
@@ -176,7 +185,8 @@ const Settings = () => {
         }
       })
   }
-
+  
+  // Update password
   const submitPasswordForm = (e: any) => {
     e.preventDefault();
     const updatedPasswordData: PasswordData = {

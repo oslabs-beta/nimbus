@@ -5,10 +5,12 @@ interface Props {
     theme: String;
 }
 
+// HeadBar component
 const HeadBar: React.FC<Props> = ({ toggleTheme, theme }: Props) => {
 
     const [checked, setChecked] = useState(false);
 
+    // Toggle theme (light/dark)
     const handleToggle = () => {
         toggleTheme();
         setChecked(prev => !prev);
@@ -20,7 +22,7 @@ const HeadBar: React.FC<Props> = ({ toggleTheme, theme }: Props) => {
             <div className="form-control">
                 
                 <label className="label cursor-pointer">
-                    <span className="label-text">{theme === 'myThemeDark' ? 'Dark' : 'Light'}</span> 
+                    <span className="label-text">{theme === 'myThemeDark' ? 'Light' : 'Dark'}</span> 
                     <input type="checkbox" className="toggle ml-2" checked={checked} onClick={handleToggle} />
                 </label>
             </div>

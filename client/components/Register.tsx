@@ -19,7 +19,6 @@ const Register: React.FC<Props> = ({
   swapAuthView,
   handleUserLogin,
 }: Props) => {
-  // const [username, setUsername] = useState("");
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -63,6 +62,7 @@ const Register: React.FC<Props> = ({
     setErrorMessage('Some information is missing or incorrect');
   };
 
+  // Highlight erroneously filld fields in red
   const highlightInput = (errors: Array<String>): void => {
     errors.forEach((el) => {
       const input = document.querySelector<HTMLElement>(`#${el}`);
@@ -72,7 +72,7 @@ const Register: React.FC<Props> = ({
     });
   };
 
-  // Handle form sumbission
+  // Send user credentials to server and receive access and refresh tokens
   const submitForm = (e: any) => {
     e.preventDefault();
     const userData: UserData = {
@@ -100,12 +100,14 @@ const Register: React.FC<Props> = ({
         } else {
           console.log('user info:', result);
           handleUserLogin();
+          // Save tokens to local storage
           localStorage.setItem('accessToken', result.accessToken);
           localStorage.setItem('refreshToken', result.refreshToken);
         }
       });
   };
 
+  // List of AWS regions
   const regionsOptions = [
     'us-east-2',
     'us-east-1',

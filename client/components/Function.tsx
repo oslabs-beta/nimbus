@@ -21,6 +21,7 @@ type RawData = {
 
 type d3Data = Array<RawData>;
 
+// Component to display a single function's metrics
 const Function = (props: FunctionProps) => {
   const [isClicked, setIsClicked] = useState(false)
 
@@ -43,6 +44,7 @@ const Function = (props: FunctionProps) => {
     if (props.duration.values.length > 0) setTotalDuration(Math.ceil(props.duration.values.reduce((acc: number, curr: number):number => acc + curr)/props.duration.values.length))
   }, [])
 
+  // Create a function to convert our raw data into a format that ChartJS can use
   const convertToChartJSStructure = (rawData: Data) => {
     const output = [];
     for (let key in rawData.values) {
@@ -55,6 +57,7 @@ const Function = (props: FunctionProps) => {
     return output.reverse();
   };
 
+  // Generate the chart when the user clicks on the row
   const generateChart = () => {
     if (!isClicked) {
       setInvocations(convertToChartJSStructure(props.invocations))

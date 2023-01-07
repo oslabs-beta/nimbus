@@ -43,13 +43,16 @@ const Settings = () => {
     const [region, setRegion] = (0, react_1.useState)('');
     const [errorMessage, setErrorMessage] = (0, react_1.useState)('');
     const [successMessage, setSuccessMessage] = (0, react_1.useState)('');
+    // Create refs for password and confirmation
     const passwordRef = (0, react_1.useRef)();
     const confirmationRef = (0, react_1.useRef)();
+    // Store routes in object
     const routes = {
         userDetails: '/dashboard/userDetails',
         updateProfile: '/dashboard/updateProfile',
         updatePassword: '/dashboard/updatePassword'
     };
+    // Get user details
     const getUserDetails = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -73,9 +76,11 @@ const Settings = () => {
             console.log(err);
         }
     });
+    // Get user details on page load
     (0, react_1.useEffect)(() => {
         getUserDetails();
     }, []);
+    // Update state on change
     const updateFirstName = (e) => {
         setFirstName(e.target.value);
     };
@@ -94,6 +99,7 @@ const Settings = () => {
     const updateRegion = (e) => {
         setRegion(e.target.value);
     };
+    // Reset password fields
     const resetPasswords = () => {
         passwordRef.current.value = "";
         confirmationRef.current.value = "";
@@ -129,6 +135,7 @@ const Settings = () => {
         'us-gov-west-1',
     ];
     const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
+    // Set error and success messages
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect!');
     };
@@ -138,6 +145,7 @@ const Settings = () => {
     const handlePasswordSuccess = () => {
         setSuccessMessage('Password updated successfully');
     };
+    // Highlight erroneusly filled fields in red
     const highlightInput = (errors) => {
         errors.forEach((el) => {
             const input = document.querySelector(`#${el}`);
@@ -146,6 +154,7 @@ const Settings = () => {
             }
         });
     };
+    // Update profile
     const submitProfileForm = (e) => {
         e.preventDefault();
         const updatedProfileData = {
@@ -179,6 +188,7 @@ const Settings = () => {
             }
         });
     };
+    // Update password
     const submitPasswordForm = (e) => {
         e.preventDefault();
         const updatedPasswordData = {
