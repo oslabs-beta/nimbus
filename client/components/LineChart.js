@@ -11,6 +11,7 @@ require("chartjs-adapter-moment");
 const LineChart = (props) => {
     // Registers plugins to be applied on all charts
     chart_js_1.Chart.register(chart_js_1.TimeScale, chart_js_1.CategoryScale, chart_js_1.LinearScale, chart_js_1.PointElement, chart_js_1.LineElement, chart_js_1.Title, chart_js_1.Tooltip, chart_js_1.Legend);
+    // Set chart data
     const data = {
         datasets: [
             {
@@ -18,7 +19,7 @@ const LineChart = (props) => {
                 data: props.rawData,
                 fill: false,
                 borderColor: [
-                    "#F471B5",
+                    "#fb9ce5",
                 ],
                 tension: 0.3,
             },

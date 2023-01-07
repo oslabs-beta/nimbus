@@ -26,10 +26,8 @@ const region = process.env.AWS_REGION;
 const client = new STSClient({ region, credentials });
 
 // Establish relationship between Nimbus AWS account and client's account
-// Grab the client's credentials
-// This F(n) is used when grabbing information from Lambda, Gateway, etc
-
 const credentialsController = {
+  // Get credentials for client's account from AWS and store in res.locals
   async getCredentials(req: Request, res: Response, next: NextFunction) {
     console.log('hitting credentials controller');
     console.log(req.body.arn);
@@ -49,15 +47,17 @@ const credentialsController = {
       res.locals.arnValidation = {validated: true};
       console.log(res.locals.credentials);
       return next();
-      console.log(assumedRole);
-    } catch (err) { 
+    } 
+    // If the ARN user input is invalid, send info to front end so that field will be highlighted red
+    catch (err) { 
       console.log(err);
-      // If the ARN user input is invalid, send info to front end so that field will be highlighted red
       res.locals.arnValidation = {validated: false};
       return next();
     }
   },
 
+  // Get credentials for client's account from database and store in res.locals
+  // This function is used when grabbing information from Lambda, Gateway, etc
   async getCredentialsFromDB(req: Request, res: Response, next: NextFunction) {
     console.log('hitting credentials controller');
     const { email } = res.locals;
@@ -79,12 +79,11 @@ const credentialsController = {
       const accessKeyId = assumedRole?.Credentials?.AccessKeyId;
       const secretAccessKey = assumedRole?.Credentials?.SecretAccessKey;
       const sessionToken = assumedRole?.Credentials?.SessionToken;
-      //const expiration = assumedRole?.Credentials?.Expiration;
       res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken };
       console.log(res.locals.credentials);
       return next();
-      console.log(assumedRole);
-    } catch (err) { 
+    } 
+    catch (err) { 
       console.log(err);
       return next({
         log: "Error caught in credentialsController.getCredentialsFromDB middleware function",

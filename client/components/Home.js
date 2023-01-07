@@ -54,7 +54,7 @@ const Home = (props) => {
         funcMetrics: '/dashboard/funcmetrics'
     };
     // Sends a GET request to the '/dashboard/allMetrics' route
-    // Uses ReactHooks in order to change the states based on data received from AWS
+    // Uses ReactHooks to change the states based on data received from AWS
     const getMetrics = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
         try {
@@ -67,19 +67,20 @@ const Home = (props) => {
                 },
             });
             res = yield res.json();
-            setInvocations(convertToD3Structure({
+            // Convert the data to a format that Chart JS can use and set the states to the new data
+            setInvocations(convertToChartJSStructure({
                 values: res.allFuncMetrics.invocations.values,
                 timestamp: res.allFuncMetrics.invocations.timestamp
             }));
-            setErrors(convertToD3Structure({
+            setErrors(convertToChartJSStructure({
                 values: res.allFuncMetrics.errors.values,
                 timestamp: res.allFuncMetrics.errors.timestamp
             }));
-            setThrottles(convertToD3Structure({
+            setThrottles(convertToChartJSStructure({
                 values: res.allFuncMetrics.throttles.values,
                 timestamp: res.allFuncMetrics.throttles.timestamp
             }));
-            setDurations(convertToD3Structure({
+            setDurations(convertToChartJSStructure({
                 values: res.allFuncMetrics.duration.values,
                 timestamp: res.allFuncMetrics.duration.timestamp
             }));
@@ -132,26 +133,32 @@ const Home = (props) => {
         }
     });
     // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-    const convertToD3Structure = (rawData) => {
+    const convertToChartJSStructure = (rawData) => {
         const output = [];
         for (let i = rawData.values.length - 1; i >= 0; i--) {
             const subElement = {
                 y: rawData.values[i],
                 x: new Date(rawData.timestamp[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
             };
-            while (rawData.timestamp[i] < rawData.timestamp[i + 1]) {
-                const date = new Date(rawData.timestamp[i]);
-                date.setDate(date.getDate() + 1);
-                const subElement = {
-                    y: 0,
-                    x: date.toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
-                };
-                output.push(subElement);
-            }
             output.push(subElement);
+            // Get the date of the current iteration
+            let date = new Date(rawData.timestamp[i]);
+            // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
+            if ((date.getTime() + 1) < (new Date(rawData.timestamp[i - 1])).getTime()) {
+                date.setDate(date.getDate() + 1);
+                while (date.getTime() < (new Date(rawData.timestamp[i - 1])).getTime()) {
+                    const subElement = {
+                        y: 0,
+                        x: new Date(date).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
+                    };
+                    output.push(subElement);
+                    date.setDate(date.getDate() + 1);
+                }
+            }
         }
         return output;
     };
+    // Calculates the running cost of all functions
     const calculateCost = (costObj) => {
         let totalCost = 0;
         for (let i = 0; i < costObj.memory.length; i++) {
@@ -166,53 +173,53 @@ const Home = (props) => {
     }, []);
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("div", { className: "w-full px-14 pb-8" },
-            react_1.default.createElement("div", { className: "card shadow-2xl w-full bg-gradient-to-r from-primary via-secondary to-accent" },
+            react_1.default.createElement("div", { className: "card shadow-xl w-full bg-gradient-to-r from-primary via-secondary to-accent text-base-300" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement("p", { className: "text-3xl" },
                         "Welcome to Your Dashboard, ",
                         props.firstName)))),
         react_1.default.createElement("div", { className: "flex flex-col lg:flex-row w-full mb-8 px-14 h-fit" },
             react_1.default.createElement("div", { className: 'grid grid-cols-2 gap-2 w-full lg:w-2/5 mr-8 h-72 mb-9 lg:mb-0' },
-                react_1.default.createElement("div", { className: "card bg-secondary shadow-2xl" },
+                react_1.default.createElement("div", { className: "card bg-secondary shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Invocations"),
-                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' }, totalInvocations.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
-                react_1.default.createElement("div", { className: "card bg-secondary shadow-xl" },
+                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-300 mb-2' }, totalInvocations.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
+                react_1.default.createElement("div", { className: "card bg-neutral shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Errors"),
-                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' }, totalErrors.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
-                react_1.default.createElement("div", { className: "card bg-secondary shadow-xl" },
+                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-300 mb-2' }, totalErrors.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
+                react_1.default.createElement("div", { className: "card bg-neutral shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Total Throttles"),
-                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' }, totalThrottles.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
-                react_1.default.createElement("div", { className: "card bg-secondary shadow-xl" },
+                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-300 mb-2' }, totalThrottles.toLocaleString(undefined, { maximumFractionDigits: 2 })))),
+                react_1.default.createElement("div", { className: "card bg-neutral shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Average Duration"),
-                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' },
+                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-300 mb-2' },
                             averageDuration.toLocaleString(undefined, { maximumFractionDigits: 2 }),
                             react_1.default.createElement("span", { className: 'text-sm' }, "ms")))),
                 react_1.default.createElement("div", { className: "col-span-2 card bg-accent shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Cost"),
-                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-100 mb-2' },
+                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-300 mb-2 pb-2' },
                             "$",
                             cost.toLocaleString(undefined, { maximumFractionDigits: 2 }))))),
             react_1.default.createElement("div", { className: "w-full lg:w-3/5" },
-                react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+                react_1.default.createElement("div", { className: "card w-full bg-neutral shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body h-72 flex flex-col justify-center" },
                         react_1.default.createElement("p", { className: 'text-sm' }, "Invocations by Functions"),
                         react_1.default.createElement(DonutChart_1.default, { rawData: invocationsByFunc }))))),
         react_1.default.createElement("div", { className: 'grid grid-cols-1 grid-rows-4 lg:grid-cols-2 lg:grid-rows-2 w-full gap-8 px-14' },
-            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card w-full bg-neutral shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { rawData: invocationsData, label: 'Invocations' }))),
-            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card w-full bg-neutral shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { rawData: errorsData, label: 'Errors' }))),
-            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card w-full bg-neutral shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { rawData: throttlesData, label: 'Throttles' }))),
-            react_1.default.createElement("div", { className: "card w-full bg-gray-800 shadow-xl" },
+            react_1.default.createElement("div", { className: "card w-full bg-neutral shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { rawData: durationData, label: 'Duration' }))))));
 };

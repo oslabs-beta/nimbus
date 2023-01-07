@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_cloudwatch_1 = require("@aws-sdk/client-cloudwatch");
 const client_lambda_1 = require("@aws-sdk/client-lambda");
 require('dotenv').config();
-// Grab the Invocation, Error, Duration, and Throttle metrics for all functions
 const metricsController = {
+    // Grab the Invocation, Error, Duration, and Throttle metrics for all functions
     getAllMetrics(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -22,6 +22,7 @@ const metricsController = {
                     region: res.locals.region,
                     credentials: res.locals.credentials
                 });
+                // Specify parameters for each metric
                 const metricMemoryData = {
                     Id: "m1",
                     MetricStat: {
@@ -82,6 +83,7 @@ const metricsController = {
                     },
                     Label: "Total Duration of Lambda Functions"
                 };
+                // Create input for GetMetricDataCommand
                 const input = {
                     "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
                     "EndTime": new Date(),
@@ -126,13 +128,13 @@ const metricsController = {
     getMetricsByFunc(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // Initiate client with credentials
+                // Start a new CloudWatchClient instance
                 const client = new client_cloudwatch_1.CloudWatchClient({
                     region: res.locals.region,
                     credentials: res.locals.credentials
                 });
                 const metricData = [];
-                // Create metric data input for each lambda function
+                // functions from lamda controller 
                 res.locals.functions.forEach((functionName, i) => {
                     const metricInvocationData = {
                         Id: `i${i}`,
@@ -221,30 +223,30 @@ const metricsController = {
                 const response = yield client.send(command);
                 // Create a metrics object to store the values and timestamps of specific metric
                 if (response.MetricDataResults) {
+                    // Parse data into an object where keys are function names and values are the metrics for each function
                     const parseData = (arr) => {
                         const allFuncMetrics = {};
                         // loop over elements in arr in chunks of 4
                         for (let i = 0; i < arr.length; i += 4) {
-                            // Grab function name
+                            // get function name
                             const funcName = arr[i].Label.split(' ')[0];
-                            // declare func object
                             const metricsByFunc = {};
-                            // Loop over each metric
+                            // populate allMetricsObj
+                            // loop over number of metrics
                             for (let j = 0; j < 4; j++) {
                                 const metricName = arr[i + j].Label.split(' ')[2];
-                                // Store values and timestamp
+                                // declare func object
                                 const singleMetric = {
                                     values: arr[i + j].Values,
                                     timestamp: arr[i + j].Timestamps
                                 };
-                                // add metric name and stats to obj
                                 metricsByFunc[metricName] = singleMetric;
                             }
-                            // add func name and metrics to obj
                             allFuncMetrics[funcName] = metricsByFunc;
                         }
                         return allFuncMetrics;
                     };
+                    // metrics data for the functions page
                     res.locals.eachFuncMetrics = parseData(response.MetricDataResults);
                 }
                 return next();
@@ -262,6 +264,7 @@ const metricsController = {
     getCostProps(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                // Start a new LambdaClient instance
                 const client = new client_lambda_1.LambdaClient({
                     region: res.locals.region,
                     credentials: res.locals.credentials
@@ -289,6 +292,7 @@ const metricsController = {
                         }
                     }
                 }
+                // Store cost related arrays in res.locals
                 res.locals.cost = {
                     memory,
                     invocations,
@@ -306,4 +310,5 @@ const metricsController = {
         });
     }
 };
+// Change to export default syntaix
 exports.default = metricsController;

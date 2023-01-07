@@ -13,7 +13,7 @@ import apiMetricsController from '../controllers/aws/apiMetricsController'
 // All routes verify JWT Token to get email
     // Email is used to query the database for ARN
     // ARN is used to get credentials from client's AWS account
-    // Credentials used to grab matrics
+    // Credentials used to grab metrics
 
 router.get('/allMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, metricsController.getAllMetrics, lambdaController.getFunctions, metricsController.getMetricsByFunc, metricsController.getCostProps, (req: Request, res: Response) => {
     return res.status(200).json({
@@ -73,11 +73,17 @@ router.get('/apiList', authController.verifyToken, credentialsController.getCred
     });
 });
 
-router.get('/apiMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, apiMetricsController.getAPIMetrics, (req: Request, res: Response) => {
-    return res.status(200).json({
-        allApiMetrics: res.locals.allApiMetrics
-    });
-});
+// // body: period
+// router.get('/apiMetrics', 
+//     authController.verifyToken, 
+//     credentialsController.getCredentialsFromDB, 
+//     apiController.getAPIList, 
+//     apiMetricsController.getAPIMetrics, 
+//     (req: Request, res: Response) => {
+//         return res.status(200).json({
+//             allApiMetrics: res.locals.allApiMetrics
+//         });
+// });
 
 //Handles GET/POST requests to the Settings Tab
 router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {

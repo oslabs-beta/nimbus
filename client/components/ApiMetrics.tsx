@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import LineChart from "./LineChart";
 
 type Props = {
@@ -7,34 +6,37 @@ type Props = {
   apiMetrics: any;
 };
 
-// interface SelectedApiMetrics {
-//   Latency: { timestamps: Date[], values: number[] },
-//   Count: { timestamps: Date[], values: number[] },
-//   '5XXError': { timestamps: Date[], values: number[] },
-//   '4XXError': { timestamps: Date[], values: number[] }
-// }
+interface SelectedApiMetrics {
+  Latency: { timestamps: Date[], values: number[] },
+  Count: { timestamps: Date[], values: number[] },
+  '5XXError': { timestamps: Date[], values: number[] },
+  '4XXError': { timestamps: Date[], values: number[] }
+}
+
+type Metric = 'Latency' | 'Count' | '5XXError' | '4XXError';
 
 type Message = 'fetching data...' | 'data not found';
 
+// Display the metrics for the selected API
 const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
   const [message, setMessage] = useState<Message>('fetching data...');
-
+  
   // If data not found, set message
-  if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
+  if (apiMetrics === undefined) {
     if (message !== 'data not found') {
       setMessage('data not found')
     }
   }
 
   // Make chart for each metric for the selected API
-  const makeCharts = (selectedApiMetrics: any) => {
+  const makeCharts = (selectedApiMetrics: SelectedApiMetrics) => {
     if (!selectedApiMetrics) return;
     // Declare array to store the LineChart elements
     const lineChartElements = [];
     // Loop over each metric 
     for (let metric in selectedApiMetrics) {
       const timeValArr = [];
-      const currMetricsObj = selectedApiMetrics[metric];
+      const currMetricsObj = selectedApiMetrics[metric as Metric];
       // Loop over data points: value and timestamp
       for (let i = currMetricsObj.values.length - 1; i >= 0; i--) {
         const subElement: any = {
@@ -59,15 +61,13 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
       }
       // Add lineChart element to array
       lineChartElements.push(
-        <div key={metric} className="card w-72 bg-gray-800 shadow-xl">
+        <div key={metric} className="card w-72 bg-neutral shadow-xl">
           <div className="card-body">
             <LineChart key={`${metric}-chart`} rawData={timeValArr} label={metric} />
            </div>
         </div> 
       )
-    
     }
-    
     return lineChartElements;
   }
 
@@ -83,7 +83,6 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
 
   return (
     <div>
-      {/* <div>Apis Metrics</div>  */}
       <div className='flex justify-center flex-wrap gap-3'>
         {chartElements ? chartElements : message}
       </div>

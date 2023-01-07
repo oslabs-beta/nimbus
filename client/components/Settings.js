@@ -27,12 +27,15 @@ const react_1 = __importStar(require("react"));
 const Settings = (props) => {
     const [errorMessage, setErrorMessage] = (0, react_1.useState)('');
     const [successMessage, setSuccessMessage] = (0, react_1.useState)('');
+    // Create refs for password and confirmation
     const passwordRef = (0, react_1.useRef)();
     const confirmationRef = (0, react_1.useRef)();
+    // Store routes in object
     const routes = {
         updateProfile: '/dashboard/updateProfile',
         updatePassword: '/dashboard/updatePassword'
     };
+    // Update state on change
     const updateFirstName = (e) => {
         props.setFirstName(e.target.value);
     };
@@ -51,6 +54,7 @@ const Settings = (props) => {
     const updateRegion = (e) => {
         props.setRegion(e.target.value);
     };
+    // Reset password fields
     const resetPasswords = () => {
         passwordRef.current.value = "";
         confirmationRef.current.value = "";
@@ -86,6 +90,7 @@ const Settings = (props) => {
         'us-gov-west-1',
     ];
     const filteredRegionsOptions = regionsOptions.filter(r => r !== props.region);
+    // Set error and success messages
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect!');
     };
@@ -95,6 +100,7 @@ const Settings = (props) => {
     const handlePasswordSuccess = () => {
         setSuccessMessage('Password updated successfully');
     };
+    // Highlight erroneusly filled fields in red
     const highlightInput = (errors) => {
         errors.forEach((el) => {
             const input = document.querySelector(`#${el}`);
@@ -103,6 +109,7 @@ const Settings = (props) => {
             }
         });
     };
+    // Update profile
     const submitProfileForm = (e) => {
         e.preventDefault();
         const updatedProfileData = {
@@ -136,6 +143,7 @@ const Settings = (props) => {
             }
         });
     };
+    // Update password
     const submitPasswordForm = (e) => {
         e.preventDefault();
         const updatedPasswordData = {
@@ -168,7 +176,7 @@ const Settings = (props) => {
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("div", { className: 'flex flex-col lg:flex-row w-full mb-24' },
             react_1.default.createElement("div", { className: "lg:basis-1/2 lg:pl-20 lg:pr-8 px-20 mb-8" },
-                react_1.default.createElement("h3", { className: "text-xl text-secondary text-center font-bold" }, "Profile"),
+                react_1.default.createElement("h3", { className: "text-xl text-base-300 text-center font-bold" }, "Profile"),
                 react_1.default.createElement("form", { onSubmit: submitProfileForm },
                     react_1.default.createElement("div", { className: "form-control" },
                         react_1.default.createElement("label", { htmlFor: 'firstName', className: "label" },
@@ -191,7 +199,7 @@ const Settings = (props) => {
                     react_1.default.createElement("div", { className: "form-control" },
                         react_1.default.createElement("input", { type: 'submit', value: 'Save', className: "btn btn-primary mt-4" })))),
             react_1.default.createElement("div", { className: "lg:basis-1/2 lg:pl-8 lg:pr-20 px-20" },
-                react_1.default.createElement("h3", { className: "text-xl text-secondary text-center font-bold" }, "Login Details"),
+                react_1.default.createElement("h3", { className: "text-xl text-base-300 text-center font-bold" }, "Login Details"),
                 react_1.default.createElement("form", { onSubmit: submitPasswordForm },
                     react_1.default.createElement("div", { className: 'form-control' },
                         react_1.default.createElement("label", { htmlFor: 'email', className: "label" },

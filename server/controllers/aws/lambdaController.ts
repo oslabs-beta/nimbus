@@ -3,14 +3,18 @@ import { Request, Response, NextFunction } from "express";
 
 import dotenv from 'dotenv';
 dotenv.config();
-//req: Request, res: Response, next: NextFunction
+
+// Controller for the Lambda functions
 const lambdaController = {
+    // Get list of Lambda functions and store in res.locals.functions
     async getFunctions(req: Request, res: Response, next: NextFunction) {
+        // Create new LambdaClient
         const lambdaClient = new LambdaClient({
             region: res.locals.region, 
             credentials: res.locals.credentials
         });
-
+        
+        // Create new ListFunctionsCommand
         const getFunctionsCommand = new ListFunctionsCommand({});
 
         try {

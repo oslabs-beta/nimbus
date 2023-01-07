@@ -28,6 +28,7 @@ const LineChart = (props: LineChartProps) => {
     Legend 
   );
 
+  // Set chart data
   const data = {
     datasets: [
       {
@@ -35,7 +36,7 @@ const LineChart = (props: LineChartProps) => {
         data: props.rawData,
         fill: false,
         borderColor: [
-          "#F471B5",
+          "#fb9ce5",
         ],
         tension: 0.3,
       },

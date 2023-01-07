@@ -5,8 +5,8 @@ interface Props {
   handleUserLogin: () => void
 }
 
+// Login component
 const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
-  // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,7 +15,6 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
   const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
-
   const updatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
@@ -25,6 +24,7 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
     setErrorMessage(err)
   }
 
+  // Send user credentials to server and receive access and refresh tokens
   const submitForm = (e:any) => {
     e.preventDefault();
     const credentials = {
@@ -46,6 +46,7 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
       else {
         console.log('user info:', result);
         handleUserLogin();
+        // Save tokens to local storage
         localStorage.setItem("accessToken", result.accessToken)
         localStorage.setItem("refreshToken", result.refreshToken)
       }

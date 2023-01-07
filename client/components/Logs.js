@@ -43,12 +43,13 @@ const Logs = () => {
         functions: '/dashboard/functions',
         logs: '/dashboard/filteredLogs'
     };
-    // Change options
+    // Change period
     const changePeriod = (e) => {
         if (e.target.value !== period) {
             setPeriod(e.target.value);
         }
     };
+    // Change search keyword
     const changeSearch = (e) => {
         if (e.target.value === 'allLogs') {
             setSearch('');
@@ -129,7 +130,9 @@ const Logs = () => {
             getLogs();
         }
     }, [selectedFunc, period, search]);
+    // Map logs to divs
     const logsList = logs.map((log, i) => react_1.default.createElement("div", { key: `log-${i}`, className: 'logs-log-event' }, log));
+    // Map functions to buttons
     const functionsList = functions.map((func, i) => react_1.default.createElement("button", { key: `func-${i}`, onClick: changeSelectedFunc, value: func, className: 'logs-function-name' }, func));
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("div", null, "Logs"),

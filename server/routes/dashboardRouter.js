@@ -16,7 +16,7 @@ const apiMetricsController_1 = __importDefault(require("../controllers/aws/apiMe
 // All routes verify JWT Token to get email
 // Email is used to query the database for ARN
 // ARN is used to get credentials from client's AWS account
-// Credentials used to grab matrics
+// Credentials used to grab metrics
 router.get('/allMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, metricsController_1.default.getAllMetrics, lambdaController_1.default.getFunctions, metricsController_1.default.getMetricsByFunc, metricsController_1.default.getCostProps, (req, res) => {
     return res.status(200).json({
         allFuncMetrics: res.locals.allFuncMetrics,
@@ -65,11 +65,17 @@ router.get('/apiList', authController_1.default.verifyToken, credentialsControll
         apiList: res.locals.apiList
     });
 });
-router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
-    return res.status(200).json({
-        allApiMetrics: res.locals.allApiMetrics
-    });
-});
+// // body: period
+// router.get('/apiMetrics', 
+//     authController.verifyToken, 
+//     credentialsController.getCredentialsFromDB, 
+//     apiController.getAPIList, 
+//     apiMetricsController.getAPIMetrics, 
+//     (req: Request, res: Response) => {
+//         return res.status(200).json({
+//             allApiMetrics: res.locals.allApiMetrics
+//         });
+// });
 //Handles GET/POST requests to the Settings Tab
 router.get('/userDetails', authController_1.default.verifyToken, userController_1.default.getUser, (req, res) => {
     return res.status(200).json(res.locals.user);

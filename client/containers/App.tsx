@@ -5,6 +5,7 @@ import UserAuth from './UserAuth';
 import UserDashboard from './UserDashboard';
 import HeadBar from '../components/HeadBar'
 
+// App (root) component
 const App = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [theme, setTheme] = React.useState('myThemeDark');
@@ -16,7 +17,8 @@ const App = () => {
   const toggleTheme = () => {
     setTheme(theme === 'myThemeDark' ? 'myThemeLight' : 'myThemeDark');
   };
-
+  
+  // If user is logged in, render UserDashboard component, otherwise render UserAuth component
   return (
     <Theme dataTheme={theme}>
       <HeadBar toggleTheme={toggleTheme} theme={theme}/>

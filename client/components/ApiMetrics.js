@@ -28,10 +28,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const LineChart_1 = __importDefault(require("./LineChart"));
+// Display the metrics for the selected API
 const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
-    if (Array.isArray(apiMetrics) && typeof apiMetrics[0] === 'string') {
+    if (apiMetrics === undefined) {
         if (message !== 'data not found') {
             setMessage('data not found');
         }
@@ -53,9 +54,23 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
                     x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
                 };
                 timeValArr.push(subElement);
+                // Get the date of the current iteration
+                let date = new Date(currMetricsObj.timestamps[i]);
+                // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
+                if ((date.getTime() + 1) < (new Date(currMetricsObj.timestamps[i - 1])).getTime()) {
+                    date.setDate(date.getDate() + 1);
+                    while (date.getTime() < (new Date(currMetricsObj.timestamps[i - 1])).getTime()) {
+                        const subElement = {
+                            y: 0,
+                            x: new Date(date).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
+                        };
+                        timeValArr.push(subElement);
+                        date.setDate(date.getDate() + 1);
+                    }
+                }
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-gray-800 shadow-xl" },
+            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-neutral shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { key: `${metric}-chart`, rawData: timeValArr, label: metric }))));
         }

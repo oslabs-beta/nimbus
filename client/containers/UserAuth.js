@@ -29,11 +29,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Login_js_1 = __importDefault(require("../components/Login.js"));
 const Register_js_1 = __importDefault(require("../components/Register.js"));
+// UserAuth component, displays login or register component depending on state
 const UserAuth = ({ handleUserLogin, toggleTheme }) => {
     const [showLogin, setShowLogin] = (0, react_1.useState)(true);
+    // Swap between login and register views
     const swapAuthView = () => {
         setShowLogin((showLogin) => !showLogin);
     };
-    return (react_1.default.createElement("div", { className: "user-auth hero min-h-screen bg-base-200" }, showLogin === true ? react_1.default.createElement(Login_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView }) : react_1.default.createElement(Register_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView })));
+    return (react_1.default.createElement("div", { className: "user-auth hero min-h-screen bg-base-150" }, showLogin === true ? react_1.default.createElement(Login_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView }) : react_1.default.createElement(Register_js_1.default, { handleUserLogin: handleUserLogin, swapAuthView: swapAuthView })));
 };
 exports.default = UserAuth;
