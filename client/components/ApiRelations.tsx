@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { getAutomaticTypeDirectiveNames } from 'typescript';
-import { v4 as uuidv4 } from 'uuid';
+
+type Method = {
+  func: string,
+  method: string,
+}
 
 type Props = {
   selectedApi: string
-  apiRelations: any;
+  apiRelations: Array<{apiName: string, endpoints: {[key: string]: Method[]}}> | null | undefined;
 };
 
 type Message = 'fetching data...' | 'data not found';
 
+// Display the relations for the selected API: routes, methods, and functions.
 const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => {
   const [message, setMessage] = useState<Message>('fetching data...')
 
@@ -32,9 +36,9 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
   
   console.log("endpoints", endpoints)
  
+  // If endpoints is truthy, render api relations, else render message
   return (
     <div>
-      {/* {if endpoints is truthy, render api relations, else render message} */}
       {endpoints ? 
       <div className='flex flex-col gap-y-4'>
         {Object.keys(endpoints).map((key) => {
@@ -43,14 +47,14 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
             <div className="card-body">
             <h2 className="card-title text-accent text-lg font-bold">{key}</h2>
             <ul className=''>
-            {endpoints[key].map((item:any) => {
+            {(endpoints)[key].map((method:Method) => {
               return (
-                <li key={item.method} className='my-2'>
+                <li key={method.func} className='my-2'>
                     <div className='bg-gray-700 py-2 px-4 rounded-lg border-0'>
                   <div>
-                    Method: {item.method} 
+                    Method: {method.method} 
                     <svg  className="inline" style={{width:'1.5rem', fill: '#9ca3af', margin: '0rem .5rem'}} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ArrowForwardIcon" aria-label="fontSize large"><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></svg>
-                    Function: {item.func}
+                    Function: {method.func}
                   </div> 
                   </div>
                   

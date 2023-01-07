@@ -20,14 +20,14 @@ const Logs = () => {
     logs: '/dashboard/filteredLogs'
   }
 
-  // Change options
+  // Change period
   const changePeriod = (e: any) => {
     if (e.target.value !== period) {
       setPeriod(e.target.value);
     }
   };
 
-
+  // Change search keyword
   const changeSearch = (e: any) => {
     if (e.target.value === 'allLogs') {
       setSearch('');

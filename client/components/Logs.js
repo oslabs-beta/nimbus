@@ -43,12 +43,13 @@ const Logs = () => {
         functions: '/dashboard/functions',
         logs: '/dashboard/filteredLogs'
     };
-    // Change options
+    // Change period
     const changePeriod = (e) => {
         if (e.target.value !== period) {
             setPeriod(e.target.value);
         }
     };
+    // Change search keyword
     const changeSearch = (e) => {
         if (e.target.value === 'allLogs') {
             setSearch('');

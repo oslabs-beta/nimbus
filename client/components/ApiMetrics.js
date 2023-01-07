@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const LineChart_1 = __importDefault(require("./LineChart"));
+// Display the metrics for the selected API
 const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
