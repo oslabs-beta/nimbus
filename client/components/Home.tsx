@@ -150,9 +150,8 @@ const Home = (props: HomeProps) => {
         </div>
       </div>
     </div>
-    
     <div className="flex flex-col lg:flex-row w-full mb-8 px-14 h-fit">
-      <div className='grid grid-cols-2 gap-2 w-full lg:w-2/5 mr-8 lg:h-72 pb-8 lg:p-0'>
+      <div className='grid grid-cols-2 gap-2 w-full lg:w-2/5 mr-8 h-72 mb-9 lg:mb-0'>
           <div className="card bg-secondary shadow-2xl">
             <div className="card-body p-2">
               <p className='text-sm ml-1'>Total Invocations</p>
@@ -186,7 +185,7 @@ const Home = (props: HomeProps) => {
       </div>
       <div className="w-full lg:w-3/5">
         <div className="card w-full bg-gray-800 shadow-xl">
-          <div className="card-body lg:h-72 flex flex-col justify-center">
+          <div className="card-body h-72 flex flex-col justify-center">
             <p className='text-sm'>Invocations by Functions</p>
             <DonutChart rawData={invocationsByFunc} />
           </div>
