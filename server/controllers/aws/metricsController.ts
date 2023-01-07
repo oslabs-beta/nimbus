@@ -32,7 +32,7 @@ const metricsController = {
             MetricName: "MemoryUsage",
             Namespace: "AWS/Lambda",
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Average", 
         },
         Label: "Average memory usage of Lambda Functions"
@@ -44,7 +44,7 @@ const metricsController = {
             MetricName: "Invocations",
             Namespace: "AWS/Lambda",
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum", 
         },
         Label: "Total Invocations of Lambda Functions"
@@ -56,7 +56,7 @@ const metricsController = {
             MetricName: "Errors",
             Namespace: "AWS/Lambda"
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum",
         },
         Label: "Total Errors of Lambda Functions"
@@ -68,7 +68,7 @@ const metricsController = {
             MetricName: "Throttles",
             Namespace: "AWS/Lambda"
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum",
         },
         Label: "Total Throttles of Lambda Functions"
@@ -80,7 +80,7 @@ const metricsController = {
             MetricName: "Duration",
             Namespace: "AWS/Lambda"
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum",
         },
         Label: "Total Duration of Lambda Functions"
@@ -153,7 +153,7 @@ const metricsController = {
                 },           
               ],
             },
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum", 
           },
           Label: `${functionName} Total invocations of Lambda Function`
@@ -173,7 +173,7 @@ const metricsController = {
                 },           
               ],
             },   
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum",
           },
           Label: `${functionName} Total errors of Lambda Function`
@@ -193,7 +193,7 @@ const metricsController = {
                 },           
               ],
             },
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum",
           },
           Label: `${functionName} Total throttles of Lambda Function`
@@ -213,7 +213,7 @@ const metricsController = {
                 },           
               ],
             },
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum",
           },
           Label: `${functionName} Total duration of Lambda Function`
