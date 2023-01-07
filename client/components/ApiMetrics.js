@@ -51,12 +51,12 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
             for (let i in currMetricsObj.values) {
                 const subElement = {
                     y: currMetricsObj.values[i],
-                    x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute: '2-digit' }),
+                    x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
                 };
                 timeValArr.push(subElement);
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-76 bg-gray-800 shadow-xl" },
+            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-base-150 shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { key: `${metric}-chart`, rawData: timeValArr, label: metric }))));
         }

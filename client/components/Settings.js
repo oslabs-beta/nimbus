@@ -22,25 +22,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const Settings = () => {
-    const [email, setEmail] = (0, react_1.useState)('');
-    const [firstName, setFirstName] = (0, react_1.useState)('AAA');
-    const [lastName, setLastName] = (0, react_1.useState)('');
-    const [password, setPassword] = (0, react_1.useState)('');
-    const [confirmation, setConfirmation] = (0, react_1.useState)('');
-    const [arn, setArn] = (0, react_1.useState)('');
-    const [region, setRegion] = (0, react_1.useState)('');
+const Settings = (props) => {
     const [errorMessage, setErrorMessage] = (0, react_1.useState)('');
     const [successMessage, setSuccessMessage] = (0, react_1.useState)('');
     // Create refs for password and confirmation
@@ -48,56 +32,26 @@ const Settings = () => {
     const confirmationRef = (0, react_1.useRef)();
     // Store routes in object
     const routes = {
-        userDetails: '/dashboard/userDetails',
         updateProfile: '/dashboard/updateProfile',
         updatePassword: '/dashboard/updatePassword'
     };
-    // Get user details
-    const getUserDetails = () => __awaiter(void 0, void 0, void 0, function* () {
-        let res;
-        try {
-            res = yield fetch(`${routes.userDetails}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'Application/JSON',
-                    authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-                    refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-                },
-            });
-            // convert response to JS object
-            res = yield res.json();
-            setEmail(res.email);
-            setFirstName(res.firstName);
-            setLastName(res.lastName);
-            setArn(res.arn);
-            setRegion(res.region);
-        }
-        catch (err) {
-            console.log(err);
-        }
-    });
-    // Get user details on page load
-    (0, react_1.useEffect)(() => {
-        getUserDetails();
-    }, []);
-    // Update state on change
     const updateFirstName = (e) => {
-        setFirstName(e.target.value);
+        props.setFirstName(e.target.value);
     };
     const updateLastName = (e) => {
-        setLastName(e.target.value);
+        props.setLastName(e.target.value);
     };
     const updatePassword = (e) => {
-        setPassword(e.target.value);
+        props.setPassword(e.target.value);
     };
     const updateConfirmation = (e) => {
-        setConfirmation(e.target.value);
+        props.setConfirmation(e.target.value);
     };
     const updateArn = (e) => {
-        setArn(e.target.value);
+        props.setArn(e.target.value);
     };
     const updateRegion = (e) => {
-        setRegion(e.target.value);
+        props.setRegion(e.target.value);
     };
     // Reset password fields
     const resetPasswords = () => {
@@ -134,8 +88,7 @@ const Settings = () => {
         'us-gov-east-1',
         'us-gov-west-1',
     ];
-    const filteredRegionsOptions = regionsOptions.filter(r => r !== region);
-    // Set error and success messages
+    const filteredRegionsOptions = regionsOptions.filter(r => r !== props.region);
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect!');
     };
@@ -158,10 +111,10 @@ const Settings = () => {
     const submitProfileForm = (e) => {
         e.preventDefault();
         const updatedProfileData = {
-            firstName,
-            lastName,
-            arn,
-            region,
+            firstName: props.firstName,
+            lastName: props.lastName,
+            arn: props.arn,
+            region: props.region,
         };
         fetch(routes.updateProfile, {
             method: 'POST',
@@ -181,10 +134,10 @@ const Settings = () => {
             else {
                 console.log('user info:', result);
                 handleSuccess();
-                setFirstName(result.firstName);
-                setLastName(result.lastName);
-                setArn(result.arn);
-                setRegion(result.region);
+                props.setFirstName(result.firstName);
+                props.setLastName(result.lastName);
+                props.setArn(result.arn);
+                props.setRegion(result.region);
             }
         });
     };
@@ -192,8 +145,8 @@ const Settings = () => {
     const submitPasswordForm = (e) => {
         e.preventDefault();
         const updatedPasswordData = {
-            password,
-            confirmation
+            password: props.password,
+            confirmation: props.confirmation
         };
         fetch(routes.updatePassword, {
             method: 'POST',
@@ -212,8 +165,8 @@ const Settings = () => {
             }
             else if (result.successMessage) {
                 handlePasswordSuccess();
-                setPassword('');
-                setConfirmation('');
+                props.setPassword('');
+                props.setConfirmation('');
                 resetPasswords();
             }
         });
@@ -221,35 +174,35 @@ const Settings = () => {
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("div", { className: 'flex flex-col lg:flex-row w-full mb-24' },
             react_1.default.createElement("div", { className: "lg:basis-1/2 lg:pl-20 lg:pr-8 px-20 mb-8" },
-                react_1.default.createElement("h3", { className: "text-xl text-secondary text-center font-bold" }, "Profile"),
+                react_1.default.createElement("h3", { className: "text-xl text-base-300 text-center font-bold" }, "Profile"),
                 react_1.default.createElement("form", { onSubmit: submitProfileForm },
                     react_1.default.createElement("div", { className: "form-control" },
                         react_1.default.createElement("label", { htmlFor: 'firstName', className: "label" },
                             react_1.default.createElement("span", { className: "label-text" }, "First Name")),
-                        react_1.default.createElement("input", { type: 'text', id: 'firstName', name: 'firstName', onChange: updateFirstName, value: firstName, className: "input input-bordered" })),
+                        react_1.default.createElement("input", { type: 'text', id: 'firstName', name: 'firstName', onChange: updateFirstName, value: props.firstName, className: "input input-bordered" })),
                     react_1.default.createElement("div", { className: "form-control" },
                         react_1.default.createElement("label", { htmlFor: 'lastName', className: "label" },
                             react_1.default.createElement("span", { className: "label-text" }, "Last Name")),
-                        react_1.default.createElement("input", { type: 'text', id: 'lastName', name: 'lastName', onChange: updateLastName, value: lastName, className: "input input-bordered" })),
+                        react_1.default.createElement("input", { type: 'text', id: 'lastName', name: 'lastName', onChange: updateLastName, value: props.lastName, className: "input input-bordered" })),
                     react_1.default.createElement("div", { className: "form-control" },
                         react_1.default.createElement("label", { htmlFor: 'arn', className: "label" },
                             react_1.default.createElement("span", { className: "label-text" }, "ARN")),
-                        react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, value: arn, className: "input input-bordered" })),
+                        react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, value: props.arn, className: "input input-bordered" })),
                     react_1.default.createElement("div", { className: 'form-control' },
                         react_1.default.createElement("label", { htmlFor: 'region', className: "label" },
                             react_1.default.createElement("span", { className: "label-text" }, "Region")),
-                        react_1.default.createElement("select", { onChange: updateRegion, value: region, className: "select select-secondary w-full" },
-                            react_1.default.createElement("option", { value: region }, region),
+                        react_1.default.createElement("select", { onChange: updateRegion, value: props.region, className: "select select-secondary w-full" },
+                            react_1.default.createElement("option", { value: props.region }, props.region),
                             filteredRegionsOptions.map((item, idx) => (react_1.default.createElement("option", { key: `region-${idx}`, value: item }, item))))),
                     react_1.default.createElement("div", { className: "form-control" },
                         react_1.default.createElement("input", { type: 'submit', value: 'Save', className: "btn btn-primary mt-4" })))),
             react_1.default.createElement("div", { className: "lg:basis-1/2 lg:pl-8 lg:pr-20 px-20" },
-                react_1.default.createElement("h3", { className: "text-xl text-secondary text-center font-bold" }, "Login Details"),
+                react_1.default.createElement("h3", { className: "text-xl text-base-300 text-center font-bold" }, "Login Details"),
                 react_1.default.createElement("form", { onSubmit: submitPasswordForm },
                     react_1.default.createElement("div", { className: 'form-control' },
                         react_1.default.createElement("label", { htmlFor: 'email', className: "label" },
                             react_1.default.createElement("span", { className: "label-text" }, "Email")),
-                        react_1.default.createElement("input", { type: 'text', id: 'email', name: 'email', value: email, disabled: true, className: "input input-bordered disabled:bg-neutral-800 disabled:text-slate-400" })),
+                        react_1.default.createElement("input", { type: 'text', id: 'email', name: 'email', value: props.email, disabled: true, className: "input input-bordered disabled:bg-neutral-800 disabled:text-slate-400" })),
                     react_1.default.createElement("div", { className: 'form-control' },
                         react_1.default.createElement("label", { htmlFor: 'password', className: "label" },
                             react_1.default.createElement("span", { className: "label-text" }, "Update Password")),

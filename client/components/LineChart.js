@@ -17,14 +17,12 @@ const LineChart = (props) => {
                 data: props.rawData,
                 fill: false,
                 borderColor: [
-                    "#F471B5",
+                    "#fb9ce5",
                 ],
                 tension: 0.3,
             },
         ]
     };
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h3", null),
-        react_1.default.createElement(react_chartjs_2_1.Line, { data: data })));
+    return (react_1.default.createElement(react_chartjs_2_1.Line, { data: data, options: { responsive: true, maintainAspectRatio: false } }));
 };
 exports.default = LineChart;

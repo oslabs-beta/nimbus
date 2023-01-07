@@ -7,7 +7,7 @@ const Layout = () => {
   const [selectedTab, setSelectedTab] = useState('Home');
 
   return (
-    <ul className='menu bg-gray-800 w-56 rounded-box lg:rounded-none h-fit lg:h-full'>
+    <ul className='menu bg-neutral w-56 rounded-box lg:rounded-none h-fit lg:h-full'>
       <li onClick={() => setSelectedTab('Home')}>
         <Link to='/' className={selectedTab === 'Home' ? 'active' : ''}>Home</Link>
       </li>

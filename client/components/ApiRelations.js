@@ -45,12 +45,12 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
     // If endpoints is truthy, render api relations, else render message
     return (react_1.default.createElement("div", null, endpoints ?
         react_1.default.createElement("div", { className: 'flex flex-col gap-y-4' }, Object.keys(endpoints).map((key) => {
-            return (react_1.default.createElement("div", { className: 'card w-96 bg-gray-800 shadow-xl', key: key },
+            return (react_1.default.createElement("div", { className: 'card w-96 bg-base-150 shadow-xl', key: key },
                 react_1.default.createElement("div", { className: "card-body" },
-                    react_1.default.createElement("h2", { className: "card-title text-accent text-lg font-bold" }, key),
-                    react_1.default.createElement("ul", { className: '' }, (endpoints)[key].map((method) => {
-                        return (react_1.default.createElement("li", { key: method.func, className: 'my-2' },
-                            react_1.default.createElement("div", { className: 'bg-gray-700 py-2 px-4 rounded-lg border-0' },
+                    react_1.default.createElement("h2", { className: "card-title text-pink-300 text-lg font-bold" }, key),
+                    react_1.default.createElement("ul", { className: '' }, endpoints[key].map((item) => {
+                        return (react_1.default.createElement("li", { key: item.method, className: 'my-2' },
+                            react_1.default.createElement("div", { className: 'bg-secondary py-2 px-4 rounded-lg border-0' },
                                 react_1.default.createElement("div", null,
                                     "Method: ",
                                     method.method,

@@ -29,7 +29,7 @@ const react_router_dom_1 = require("react-router-dom");
 // Sidaber component
 const Layout = () => {
     const [selectedTab, setSelectedTab] = (0, react_1.useState)('Home');
-    return (react_1.default.createElement("ul", { className: 'menu bg-gray-800 w-56 rounded-box lg:rounded-none h-fit lg:h-full' },
+    return (react_1.default.createElement("ul", { className: 'menu bg-neutral w-56 rounded-box lg:rounded-none h-fit lg:h-full' },
         react_1.default.createElement("li", { onClick: () => setSelectedTab('Home') },
             react_1.default.createElement(react_router_dom_1.Link, { to: '/', className: selectedTab === 'Home' ? 'active' : '' }, "Home")),
         react_1.default.createElement("li", { onClick: () => setSelectedTab('Functions') },

@@ -1,15 +1,15 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import { ErrorObj } from './types';
 const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
-const { PORT } = process.env
+const { PORT } = process.env;
 
 app.use(express.json());
 const authRouter = require('./routes/authRouter');
 const dashboardRouter = require('./routes/dashboardRouter');
 
 app.use('/', authRouter);
-
 app.use('/dashboard', dashboardRouter);
 
 // Handle all remaining endpoints that are not defined in the server/routers
@@ -17,13 +17,8 @@ app.use('*', (req: Request, res: Response) => {
   return res.status(404).json('Not Found');
 });
 
-// Global error handler
+// Global Error Handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  type ErrorObj = {
-    log: string,
-    status: number,
-    message: {err: string}
-  }
   const defaultErr: ErrorObj = {
     log: "Express error handler caught unknown middleware error",  
     status: 500,

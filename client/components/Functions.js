@@ -59,11 +59,12 @@ const Functions = () => {
     (0, react_1.useEffect)(() => {
         grabFuncsMetrics();
     }, []);
-    // Display table head and each function metrics component
-    return (react_1.default.createElement("div", { className: "w-[100%]" },
-        react_1.default.createElement("table", { className: "table w-[100%]" },
-            react_1.default.createElement("thead", null,
-                react_1.default.createElement("tr", null,
+    // Update to generate 4 charts of each metric
+
+    return (react_1.default.createElement("div", { className: "w-[100%] overflow-auto" },
+        react_1.default.createElement("table", { className: "table w-[100%] mx-6" },
+            react_1.default.createElement("thead", { className: "w-[100%]" },
+                react_1.default.createElement("tr", { className: "w-[100%]" },
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Lambda Function"),
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Invocations"),
                     react_1.default.createElement("th", { className: "bg-primary text-center w-[20%]" }, "Errors"),

@@ -33,7 +33,7 @@ const LineChart = (props: LineChartProps) => {
         data: props.rawData,
         fill: false,
         borderColor: [
-          "#F471B5",
+          "#fb9ce5",
         ],
         tension: 0.3,
       },
@@ -41,10 +41,8 @@ const LineChart = (props: LineChartProps) => {
   };
   
   return (
-        <div> 
-          <h3></h3>
-          <Line data = {data} />
-        </div>
+    <Line data = {data} 
+    options={{responsive: true, maintainAspectRatio: false}}/>
   );
 };
 

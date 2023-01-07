@@ -27,10 +27,10 @@ const Functions = () => {
 
   // Display table head and each function metrics component
   return (
-    <div className="w-[100%]">
-      <table className="table w-[100%]">
-        <thead>
-          <tr>
+    <div className="w-[100%] overflow-auto">
+      <table className="table w-[100%] mx-6">
+        <thead className="w-[100%]">
+          <tr className="w-[100%]">
             <th className="bg-primary text-center w-[20%]">Lambda Function</th>
             <th className="bg-primary text-center w-[20%]">Invocations</th>
             <th className="bg-primary text-center w-[20%]">Errors</th>
