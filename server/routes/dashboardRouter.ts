@@ -13,7 +13,7 @@ import apiMetricsController from '../controllers/aws/apiMetricsController'
 // All routes verify JWT Token to get email
     // Email is used to query the database for ARN
     // ARN is used to get credentials from client's AWS account
-    // Credentials used to grab matrics
+    // Credentials used to grab metrics
 
 router.get('/allMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, metricsController.getAllMetrics, lambdaController.getFunctions, metricsController.getMetricsByFunc, metricsController.getCostProps, (req: Request, res: Response) => {
     return res.status(200).json({
