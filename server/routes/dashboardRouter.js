@@ -28,13 +28,12 @@ router.get('/funcmetrics', authController_1.default.verifyToken, credentialsCont
         eachFuncMetrics: res.locals.eachFuncMetrics,
     });
 });
-router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, 
-// metricsController.getMetricsByFunc, 
-(req, res) => {
+router.get('/functions', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, (req, res) => {
     return res.status(200).json({
         functions: res.locals.functions
     });
 });
+// Handles POST Requests to get Logs for all functions and the ability to filter
 router.post('/allLogs', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, logsController_1.default.getAllLogs, (req, res) => {
     return res.status(200).json({
         logs: res.locals.logs
@@ -45,6 +44,7 @@ router.post('/filteredLogs', authController_1.default.verifyToken, credentialsCo
         filteredLogs: res.locals.filteredLogs
     });
 });
+// Handles GET/POST Requests to grab API Metrics + Relationships
 router.post('/apiRelations', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, lambdaController_1.default.getFunctions, apiController_1.default.getAPIRelations, (req, res) => {
     return res.status(200).json({
         apiRelations: res.locals.apiRelations
@@ -55,7 +55,6 @@ router.get('/apiList', authController_1.default.verifyToken, credentialsControll
         apiList: res.locals.apiList
     });
 });
-// body: period
 router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
     return res.status(200).json({
         allApiMetrics: res.locals.allApiMetrics
@@ -66,13 +65,12 @@ router.get('/apiList', authController_1.default.verifyToken, credentialsControll
         apiList: res.locals.apiList
     });
 });
-// body: period
 router.get('/apiMetrics', authController_1.default.verifyToken, credentialsController_1.default.getCredentialsFromDB, apiController_1.default.getAPIList, apiMetricsController_1.default.getAPIMetrics, (req, res) => {
     return res.status(200).json({
         allApiMetrics: res.locals.allApiMetrics
     });
 });
-//Settings
+//Handles GET/POST requests to the Settings Tab
 router.get('/userDetails', authController_1.default.verifyToken, userController_1.default.getUser, (req, res) => {
     return res.status(200).json(res.locals.user);
 });

@@ -19,12 +19,14 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const userController = {
+    // Middleware for user login
     verifyUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                // find user with input email from database
+                // Find user with input email from database
                 const user = yield userModel_1.default.findOne({ email });
+                // If the user does not exist in the database, invoke global error handler
                 if (!user) {
                     return next({
                         log: "Error caught in userController.verifyUser middleware function",
@@ -32,7 +34,7 @@ const userController = {
                         message: { err: 'User not in database' }
                     });
                 }
-                // if user exists, compare password from client with password in database
+                // If user exists with cooresponding email, compare password from client with password in database
                 const isValid = yield bcrypt.compare(password, user.password);
                 if (!isValid) {
                     return next({
@@ -43,7 +45,7 @@ const userController = {
                 }
                 res.locals.email = email;
                 return next();
-                // all other errors, invoke global error handler
+                // All other errors, invoke global error handler
             }
             catch (err) {
                 return next({
@@ -54,43 +56,41 @@ const userController = {
             }
         });
     },
+    // Middleware for user registration
     createUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, firstName, lastName, password, confirmation, arn, region } = req.body;
             const { arnValidation } = res.locals;
-            console.log(arn, arnValidation);
             // Declare an array to store errors
             const errors = [];
             // Validate email:
             if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email) === false) {
                 errors.push("email");
             }
-            // Check if input fields are empty
+            // Check if user left any input fields empty
+            // Front end will highlight input fields if errors occur
             for (const key in req.body) {
-                if (req.body[key].length === 0) {
+                if (req.body[key].length === 0)
                     errors.push(key);
-                }
             }
+            ;
             // Check if password matches confirmation
-            if (password !== confirmation) {
+            if (password !== confirmation)
                 errors.push("password", "confirmation");
-            }
-            //Check if arn is validated
-            if (!arnValidation.validated) {
+            // Check if arn is validated
+            if (!arnValidation.validated)
                 errors.push("arn");
-            }
-            // Send back errors
+            // Send errors array to the front end if they exist
             if (errors.length > 0) {
-                // res.locals.errors = errors;
                 return next({
                     log: "Error caught in userController.createUser middleware function",
                     status: 500,
                     message: { errMessage: `Error found in user input`, errors: errors }
                 });
             }
+            // If the registration form was successfully filled out, create a new user in the database
             try {
                 const hashedPass = yield bcrypt.hash(password, SALT_WORK_FACTOR);
-                // create a new user in database with hashedPass as password
                 const user = yield userModel_1.default.create({
                     firstName,
                     lastName,
@@ -99,9 +99,9 @@ const userController = {
                     arn,
                     region
                 });
-                console.log(user);
                 res.locals.user = user;
                 return next();
+                // Invoke global error handler if a DB error occurs
             }
             catch (err) {
                 return next({
@@ -112,6 +112,7 @@ const userController = {
             }
         });
     },
+    // Middleware for grabbing user info on Settings tab
     getUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email } = res.locals;
@@ -126,27 +127,24 @@ const userController = {
             return next();
         });
     },
+    // Middleware for updating user settings
     updateUserProfile(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const originalEmail = res.locals.email;
             const { firstName, lastName, arn, region } = req.body;
             const { arnValidation } = res.locals;
-            console.log(arn, arnValidation);
             // Declare an array to store errors
             const errors = [];
             // Check if input fields are empty
             for (const key in req.body) {
-                if (req.body[key].length === 0) {
+                if (req.body[key].length === 0)
                     errors.push(key);
-                }
             }
             //Check if arn is validated
-            if (!arnValidation.validated) {
+            if (!arnValidation.validated)
                 errors.push("arn");
-            }
-            // Send back errors
+            // Send errors array to the front end
             if (errors.length > 0) {
-                // res.locals.errors = errors;
                 return next({
                     log: "Error caught in userController.createUser middleware function",
                     status: 500,
@@ -154,7 +152,7 @@ const userController = {
                 });
             }
             try {
-                // create a new user in database with hashedPass as password
+                // Update user in database with hashedPass as password
                 const updatedUser = yield userModel_1.default.findOneAndUpdate({
                     email: originalEmail
                 }, {
@@ -165,7 +163,6 @@ const userController = {
                 }, {
                     new: true
                 });
-                console.log(updatedUser);
                 res.locals.user = updatedUser;
                 return next();
             }
@@ -196,7 +193,6 @@ const userController = {
             }
             // Send back errors
             if (errors.length > 0) {
-                // res.locals.errors = errors;
                 return next({
                     log: "Error caught in userController.createUser middleware function",
                     status: 500,
