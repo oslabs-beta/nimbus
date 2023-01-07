@@ -69,7 +69,7 @@ const authController: authController = {
               res.locals.email = user.email
             } 
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
         }
       } 
