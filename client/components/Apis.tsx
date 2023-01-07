@@ -121,13 +121,13 @@ const Apis = () => {
   return (
     <div className='w-full'>
       <div className='flex flex-row'>
-        <ul className='menu bg-base-100 grow-0 w-56 p-2 rounded-box'>
+        <ul className='menu mt-4 lg:mt-0 bg-base-100 w-3/12 p-2 rounded-box'>
           <li key={'menu-title'} className='menu-title'>
             <span className='text-lg'>API list</span>
           </li>
           {apiMetrics ? getApiNames() : ''}
         </ul>
-        <div className='flex flex-col grow justify-center gap-y-6'> 
+        <div className='flex flex-col w-9/12 justify-center gap-y-6'> 
           <div className='flex flex-row w-full justify-center gap-x-4'>
             <button 
               className={`btn ${showInfo === 'metrics' ? 'btn-active' : ''} btn-ghost`} 

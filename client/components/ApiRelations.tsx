@@ -50,11 +50,11 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
             {(endpoints)[key].map((method:Method) => {
               return (
                 <li key={method.func} className='my-2'>
-                    <div className='bg-gray-700 py-2 px-4 rounded-lg border-0'>
+                    <div className='bg-secondary py-2 px-4 rounded-lg border-0'>
                   <div>
-                    Method: {method.method} 
-                    <svg  className="inline" style={{width:'1.5rem', fill: '#9ca3af', margin: '0rem .5rem'}} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ArrowForwardIcon" aria-label="fontSize large"><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></svg>
-                    Function: {method.func}
+                    {method.method} 
+                    <svg  className="inline" style={{width:'1.5rem', fill: 'rgb(250 232 255)', margin: '0rem .5rem'}} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ArrowForwardIcon" aria-label="fontSize large"><path d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></svg>
+                    &#x3BB; : {method.func}
                   </div> 
                   </div>
                   

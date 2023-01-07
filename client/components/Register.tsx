@@ -207,7 +207,7 @@ const Register: React.FC<Props> = ({
                     account. Click{' '}
                     <a
                       target='_blank'
-                      href='https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-fo1de99kotoi-us-east-1.s3.amazonaws.com/2022347I7Q-nimbus.yaml&stackName=NimbusStack'
+                      href='https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-htl66jverox0-us-east-1.s3.amazonaws.com/2023-01-03T001457.540Zd6i-nimbus-new.yaml&stackName=Nimbus-Stack'
                       className='text-accent underline underline-offset-2 hover:text-secondary'
                     >
                       HERE
