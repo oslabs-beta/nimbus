@@ -43,6 +43,7 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
         };
         timeValArr.push(subElement);
       }
+      timeValArr.reverse()
       // Add lineChart element to array
       lineChartElements.push(
         <div key={metric} className="card w-72 bg-gray-800 shadow-xl">
