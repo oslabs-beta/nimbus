@@ -23,8 +23,6 @@ interface Props {
   toggleTheme: () => void;
 }
 
-
-
 const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
 
   const routes = {
@@ -98,7 +96,7 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props)
       <Router>
         <div className="drawer drawer-mobile">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content flex flex-col items-center py-12 relative">
+          <div className="drawer-content flex flex-col items-center pb-12 pt-6 relative">
             <Routes>
               <Route path='/' element={<Home firstName={firstName}/>}></Route>
               <Route path='functions' element={<Functions />}></Route>

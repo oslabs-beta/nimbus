@@ -190,7 +190,7 @@ const Settings = (props: SettingsProps) => {
     <>
       <div className='flex flex-col lg:flex-row w-full mb-24'>
         <div className="lg:basis-1/2 lg:pl-20 lg:pr-8 px-20 mb-8">
-          <h3 className="text-xl text-secondary text-center font-bold">Profile</h3>
+          <h3 className="text-xl text-base-300 text-center font-bold">Profile</h3>
           <form onSubmit={submitProfileForm}>
             <div className="form-control">
               <label htmlFor='firstName' className="label"><span className="label-text">First Name</span></label>
@@ -236,7 +236,7 @@ const Settings = (props: SettingsProps) => {
         </div>
         
         <div className="lg:basis-1/2 lg:pl-8 lg:pr-20 px-20">
-          <h3 className="text-xl text-secondary text-center font-bold">Login Details</h3>
+          <h3 className="text-xl text-base-300 text-center font-bold">Login Details</h3>
           <form onSubmit={submitPasswordForm} >
             <div className='form-control'>
               <label htmlFor='email' className="label"><span className="label-text">Email</span></label>

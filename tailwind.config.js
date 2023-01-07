@@ -13,8 +13,8 @@ module.exports = {
     themes: [
       {
         myThemeDark: {  
-          "primary": "#4f46e5",  
-          "secondary": "#828DF8", 
+          "primary": "#6868AC",  
+          "secondary": "#475378", 
           "accent": "#F471B5",
           "neutral": "#1D283A",
           "base-100": "#111827",
@@ -24,11 +24,12 @@ module.exports = {
           "error": "#FB6F84",
         },
         myThemeLight: {
-          "primary": "#4F46E5",  
-          "secondary": "#828DF8",   
-          "accent": "#F471B5",  
-          "neutral": "#3D4451",    
-          "base-100": "#FFFFFF",    
+          "primary": "#DECCFF",  
+          "secondary": "#ece2ff",   
+          "accent": "#f6d5ff",  
+          "neutral": "#f6eefd",    
+          "base-100": "#FFFFFF",
+          "base-300": '#5d597a',    
           "info": "#3ABFF8",      
           "success": "#36D399",     
           "warning": "#FBBD23",      

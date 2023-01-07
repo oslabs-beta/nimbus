@@ -30,11 +30,11 @@ const HeadBar = ({ toggleTheme, theme }) => {
         toggleTheme();
         setChecked(prev => !prev);
     };
-    return (react_1.default.createElement("div", { className: "navbar bg-primary flex-row justify-between" },
+    return (react_1.default.createElement("div", { className: "navbar bg-secondary flex-row justify-between shadow-inner shadow-md" },
         react_1.default.createElement("a", { className: "btn btn-ghost normal-case text-xl" }, "nimbus"),
         react_1.default.createElement("div", { className: "form-control" },
             react_1.default.createElement("label", { className: "label cursor-pointer" },
-                react_1.default.createElement("span", { className: "label-text" }, theme === 'myThemeDark' ? 'Dark' : 'Light'),
+                react_1.default.createElement("span", { className: "label-text" }, theme === 'myThemeDark' ? 'Light' : 'Dark'),
                 react_1.default.createElement("input", { type: "checkbox", className: "toggle ml-2", checked: checked, onClick: handleToggle })))));
 };
 exports.default = HeadBar;

@@ -10,7 +10,7 @@ const chroma_js_1 = __importDefault(require("chroma-js"));
 const DonutChart = (props) => {
     var _a;
     chart_js_1.Chart.register(chart_js_1.ArcElement, chart_js_1.Tooltip, chart_js_1.Legend);
-    const colors = chroma_js_1.default.scale(['#4f46e5', '#F471B5']).mode('lch').colors((_a = props.rawData.data) === null || _a === void 0 ? void 0 : _a.length);
+    const colors = chroma_js_1.default.scale(['#623cad', '#fb9ce5']).mode('lch').colors((_a = props.rawData.data) === null || _a === void 0 ? void 0 : _a.length);
     return (react_1.default.createElement(react_chartjs_2_1.Doughnut, { data: {
             labels: props.rawData.labels,
             datasets: [
