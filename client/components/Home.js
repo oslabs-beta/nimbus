@@ -133,7 +133,7 @@ const Home = (props) => {
         }
     });
     // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-    const convertToD3Structure = (rawData) => {
+    const convertToChartJSStructure = (rawData) => {
         const output = [];
         for (let key in rawData.values) {
             const subElement = {
@@ -158,7 +158,6 @@ const Home = (props) => {
         getFuncMetrics();
     }, []);
     return (react_1.default.createElement(react_1.default.Fragment, null,
-
         react_1.default.createElement("div", { className: "w-full px-14 pb-8" },
             react_1.default.createElement("div", { className: "card shadow-xl w-full bg-gradient-to-r from-primary via-secondary to-accent text-base-300" },
                 react_1.default.createElement("div", { className: "card-body" },

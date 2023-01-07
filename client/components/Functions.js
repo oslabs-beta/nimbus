@@ -59,8 +59,7 @@ const Functions = () => {
     (0, react_1.useEffect)(() => {
         grabFuncsMetrics();
     }, []);
-    // Update to generate 4 charts of each metric
-
+    // Display table head and each function metrics component
     return (react_1.default.createElement("div", { className: "w-[100%] overflow-auto" },
         react_1.default.createElement("table", { className: "table w-[100%] mx-6" },
             react_1.default.createElement("thead", { className: "w-[100%]" },
