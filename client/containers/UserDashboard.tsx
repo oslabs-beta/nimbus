@@ -8,50 +8,10 @@ import Logs from '../components/Logs';
 import Apis from '../components/Apis';
 import Settings from '../components/Settings';
 
-interface FetchHeader {
-  headers: {
-    'Content-Type': string;
-    authorization: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  };
-}
-
-interface Props {
-  handleUserLogin: () => void;
-  toggleTheme: () => void;
-}
-
-const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
-  const [data, setData] = useState([]);
-  //   const swapAuthView = () => {
-  //     setShowLogin((showLogin) => !showLogin);
-  //   }
-
-  const getData = async () => {
-    // const refreshToken = localStorage.getItem('refreshToken')
-    // if (refreshToken) request.setHeader('refresh', `BEARER ${refreshToken}`);
-    const data = await fetch('/verifyToken', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'Application/JSON',
-        authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-      },
-    });
-    const res = await data.json();
-    console.log(res, 'RESPONSE FROM VERIFYING');
-    if (!res.accessToken) {
-      handleUserLogin();
-    }
-    console.log(res);
-    setData(res);
-  };
+// Conditional rendering of components: Home, Functions, Logs, APIs, Settings
+const UserDashboard = () => {
   return (
     <>
-      {/*<button onClick={getData}>DO I HAVE TOKEN</button>
-      <button onClick={toggleTheme} className="btn">Theme</button>*/}
       <Router>
         <div className="drawer drawer-mobile">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
