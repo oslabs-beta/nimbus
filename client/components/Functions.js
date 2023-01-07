@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Function_1 = __importDefault(require("./Function"));
 const uuid_1 = require("uuid");
+// Component to fetch all functions metrics and display them
 const Functions = () => {
     const [funcMetrics, setFuncMetrics] = (0, react_1.useState)({});
     // Grab each functions metrics when the component mounts
@@ -54,6 +55,7 @@ const Functions = () => {
         response = yield response.json();
         setFuncMetrics(response.eachFuncMetrics);
     });
+    // Grab functions metrics when the component mounts
     (0, react_1.useEffect)(() => {
         grabFuncsMetrics();
     }, []);

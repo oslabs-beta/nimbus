@@ -24,8 +24,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+// Login component
 const Login = ({ swapAuthView, handleUserLogin }) => {
-    // const [username, setUsername] = useState("");
     const [email, setEmail] = (0, react_1.useState)("");
     const [password, setPassword] = (0, react_1.useState)("");
     const [errorMessage, setErrorMessage] = (0, react_1.useState)("");
@@ -40,6 +40,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
     const handleError = (err) => {
         setErrorMessage(err);
     };
+    // Send user credentials to server and receive access and refresh tokens
     const submitForm = (e) => {
         e.preventDefault();
         const credentials = {
@@ -60,6 +61,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
             else {
                 console.log('user info:', result);
                 handleUserLogin();
+                // Save tokens to local storage
                 localStorage.setItem("accessToken", result.accessToken);
                 localStorage.setItem("refreshToken", result.refreshToken);
             }

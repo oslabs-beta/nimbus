@@ -5,10 +5,12 @@ interface Props {
     theme: String;
 }
 
+// HeadBar component
 const HeadBar: React.FC<Props> = ({ toggleTheme, theme }: Props) => {
 
     const [checked, setChecked] = useState(false);
 
+    // Toggle theme (light/dark)
     const handleToggle = () => {
         toggleTheme();
         setChecked(prev => !prev);

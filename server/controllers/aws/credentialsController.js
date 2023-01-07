@@ -33,9 +33,8 @@ const region = process.env.AWS_REGION;
 // Create Amazon Cloudwatch Logs service client object
 const client = new client_sts_1.STSClient({ region, credentials });
 // Establish relationship between Nimbus AWS account and client's account
-// Grab the client's credentials
-// This F(n) is used when grabbing information from Lambda, Gateway, etc
 const credentialsController = {
+    // Get credentials for client's account from AWS and store in res.locals
     getCredentials(req, res, next) {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
@@ -56,16 +55,17 @@ const credentialsController = {
                 res.locals.arnValidation = { validated: true };
                 console.log(res.locals.credentials);
                 return next();
-                console.log(assumedRole);
             }
+            // If the ARN user input is invalid, send info to front end so that field will be highlighted red
             catch (err) {
                 console.log(err);
-                // If the ARN user input is invalid, send info to front end so that field will be highlighted red
                 res.locals.arnValidation = { validated: false };
                 return next();
             }
         });
     },
+    // Get credentials for client's account from database and store in res.locals
+    // This function is used when grabbing information from Lambda, Gateway, etc
     getCredentialsFromDB(req, res, next) {
         var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
@@ -87,11 +87,9 @@ const credentialsController = {
                 const accessKeyId = (_a = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _a === void 0 ? void 0 : _a.AccessKeyId;
                 const secretAccessKey = (_b = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _b === void 0 ? void 0 : _b.SecretAccessKey;
                 const sessionToken = (_c = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _c === void 0 ? void 0 : _c.SessionToken;
-                //const expiration = assumedRole?.Credentials?.Expiration;
                 res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken };
                 console.log(res.locals.credentials);
                 return next();
-                console.log(assumedRole);
             }
             catch (err) {
                 console.log(err);

@@ -73,11 +73,17 @@ router.get('/apiList', authController.verifyToken, credentialsController.getCred
     });
 });
 
-router.get('/apiMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, apiMetricsController.getAPIMetrics, (req: Request, res: Response) => {
-    return res.status(200).json({
-        allApiMetrics: res.locals.allApiMetrics
-    });
-});
+// // body: period
+// router.get('/apiMetrics', 
+//     authController.verifyToken, 
+//     credentialsController.getCredentialsFromDB, 
+//     apiController.getAPIList, 
+//     apiMetricsController.getAPIMetrics, 
+//     (req: Request, res: Response) => {
+//         return res.status(200).json({
+//             allApiMetrics: res.locals.allApiMetrics
+//         });
+// });
 
 //Handles GET/POST requests to the Settings Tab
 router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {

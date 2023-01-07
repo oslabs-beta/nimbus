@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Function from './Function'
 import { v4 as uuidv4 } from 'uuid';
 
+// Component to fetch all functions metrics and display them
 const Functions = () => {
   const [funcMetrics, setFuncMetrics] = useState({})
   // Grab each functions metrics when the component mounts
@@ -19,12 +20,12 @@ const Functions = () => {
     setFuncMetrics(response.eachFuncMetrics)
   }
 
+  // Grab functions metrics when the component mounts
   useEffect(() => {
     grabFuncsMetrics()    
   }, [])  
 
-  // Update to generate 4 charts of each metric
-
+  // Display table head and each function metrics component
   return (
     <div className="w-[100%] overflow-auto">
       <table className="table w-[100%] mx-6">

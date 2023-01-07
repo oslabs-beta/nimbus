@@ -37,7 +37,7 @@ const Home = (props: HomeProps) => {
   }
 
   // Sends a GET request to the '/dashboard/allMetrics' route
-  // Uses ReactHooks in order to change the states based on data received from AWS
+  // Uses ReactHooks to change the states based on data received from AWS
   const getMetrics = async () => {
     let res;
     try {
@@ -50,19 +50,20 @@ const Home = (props: HomeProps) => {
         },
       });
       res = await res.json();
-      setInvocations(convertToD3Structure({
+      // Convert the data to a format that Chart JS can use and set the states to the new data
+      setInvocations(convertToChartJSStructure({
         values: res.allFuncMetrics.invocations.values, 
         timestamp: res.allFuncMetrics.invocations.timestamp
       }));
-      setErrors(convertToD3Structure({
+      setErrors(convertToChartJSStructure({
         values: res.allFuncMetrics.errors.values, 
         timestamp: res.allFuncMetrics.errors.timestamp
       }));
-      setThrottles(convertToD3Structure({
+      setThrottles(convertToChartJSStructure({
         values: res.allFuncMetrics.throttles.values, 
         timestamp: res.allFuncMetrics.throttles.timestamp
       }));
-      setDurations(convertToD3Structure({
+      setDurations(convertToChartJSStructure({
         values: res.allFuncMetrics.duration.values, 
         timestamp: res.allFuncMetrics.duration.timestamp
       }));
@@ -127,6 +128,7 @@ const Home = (props: HomeProps) => {
     return output.reverse();
   };
   
+  // Calculates the running cost of all functions
   const calculateCost = (costObj: costProps) => {
     let totalCost = 0;
     for (let i = 0; i < costObj.memory.length; i++) {

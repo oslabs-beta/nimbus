@@ -24,15 +24,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+// Display the relations for the selected API: routes, methods, and functions.
 const ApiRelations = ({ selectedApi, apiRelations }) => {
     const [message, setMessage] = (0, react_1.useState)('fetching data...');
     // If data not found, set message
-    if (Array.isArray(apiRelations) && typeof apiRelations[0] === 'string') {
+    if (apiRelations === undefined || selectedApi === '') {
         if (message !== 'data not found') {
             setMessage('data not found');
         }
     }
-    // Grab data for the selected API
+    // Grab data for the selected API; if not found set to null
     const selectedApiRelations = apiRelations
         && selectedApi
         ?
@@ -41,6 +42,7 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
     // Get endpoints data
     const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
     console.log("endpoints", endpoints);
+    // If endpoints is truthy, render api relations, else render message
     return (react_1.default.createElement("div", null, endpoints ?
         react_1.default.createElement("div", { className: 'flex flex-col gap-y-4' }, Object.keys(endpoints).map((key) => {
             return (react_1.default.createElement("div", { className: 'card w-96 bg-base-150 shadow-xl', key: key },
@@ -51,11 +53,11 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
                             react_1.default.createElement("div", { className: 'bg-secondary py-2 px-4 rounded-lg border-0' },
                                 react_1.default.createElement("div", null,
                                     "Method: ",
-                                    item.method,
+                                    method.method,
                                     react_1.default.createElement("svg", { className: "inline", style: { width: '1.5rem', fill: '#9ca3af', margin: '0rem .5rem' }, focusable: "false", "aria-hidden": "true", viewBox: "0 0 24 24", "data-testid": "ArrowForwardIcon", "aria-label": "fontSize large" },
                                         react_1.default.createElement("path", { d: "m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" })),
                                     "Function: ",
-                                    item.func))));
+                                    method.func))));
                     })))));
         }))
         :

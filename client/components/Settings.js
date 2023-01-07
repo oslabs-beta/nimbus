@@ -27,8 +27,10 @@ const react_1 = __importStar(require("react"));
 const Settings = (props) => {
     const [errorMessage, setErrorMessage] = (0, react_1.useState)('');
     const [successMessage, setSuccessMessage] = (0, react_1.useState)('');
+    // Create refs for password and confirmation
     const passwordRef = (0, react_1.useRef)();
     const confirmationRef = (0, react_1.useRef)();
+    // Store routes in object
     const routes = {
         updateProfile: '/dashboard/updateProfile',
         updatePassword: '/dashboard/updatePassword'
@@ -51,6 +53,7 @@ const Settings = (props) => {
     const updateRegion = (e) => {
         props.setRegion(e.target.value);
     };
+    // Reset password fields
     const resetPasswords = () => {
         passwordRef.current.value = "";
         confirmationRef.current.value = "";
@@ -95,6 +98,7 @@ const Settings = (props) => {
     const handlePasswordSuccess = () => {
         setSuccessMessage('Password updated successfully');
     };
+    // Highlight erroneusly filled fields in red
     const highlightInput = (errors) => {
         errors.forEach((el) => {
             const input = document.querySelector(`#${el}`);
@@ -103,6 +107,7 @@ const Settings = (props) => {
             }
         });
     };
+    // Update profile
     const submitProfileForm = (e) => {
         e.preventDefault();
         const updatedProfileData = {
@@ -136,6 +141,7 @@ const Settings = (props) => {
             }
         });
     };
+    // Update password
     const submitPasswordForm = (e) => {
         e.preventDefault();
         const updatedPasswordData = {

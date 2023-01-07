@@ -8,9 +8,11 @@ interface Props {
   toggleTheme: () => void;
 }
 
+// UserAuth component, displays login or register component depending on state
 const UserAuth: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
   const [showLogin, setShowLogin] = useState(true);
 
+  // Swap between login and register views
   const swapAuthView = () => {
     setShowLogin((showLogin) => !showLogin);
   }

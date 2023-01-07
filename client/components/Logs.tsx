@@ -20,14 +20,14 @@ const Logs = () => {
     logs: '/dashboard/filteredLogs'
   }
 
-  // Change options
+  // Change period
   const changePeriod = (e: any) => {
     if (e.target.value !== period) {
       setPeriod(e.target.value);
     }
   };
 
-
+  // Change search keyword
   const changeSearch = (e: any) => {
     if (e.target.value === 'allLogs') {
       setSearch('');
@@ -99,7 +99,6 @@ const Logs = () => {
     }
   }
 
-
   // On component mount: get all lambda functions
   useEffect(() => {
     console.log("first useEffct")
@@ -116,11 +115,12 @@ const Logs = () => {
     
   }, [selectedFunc, period, search]);
 
-
+  // Map logs to divs
   const logsList = logs.map((log, i) =>
   <div key={`log-${i}`} className='logs-log-event'>{log}</div>
   );
 
+  // Map functions to buttons
   const functionsList = functions.map((func, i) =>
   <button 
     key={`func-${i}`} 

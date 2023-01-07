@@ -24,8 +24,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const react_router_dom_1 = require("react-router-dom");
 // import Link component from react router here
+const react_router_dom_1 = require("react-router-dom");
+// Sidaber component
 const Layout = () => {
     const [selectedTab, setSelectedTab] = (0, react_1.useState)('Home');
     return (react_1.default.createElement("ul", { className: 'menu bg-neutral w-56 rounded-box lg:rounded-none h-fit lg:h-full' },

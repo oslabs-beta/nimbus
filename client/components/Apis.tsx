@@ -37,7 +37,8 @@ const Apis = () => {
         signal
       });
       res = await res.json();
-      const apiRel = res.apiRelations || ['unable to fetch api relations'];
+      // const apiRel = res.apiRelations || ['unable to fetch api relations'];
+      const apiRel = res.apiRelations || undefined;
       console.log("res.apiRelations", res.apiRelations)
       setApiRelations(apiRel);
     }
@@ -66,9 +67,6 @@ const Apis = () => {
         metrics = res.allApiMetrics;
         setSelectedApi(Object.keys(metrics)[0])
       } 
-      else {
-        metrics = ['unable to fetch api metrics'];
-      }
       setApiMetrics(metrics);
     }
     catch(err){

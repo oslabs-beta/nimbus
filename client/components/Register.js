@@ -25,7 +25,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Register = ({ swapAuthView, handleUserLogin, }) => {
-    // const [username, setUsername] = useState("");
     const [email, setEmail] = (0, react_1.useState)('');
     const [firstName, setFirstName] = (0, react_1.useState)('');
     const [lastName, setLastName] = (0, react_1.useState)('');
@@ -60,6 +59,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect');
     };
+    // Highlight erroneously filld fields in red
     const highlightInput = (errors) => {
         errors.forEach((el) => {
             const input = document.querySelector(`#${el}`);
@@ -68,7 +68,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
             }
         });
     };
-    // Handle form sumbission
+    // Send user credentials to server and receive access and refresh tokens
     const submitForm = (e) => {
         e.preventDefault();
         const userData = {
@@ -96,11 +96,13 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
             else {
                 console.log('user info:', result);
                 handleUserLogin();
+                // Save tokens to local storage
                 localStorage.setItem('accessToken', result.accessToken);
                 localStorage.setItem('refreshToken', result.refreshToken);
             }
         });
     };
+    // List of AWS regions
     const regionsOptions = [
         'us-east-2',
         'us-east-1',

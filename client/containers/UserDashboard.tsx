@@ -91,8 +91,6 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props)
 
   return (
     <>
-      {/*<button onClick={getData}>DO I HAVE TOKEN</button>
-      <button onClick={toggleTheme} className="btn">Theme</button>*/}
       <Router>
         <div className="drawer drawer-mobile">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
