@@ -9,31 +9,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//NEED TO CONVERT FILE TO TYPESCRIPT
 const client_api_gateway_1 = require("@aws-sdk/client-api-gateway");
 const client_lambda_1 = require("@aws-sdk/client-lambda");
+// Controller for the API Gateway endpoints
 const apiController = {
+    // Get relations between API Gateway endpoints and Lambda functions
     getAPIRelations(req, res, next) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            // Change variable name
-            console.log('Hitting API controller');
+            // Create new APIGatewayClient
             const apiClient = new client_api_gateway_1.APIGatewayClient({
                 region: res.locals.region,
                 credentials: res.locals.credentials,
             });
+            // Create new LambdaClient
             const lambdaClient = new client_lambda_1.LambdaClient({
                 region: res.locals.region,
                 credentials: res.locals.credentials
             });
-            // const apiData: {name: string, apiId: string, resourses: any[]}[] = [];
-            // // Grab names of API Endpoints and associated IDs
+            // Declare array to store APIs
             const apiList = [];
             const lambdaAPIsList = [];
             try {
+                // Get list of APIs and store in apiList
                 const restAPIs = yield apiClient.send(new client_api_gateway_1.GetRestApisCommand({}));
-                //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
-                // const resources = await client.send(new GetResourceCommand({  }));
                 const restAPIsItems = restAPIs === null || restAPIs === void 0 ? void 0 : restAPIs.items;
                 if (restAPIsItems !== undefined) {
                     for (const item of restAPIsItems) {
@@ -44,9 +43,9 @@ const apiController = {
                         apiList.push(apiDetails);
                     }
                 }
-                //const restItems = restAPIs.items;
-                //restItems?.forEach(i => console.log(i.resourceMethods));
+                // Get list of Lambda functions from res.locals
                 const functions = res.locals.functions;
+                // For each function, get the policy, create apiInfo and store apiInfo in lambdaAPIsList
                 for (const func of functions) {
                     try {
                         const functionName = func;
@@ -77,9 +76,12 @@ const apiController = {
                         }
                     }
                     catch (err) {
+                        console.log(err);
                     }
                 }
+                // Declare array to store relations
                 const relations = [];
+                // For each API, create relationObj and store in relations
                 for (const api of apiList) {
                     const relationObj = { apiName: api.apiName, endpoints: {} };
                     if (relationObj.endpoints) {
@@ -103,6 +105,7 @@ const apiController = {
                 res.locals.apiRelations = relations;
                 return next();
             }
+            // If error, pass to error handler
             catch (err) {
                 next({
                     log: "Error caught in apiController.getAPIRelations middleware function",
@@ -112,18 +115,20 @@ const apiController = {
             }
         });
     },
+    // Get list of API endpoints
     getAPIList(req, res, next) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            // Create new APIGatewayClient
             const apiClient = new client_api_gateway_1.APIGatewayClient({
                 region: res.locals.region,
                 credentials: res.locals.credentials,
             });
+            // Declare array to store APIs
             const apiList = [];
             try {
+                // Get list of APIs and store in apiList
                 const restAPIs = yield apiClient.send(new client_api_gateway_1.GetRestApisCommand({}));
-                //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
-                // const resources = await client.send(new GetResourceCommand({  }));
                 const restAPIsItems = restAPIs === null || restAPIs === void 0 ? void 0 : restAPIs.items;
                 if (restAPIsItems !== undefined) {
                     for (const item of restAPIsItems) {
@@ -138,6 +143,7 @@ const apiController = {
                 return next();
             }
             catch (err) {
+                // If error, pass to error handler
                 next({
                     log: "Error caught in apiController.getAPIList middleware function",
                     status: 500,

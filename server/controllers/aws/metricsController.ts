@@ -317,5 +317,5 @@ const metricsController = {
   }
 }
     
-// Change to export default syntaix
+
 export default metricsController;
