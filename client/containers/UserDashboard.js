@@ -107,7 +107,7 @@ const UserDashboard = ({ handleUserLogin, toggleTheme }) => {
         react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
             react_1.default.createElement("div", { className: "drawer drawer-mobile" },
                 react_1.default.createElement("input", { id: "my-drawer-2", type: "checkbox", className: "drawer-toggle" }),
-                react_1.default.createElement("div", { className: "drawer-content flex flex-col items-center py-12 relative" },
+                react_1.default.createElement("div", { className: "drawer-content flex flex-col items-center pb-12 pt-6 relative" },
                     react_1.default.createElement(react_router_dom_1.Routes, null,
                         react_1.default.createElement(react_router_dom_1.Route, { path: '/', element: react_1.default.createElement(Home_1.default, { firstName: firstName }) }),
                         react_1.default.createElement(react_router_dom_1.Route, { path: 'functions', element: react_1.default.createElement(Functions_1.default, null) }),

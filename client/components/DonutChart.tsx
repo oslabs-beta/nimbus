@@ -11,7 +11,7 @@ const DonutChart = (props: DonutChartProps) => {
 
     Chart.register(ArcElement, Tooltip, Legend);
 
-    const colors = chroma.scale(['#4f46e5','#F471B5']).mode('lch').colors(props.rawData.data?.length);
+    const colors = chroma.scale(['#623cad','#fb9ce5']).mode('lch').colors(props.rawData.data?.length);
 
     return (
         <Doughnut

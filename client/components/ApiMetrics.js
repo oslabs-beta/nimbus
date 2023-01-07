@@ -55,7 +55,7 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
                 timeValArr.push(subElement);
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-gray-800 shadow-xl" },
+            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-base-150 shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { key: `${metric}-chart`, rawData: timeValArr, label: metric }))));
         }
