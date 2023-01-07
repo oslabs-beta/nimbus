@@ -17,7 +17,7 @@ app.use('/dashboard', dashboardRouter);
 app.use('*', (req, res) => {
     return res.status(404).json('Not Found');
 });
-// Global error handler
+// Global Error Handler
 app.use((err, req, res, next) => {
     const defaultErr = {
         log: "Express error handler caught unknown middleware error",

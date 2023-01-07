@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { nextTick } from "process";
 const userModel_1 = __importDefault(require("../models/userModel"));
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
@@ -183,15 +184,13 @@ const userController = {
             const errors = [];
             // Check if input fields are empty
             for (const key in req.body) {
-                if (req.body[key].length === 0) {
+                if (req.body[key].length === 0)
                     errors.push(key);
-                }
             }
             // Check if password matches confirmation
-            if (password !== confirmation) {
+            if (password !== confirmation)
                 errors.push("password", "confirmation");
-            }
-            // Send back errors
+            // Send errors array back to front end
             if (errors.length > 0) {
                 return next({
                     log: "Error caught in userController.createUser middleware function",

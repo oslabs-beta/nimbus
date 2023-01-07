@@ -1,6 +1,6 @@
-// import built-in Request, Response and NextFunction types from express module
 import { Request, Response, NextFunction } from "express";
-import { nextTick } from "process";
+import { userController , KeyType, KeyTypeSettings, KeyTypePassword } from '../types';
+// import { nextTick } from "process";
 import User from '../models/userModel';
 const bcrypt = require('bcrypt')
 const SALT_WORK_FACTOR = 10;
@@ -9,24 +9,14 @@ const jwt = require('jsonwebtoken')
 import * as dotenv from "dotenv";
 require('dotenv').config();
 
-// create a usercontroller type
-type userController = {
-    verifyUser: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
-    createUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-    getUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-    updateUserProfile: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-    updateUserPassword: (req: Request, res: Response, next: NextFunction) => Promise<void>;
-}
-
 const userController: userController = {
 
   // Middleware for user login
   async verifyUser(req, res, next) {
     const { email, password } = req.body;
     try {
-      // Find user with input email from database
-      const user: any = await User.findOne({email})
-      
+      const user: any = await User.findOne({email});
+
       // If the user does not exist in the database, invoke global error handler
       if (!user) {
           return next({
@@ -35,8 +25,9 @@ const userController: userController = {
             message: {err: 'User not in database'}
           });
       }
+
       // If user exists with cooresponding email, compare password from client with password in database
-      const isValid: any = await bcrypt.compare(password, user.password)
+      const isValid: boolean = await bcrypt.compare(password, user.password);
 
       if (!isValid) {
         return next({
@@ -69,7 +60,6 @@ const userController: userController = {
     if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email) === false) {
       errors.push("email");
     }
-    type KeyType = "email" | "firstName" | "lastName" | "password" | "confirmation" | "arn" | "region";
 
     // Check if user left any input fields empty
       // Front end will highlight input fields if errors occur
@@ -137,11 +127,9 @@ const userController: userController = {
     // Declare an array to store errors
     const errors: Array<"firstName" | "lastName" | "arn" | "region"> = [];
     
-    type KeyType = "firstName" | "lastName" | "arn" | "region";
-
     // Check if input fields are empty
     for (const key in req.body) {
-      if (req.body[key as KeyType].length === 0) errors.push(key as KeyType);
+      if (req.body[key as KeyTypeSettings].length === 0) errors.push(key as KeyTypeSettings);
     }
 
     //Check if arn is validated
@@ -186,20 +174,15 @@ const userController: userController = {
     // Declare an array to store errors
     const errors: Array< "password" | "confirmation" > = [];
 
-    type KeyType = "password" | "confirmation" ;
-
     // Check if input fields are empty
     for (const key in req.body) {
-      if (req.body[key as KeyType].length === 0) {
-        errors.push(key as KeyType);
-      }
+      if (req.body[key as KeyTypePassword].length === 0) errors.push(key as KeyTypePassword);
+      
      }
     // Check if password matches confirmation
-    if (password !== confirmation) {
-      errors.push("password", "confirmation");
-    }
+    if (password !== confirmation) errors.push("password", "confirmation");
 
-    // Send back errors
+    // Send errors array back to front end
     if (errors.length > 0) {
       return next({
         log: "Error caught in userController.createUser middleware function",
