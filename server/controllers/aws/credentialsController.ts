@@ -49,7 +49,6 @@ const credentialsController = {
       res.locals.arnValidation = {validated: true};
       console.log(res.locals.credentials);
       return next();
-      console.log(assumedRole);
     } catch (err) { 
       console.log(err);
       // If the ARN user input is invalid, send info to front end so that field will be highlighted red
@@ -83,8 +82,8 @@ const credentialsController = {
       res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken };
       console.log(res.locals.credentials);
       return next();
-      console.log(assumedRole);
-    } catch (err) { 
+    } 
+    catch (err) { 
       console.log(err);
       return next({
         log: "Error caught in credentialsController.getCredentialsFromDB middleware function",

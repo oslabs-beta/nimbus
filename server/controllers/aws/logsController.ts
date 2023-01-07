@@ -90,15 +90,7 @@ const logsController = {
 
       const cwLogsClient = new CloudWatchLogsClient({
         region: res.locals.region, //'us-east-1'
-        credentials: res.locals.credentials, 
-        /*
-        region: 'us-east-1',//req.locals.region,
-        credentials: {
-          accessKeyId: 'ASIAYSDN4ZO5K6WCUXXX',
-          secretAccessKey: 'kqD2uRFJM7y+MgxnYif8c9mbOzqpA5jutFpZwPwH',
-          sessionToken: 'IQoJb3JpZ2luX2VjEBwaCXVzLWVhc3QtMSJGMEQCIHVNNcKZuU3ZPh1utP6aEjjMk4IDXRTKX5J9SRiAm/BQAiB0mQRfahiFYuKrk7RvaMYf+RexEi5/cw6qCoDiMN9BPCqaAghUEAAaDDU4ODY0MDk5NjI4MiIMhm7pKqUMjeHAmgYdKvcBq/RgEV354bd21YEXeOcxDSEIv6C0iWVnJbhCKXx+h7Bl4a6wDh7EA3KhGl03kUXZbsNWPZ7P2lP4EMGbj0HDZYrlXxqWcA7Ymt31ISVZ3gcelW6uW2cabeIQNcqmxzKK7yrWIjS8TZ4PdgRPTqjFaK0aOH3is1jkSFGm+XA2KcYBcxPMpEbv/n8gQULqkIXZX0Ny8V5Ei5Ga5qW42OLA6W+8ryj5uNqSpFuOWMiPNco9pahz/HtQuDwgF4+O8VEsSweXHfkR00AG4tdyyuv77UH40/H+VAsKgNFAQpot+EaDxicI7cx+1m/brGUiZd5F862kr01RFDDbrf+cBjqeAdNBMvM+Xi36prVeVFIkpPBBQNwxMj2N3cMtnSPqqncpFWbrLmzpun9H9KnbG1ssqwsE/8sa7z1PY+vTNmwtU9zPePw9p0a2qoMOboykdd4uGGMNfCt5j8f2lPhkYy8bOWWyqvCXJrJt/SfDxfriVfx5lSlQ7hbpHeUiF7vU6rXlAE8HsXR+JpJICa1tE+7aN/Xh39JMGviIxNYlL3qd',
-        }//req.locals.credentials,
-        */
+        credentials: res.locals.credentials, //credentials
       });
 
       const functionName = req.body.functionName

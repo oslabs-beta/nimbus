@@ -1,7 +1,6 @@
 import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataQuery, MetricDataResult} from "@aws-sdk/client-cloudwatch";
 import { LambdaClient, GetFunctionConfigurationCommand, GetFunctionConfigurationCommandOutput, GetCodeSigningConfigResponseFilterSensitiveLog } from "@aws-sdk/client-lambda"
 import { Request, Response, NextFunction } from "express";
-import { reforwardRef } from "react-chartjs-2/dist/utils";
 require('dotenv').config();
 
 interface subMetrics {

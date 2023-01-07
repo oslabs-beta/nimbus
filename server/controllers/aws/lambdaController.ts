@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 import dotenv from 'dotenv';
 dotenv.config();
-//req: Request, res: Response, next: NextFunction
+
 const lambdaController = {
     async getFunctions(req: Request, res: Response, next: NextFunction) {
         const lambdaClient = new LambdaClient({
