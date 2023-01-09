@@ -61,7 +61,7 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
       }
       // Add lineChart element to array
       lineChartElements.push(
-        <div key={metric} className="card w-72 bg-neutral shadow-xl">
+        <div key={metric} className="card w-[90%] md:w-[43%] bg-neutral shadow-xl">
           <div className="card-body">
             <LineChart key={`${metric}-chart`} rawData={timeValArr} label={metric} />
            </div>
@@ -83,7 +83,7 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
 
   return (
     <div>
-      <div className='flex justify-center flex-wrap gap-3'>
+      <div className='flex justify-center flex-wrap gap-3 items-start'>
         {chartElements ? chartElements : message}
       </div>
     </div>

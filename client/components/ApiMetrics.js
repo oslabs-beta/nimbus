@@ -70,7 +70,7 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
                 }
             }
             // Add lineChart element to array
-            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-neutral shadow-xl" },
+            lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-[90%] md:w-[43%] bg-neutral shadow-xl" },
                 react_1.default.createElement("div", { className: "card-body" },
                     react_1.default.createElement(LineChart_1.default, { key: `${metric}-chart`, rawData: timeValArr, label: metric }))));
         }
@@ -83,6 +83,6 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
         chartElements = makeCharts(apiMetrics[selectedApi]);
     }
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement("div", { className: 'flex justify-center flex-wrap gap-3' }, chartElements ? chartElements : message)));
+        react_1.default.createElement("div", { className: 'flex justify-center flex-wrap gap-3 items-start' }, chartElements ? chartElements : message)));
 };
 exports.default = ApiMetrics;

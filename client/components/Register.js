@@ -166,7 +166,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
                             react_1.default.createElement("p", { className: "mb-2" },
                                 "Please follow the steps below to set up the connection to your AWS account. Click",
                                 ' ',
-                                react_1.default.createElement("a", { target: '_blank', href: 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-fo1de99kotoi-us-east-1.s3.amazonaws.com/2022347I7Q-nimbus.yaml&stackName=NimbusStack', className: 'text-accent underline underline-offset-2 hover:text-secondary' }, "HERE"),
+                                react_1.default.createElement("a", { target: '_blank', href: 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-htl66jverox0-us-east-1.s3.amazonaws.com/2023-01-03T001457.540Zd6i-nimbus-new.yaml&stackName=Nimbus-Stack', className: 'text-accent underline underline-offset-2 hover:text-secondary' }, "HERE"),
                                 ' ',
                                 "to start the process."),
                             react_1.default.createElement("ul", { className: 'list-decimal px-5' },

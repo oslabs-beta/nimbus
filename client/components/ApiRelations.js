@@ -50,13 +50,12 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
                     react_1.default.createElement("h2", { className: "card-title text-pink-300 text-lg font-bold" }, key),
                     react_1.default.createElement("ul", { className: '' }, (endpoints)[key].map((method) => {
                         return (react_1.default.createElement("li", { key: method.func, className: 'my-2' },
-                            react_1.default.createElement("div", { className: 'bg-gray-700 py-2 px-4 rounded-lg border-0' },
+                            react_1.default.createElement("div", { className: 'bg-secondary py-2 px-4 rounded-lg border-0' },
                                 react_1.default.createElement("div", null,
-                                    "Method: ",
                                     method.method,
-                                    react_1.default.createElement("svg", { className: "inline", style: { width: '1.5rem', fill: '#9ca3af', margin: '0rem .5rem' }, focusable: "false", "aria-hidden": "true", viewBox: "0 0 24 24", "data-testid": "ArrowForwardIcon", "aria-label": "fontSize large" },
+                                    react_1.default.createElement("svg", { className: "inline", style: { width: '1.5rem', fill: 'rgb(250 232 255)', margin: '0rem .5rem' }, focusable: "false", "aria-hidden": "true", viewBox: "0 0 24 24", "data-testid": "ArrowForwardIcon", "aria-label": "fontSize large" },
                                         react_1.default.createElement("path", { d: "m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" })),
-                                    "Function: ",
+                                    "\u03BB : ",
                                     method.func))));
                     })))));
         }))
