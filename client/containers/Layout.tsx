@@ -1,8 +1,7 @@
 import React, { useState} from 'react';
-// import Link component from react router here
 import { Link } from 'react-router-dom';
 
-// Sidaber component
+// Sidebar component
 const Layout = () => {
   const [selectedTab, setSelectedTab] = useState('Home');
 

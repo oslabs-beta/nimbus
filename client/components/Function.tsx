@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import moment from "moment";
-import { FunctionProps, Data, RawData, d3Data } from "../types";
-
+import { FunctionProps, Data, RawData, chartJSData } from "../types";
+import { convertToChartJSStructure } from "../types";
 
 // Component to display a single function's metrics
-const Function = (props: FunctionProps) => {
+const Function: React.FC<FunctionProps> = (props: FunctionProps) => {
   const [isClicked, setIsClicked] = useState(false)
 
   const [totalInvocations, setTotalInvocations] = useState(0)
@@ -13,10 +13,10 @@ const Function = (props: FunctionProps) => {
   const [totalThrottles, setTotalThrottles] = useState(0)
   const [totalDuration, setTotalDuration] = useState(0)
 
-  const [invocations, setInvocations] = useState<d3Data>([])
-  const [errors, setErrors] = useState<d3Data>([])
-  const [throttles, setThrottles] = useState<d3Data>([])
-  const [duration, setDuration] = useState<d3Data>([])
+  const [invocations, setInvocations] = useState<chartJSData>([])
+  const [errors, setErrors] = useState<chartJSData>([])
+  const [throttles, setThrottles] = useState<chartJSData>([])
+  const [duration, setDuration] = useState<chartJSData>([])
 
 
   useEffect(() => {
@@ -26,34 +26,6 @@ const Function = (props: FunctionProps) => {
     if (props.throttles.values.length > 0) setTotalThrottles(props.throttles.values.reduce((acc: number, curr: number):number => acc + curr))
     if (props.duration.values.length > 0) setTotalDuration(Math.ceil(props.duration.values.reduce((acc: number, curr: number):number => acc + curr)/props.duration.values.length))
   }, [])
-
-  // Create a function to convert our raw data into a format that ChartJS can use
-  const convertToChartJSStructure = (rawData: Data) => {
-    const output = [];
-    
-    for (let i = rawData.values.length - 1; i >= 0; i--) {
-      const subElement: RawData = {
-        y: rawData.values[i],
-        x: new Date(rawData.timestamp[i]).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"})
-      }
-      output.push(subElement);
-      // Get the date of the current iteration
-      let date = new Date(rawData.timestamp[i])
-      // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
-      if ((date.getTime() + 1) < (new Date (rawData.timestamp[i - 1])).getTime()) {
-        date.setDate(date.getDate() + 1)
-        while (date.getTime() < (new Date (rawData.timestamp[i - 1])).getTime()) {
-          const subElement: RawData = {
-            y: 0,
-            x: new Date(date).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"})
-          }
-          output.push(subElement);
-          date.setDate(date.getDate() + 1)
-        }
-      }
-    }
-    return output;
-  };
 
   // Generate the chart when the user clicks on the row
   const generateChart = () => {

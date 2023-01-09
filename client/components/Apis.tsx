@@ -41,7 +41,7 @@ const Apis = () => {
       setApiRelations(apiRel);
     }
     catch(err){
-      console.log("ERROR FROM GET API RELATIONS", err);
+      console.log("Error occurred grabbing API Relations: ", err);
     }
   }
 
@@ -68,7 +68,7 @@ const Apis = () => {
       setApiMetrics(metrics);
     }
     catch(err){
-      console.log("ERROR FROM GET API METRICS", err);
+      console.log("Error occurred grabbing API Metrics: ", err);
     }
   }
 

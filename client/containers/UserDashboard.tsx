@@ -7,23 +7,9 @@ import Functions from '../components/Functions';
 import Logs from '../components/Logs';
 import Apis from '../components/Apis';
 import Settings from '../components/Settings';
+import { UserAuthProps, FetchHeader} from "../types";
 
-interface FetchHeader {
-  headers: {
-    'Content-Type': string;
-    authorization: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  };
-}
-
-interface Props {
-  handleUserLogin: () => void;
-  toggleTheme: () => void;
-}
-
-const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props) => {
+const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }: UserAuthProps) => {
 
   const routes = {
     userDetails: '/dashboard/userDetails',
@@ -37,12 +23,9 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props)
   const [confirmation, setConfirmation] = useState('');
   const [arn, setArn] = useState('');
   const [region, setRegion] = useState('');
-  //   const swapAuthView = () => {
-  //     setShowLogin((showLogin) => !showLogin);
-  //   }
+
   const getData = async () => {
-    // const refreshToken = localStorage.getItem('refreshToken')
-    // if (refreshToken) request.setHeader('refresh', `BEARER ${refreshToken}`);
+    
     const data = await fetch('/verifyToken', {
       method: 'GET',
       headers: {
@@ -52,11 +35,11 @@ const UserDashboard: React.FC<Props> = ({ handleUserLogin, toggleTheme }: Props)
       },
     });
     const res = await data.json();
-    console.log(res, 'RESPONSE FROM VERIFYING');
+
     if (!res.accessToken) {
       handleUserLogin();
     }
-    console.log(res);
+
     setData(res);
   };
 

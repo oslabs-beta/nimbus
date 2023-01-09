@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LineChart from './LineChart'
 import DonutChart from './DonutChart'
-import { RawData, d3Data, costProps, HomeProps } from "../types";
+import { RawData, chartJSData, costProps, HomeProps } from "../types";
+import { convertToChartJSStructure } from "../types";
 
-
-const Home = (props: HomeProps) => {
-  const [invocationsData, setInvocations] = useState<d3Data>([]);
-  const [errorsData, setErrors] = useState<d3Data>([]);
-  const [throttlesData, setThrottles] = useState<d3Data>([]);
-  const [durationData, setDurations] = useState<d3Data>([]);
+const Home: React.FC<HomeProps> = (props: HomeProps) => {
+  const [invocationsData, setInvocations] = useState<chartJSData>([]);
+  const [errorsData, setErrors] = useState<chartJSData>([]);
+  const [throttlesData, setThrottles] = useState<chartJSData>([]);
+  const [durationData, setDurations] = useState<chartJSData>([]);
   const [cost, setCost] = useState(0)
   const [totalInvocations, setTotalInvocations] = useState(0);
   const [totalErrors, setTotalErrors] = useState(0);
@@ -99,33 +99,6 @@ const Home = (props: HomeProps) => {
       console.log(error);
     }
 }
-
-  // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-  const convertToChartJSStructure = (rawData: any) => {
-    const output = [];
-    for (let i = rawData.values.length - 1; i >= 0; i--) {
-      const subElement: RawData = {
-        y: rawData.values[i],
-        x: new Date(rawData.timestamp[i]).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"})
-      }
-      output.push(subElement);
-      // Get the date of the current iteration
-      let date = new Date(rawData.timestamp[i])
-      // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
-      if ((date.getTime() + 1) < (new Date (rawData.timestamp[i - 1])).getTime()) {
-        date.setDate(date.getDate() + 1)
-        while (date.getTime() < (new Date (rawData.timestamp[i - 1])).getTime()) {
-          const subElement: RawData = {
-            y: 0,
-            x: new Date(date).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"})
-          }
-          output.push(subElement);
-          date.setDate(date.getDate() + 1)
-        }
-      }
-    }
-    return output;
-  };
   
   // Calculates the running cost of all functions
   const calculateCost = (costObj: costProps) => {
@@ -217,7 +190,6 @@ const Home = (props: HomeProps) => {
       </div>
     </div>
   </>
-  
   );
 };
 

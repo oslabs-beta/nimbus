@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ProfileData, PasswordData, SettingsProps } from "../types";
 
-
-const Settings = (props: SettingsProps) => {
+const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 

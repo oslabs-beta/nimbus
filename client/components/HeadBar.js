@@ -24,7 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-// HeadBar component
 const HeadBar = ({ toggleTheme, theme }) => {
     const [checked, setChecked] = (0, react_1.useState)(false);
     // Toggle theme (light/dark)

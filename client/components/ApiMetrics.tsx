@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import LineChart from "./LineChart";
-import { SelectedApiMetrics, Metric, Message } from "../types";
-
-type Props = {
-  selectedApi: string
-  apiMetrics: any;
-};
+import { SelectedApiMetrics, Metric, Message, ApiMetricsProps } from "../types";
 
 // Display the metrics for the selected API
-const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
+const ApiMetrics: React.FC<ApiMetricsProps> = ({ selectedApi, apiMetrics }: ApiMetricsProps) => {
   const [message, setMessage] = useState<Message>('fetching data...');
   
   // If data not found, set message

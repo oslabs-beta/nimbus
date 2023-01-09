@@ -1,11 +1,8 @@
 import React, { useState } from "react";
+import { AuthProps } from "../types";
 
-interface Props {
-  swapAuthView: () => void
-  handleUserLogin: () => void
-}
 
-const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
+const Login: React.FC<AuthProps> = ({ swapAuthView, handleUserLogin }: AuthProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
