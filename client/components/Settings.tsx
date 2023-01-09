@@ -116,7 +116,6 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
       headers: { 
         'Content-Type': 'Application/JSON' ,
         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-        // refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
       },
       body: JSON.stringify(updatedProfileData),
     }).then(res => res.json())
@@ -146,7 +145,6 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
       headers: { 
         'Content-Type': 'Application/JSON' ,
         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-        // refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
       },
       body: JSON.stringify(updatedPasswordData),
     }).then(res => res.json())

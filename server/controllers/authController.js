@@ -27,9 +27,7 @@ const authController = {
                 const refreshToken = jwt.sign(res.locals.user, REFRESH_TOKEN_SECRET);
                 // Store refresh token in cookies
                 res.cookie('refreshToken', refreshToken, { secure: true, httpOnly: true, sameSite: 'strict' });
-                console.log('refresh token stored in cookies', refreshToken);
                 res.locals.accessToken = accessToken;
-                // res.locals.refreshToken = refreshToken; 
                 return next();
             }
             catch (err) {
@@ -62,10 +60,7 @@ const authController = {
                 }
                 else {
                     // If the user's token was not verified, check for refresh token
-                    // const { refresh } = req.headers;
                     const refreshToken = req.cookies.refreshToken;
-                    console.log('obtained refresh token stored in cookies', refreshToken);
-                    // const refreshToken = refresh && refresh.slice(7);
                     try {
                         // Verify if user's refresh token is valid
                         const user = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
