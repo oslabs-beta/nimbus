@@ -1,28 +1,7 @@
 import { APIGatewayClient, GetRestApisCommand, GetResourcesCommand, GetResourcesCommandInput, GetRestApisCommandOutput } from "@aws-sdk/client-api-gateway";
 import { Request, Response, NextFunction } from "express";
 import { LambdaClient, GetPolicyCommand, GetPolicyCommandOutput } from "@aws-sdk/client-lambda";
-
-type Endpoint = {
-    apiId: string;
-    apiMethod: string;
-    apiPath: string;
-}
-
-type LambdaAPIs = {
-    functionName: string;
-    endpoints: (Endpoint | undefined)[];
-}
-
-type API = {
-    apiName: (string | undefined);
-    apiId: (string | undefined);
-    paths: (string | undefined)[] | undefined;
-}
-
-type Relation = {
-    apiName: string | undefined;
-    endpoints: { [key: string]: { method: string, func: string }[] } | undefined;
-}
+import { Endpoint, LambdaAPIs, API, Relation } from "../../types";
 
 // Controller for the API Gateway endpoints
 const apiController = {
@@ -99,7 +78,6 @@ const apiController = {
                 } catch (err) {
                     console.log(err);
                 }
-                
             }
             // Declare array to store relations
             const relations = [];
@@ -137,9 +115,6 @@ const apiController = {
                 message: {errMessage: `Error getting API relations for the account`, err: err}
             });
         }
-
-       
-
     },
 
     // Get list of API endpoints

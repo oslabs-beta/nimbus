@@ -1,19 +1,8 @@
 import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataQuery, MetricDataResult} from "@aws-sdk/client-cloudwatch";
 import { LambdaClient, GetFunctionConfigurationCommand} from "@aws-sdk/client-lambda"
 import { Request, Response, NextFunction } from "express";
+import { subMetrics, Metrics } from "../../types";
 require('dotenv').config();
-
-interface subMetrics {
-  values: number[] | undefined
-  timestamp: Date[] | undefined
-}
-
-interface Metrics {
-  invocations: subMetrics,
-  errors: subMetrics,
-  throttles: subMetrics,
-  duration: subMetrics
-}
 
 const metricsController = {
   // Grab the Invocation, Error, Duration, and Throttle metrics for all functions
@@ -232,16 +221,16 @@ const metricsController = {
         // Parse data into an object where keys are function names and values are the metrics for each function
         const parseData = (arr: MetricDataResult[]) => {
           const allFuncMetrics = {};
-          // loop over elements in arr in chunks of 4
+          // :oop over elements in arr in chunks of 4
           for (let i = 0; i < arr.length; i+=4) {
-            // get function name
+            // Get function name
             const funcName = arr[i].Label!.split(' ')[0];
             const metricsByFunc = {};
-            // populate allMetricsObj
-            // loop over number of metrics
+            // Populate allMetricsObj
+            // Loop over number of metrics
             for (let j = 0; j < 4; j++) {
               const metricName = arr[i+j].Label!.split(' ')[2];
-              // declare func object
+              // Declare func object
               const singleMetric: subMetrics = {
                 values: arr[i+j].Values,
                 timestamp: arr[i+j].Timestamps
@@ -252,7 +241,7 @@ const metricsController = {
           }
           return allFuncMetrics;
         }
-        // metrics data for the functions page
+        // Metrics data for the functions page
         res.locals.eachFuncMetrics = parseData(response.MetricDataResults)
       }
       return next();

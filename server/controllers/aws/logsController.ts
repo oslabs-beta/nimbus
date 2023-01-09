@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 
 
 const logsController = {
-  // Get all logs for a given function
   async getAllLogs(req: Request, res: Response, next: NextFunction) {
     try {
       // Start a new CloudWatchLogsClient connection with provided region and credentials
