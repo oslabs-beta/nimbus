@@ -16,15 +16,6 @@ const client_sts_1 = require("@aws-sdk/client-sts");
 const userModel_1 = __importDefault(require("../../models/userModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-// interface User {
-//  firstName: string,
-//  lastName: string,
-//  email: string,
-//  password: string,
-//  refreshToken?: string,
-//  arn: string, 
-//  region: string, 
-// }
 const credentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_KEY,
@@ -38,8 +29,6 @@ const credentialsController = {
     getCredentials(req, res, next) {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('hitting credentials controller');
-            console.log(req.body.arn);
             const roleDetails = {
                 RoleArn: req.body.arn,
                 RoleSessionName: 'NimbusSession'
@@ -53,7 +42,6 @@ const credentialsController = {
                 const expiration = (_d = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _d === void 0 ? void 0 : _d.Expiration;
                 res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken, expiration };
                 res.locals.arnValidation = { validated: true };
-                console.log(res.locals.credentials);
                 return next();
             }
             // If the ARN user input is invalid, send info to front end so that field will be highlighted red
@@ -69,10 +57,8 @@ const credentialsController = {
     getCredentialsFromDB(req, res, next) {
         var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('hitting credentials controller');
             const { email } = res.locals;
             const user = yield userModel_1.default.findOne({ email });
-            console.log(user);
             if (user) {
                 res.locals.arn = user.arn;
                 res.locals.region = user.region;
@@ -88,7 +74,6 @@ const credentialsController = {
                 const secretAccessKey = (_b = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _b === void 0 ? void 0 : _b.SecretAccessKey;
                 const sessionToken = (_c = assumedRole === null || assumedRole === void 0 ? void 0 : assumedRole.Credentials) === null || _c === void 0 ? void 0 : _c.SessionToken;
                 res.locals.credentials = { accessKeyId, secretAccessKey, sessionToken };
-                console.log(res.locals.credentials);
                 return next();
             }
             catch (err) {
