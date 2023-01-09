@@ -41,7 +41,7 @@ const ApiRelations = ({ selectedApi, apiRelations }) => {
         : null;
     // Get endpoints data
     const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
-    // If endpoints is truthy, render api relations, else render message
+    // If endpoints exist, render api relations, else render message
     return (react_1.default.createElement("div", null, endpoints ?
         react_1.default.createElement("div", { className: 'flex flex-col gap-y-4' }, Object.keys(endpoints).map((key) => {
             return (react_1.default.createElement("div", { className: 'card w-96 bg-neutral shadow-xl', key: key },

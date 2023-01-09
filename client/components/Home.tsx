@@ -79,7 +79,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
         headers: {
           'Content-Type': 'Application/JSON',
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+          // refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
         },
       });
       res = await res.json();

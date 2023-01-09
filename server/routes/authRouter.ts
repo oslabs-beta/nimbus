@@ -13,7 +13,7 @@ router.post('/login', userController.verifyUser, authController.generateJWT, (re
         email: res.locals.email,
         success: res.locals.success,
         accessToken: res.locals.accessToken,
-        refreshToken: res.locals.refreshToken
+        // refreshToken: res.locals.refreshToken
     });   
 });
 
@@ -21,7 +21,7 @@ router.post('/login', userController.verifyUser, authController.generateJWT, (re
 router.post('/register', credentialsController.getCredentials, userController.createUser, authController.generateJWT, (req: Request, res: Response) => {
     return res.status(200).json({
         accessToken: res.locals.accessToken,
-        refreshToken: res.locals.refreshToken
+        // refreshToken: res.locals.refreshToken
     })
 })
 

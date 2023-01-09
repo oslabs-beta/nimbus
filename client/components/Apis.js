@@ -63,7 +63,7 @@ const Apis = () => {
                 headers: {
                     'Content-Type': 'Application/JSON',
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-                    refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+                    // refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
                 signal
             });
@@ -73,7 +73,7 @@ const Apis = () => {
             setApiRelations(apiRel);
         }
         catch (err) {
-            console.log("ERROR FROM GET API RELATIONS", err);
+            console.log("Error occurred grabbing API Relations: ", err);
         }
     });
     // Get api metrics and setApiMetrics
@@ -86,7 +86,7 @@ const Apis = () => {
                 headers: {
                     'Content-Type': 'Application/JSON',
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-                    refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+                    // refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
                 signal
             });
@@ -99,7 +99,7 @@ const Apis = () => {
             setApiMetrics(metrics);
         }
         catch (err) {
-            console.log("ERROR FROM GET API METRICS", err);
+            console.log("Error occurred grabbing API Metrics: ", err);
         }
     });
     // Invoke getApiRelations if apiRelations if falsy

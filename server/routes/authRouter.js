@@ -15,14 +15,14 @@ router.post('/login', userController_1.default.verifyUser, authController_1.defa
         email: res.locals.email,
         success: res.locals.success,
         accessToken: res.locals.accessToken,
-        refreshToken: res.locals.refreshToken
+        // refreshToken: res.locals.refreshToken
     });
 });
 // Handle post requests sent to /signup endpoint
 router.post('/register', credentialsController_1.default.getCredentials, userController_1.default.createUser, authController_1.default.generateJWT, (req, res) => {
     return res.status(200).json({
         accessToken: res.locals.accessToken,
-        refreshToken: res.locals.refreshToken
+        // refreshToken: res.locals.refreshToken
     });
 });
 router.get('/verifyToken', authController_1.default.verifyToken, (req, res) => {

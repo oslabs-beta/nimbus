@@ -13,7 +13,7 @@ const Functions = () => {
       headers: {
         'Content-Type': 'Application/JSON',
         authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
+        // refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
       },
     })
     response = await response.json()

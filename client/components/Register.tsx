@@ -85,7 +85,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
           handleUserLogin();
           // Save tokens to local storage
           localStorage.setItem('accessToken', result.accessToken);
-          localStorage.setItem('refreshToken', result.refreshToken);
+          // localStorage.setItem('refreshToken', result.refreshToken);
         }
       });
   };

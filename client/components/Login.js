@@ -62,7 +62,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
                 handleUserLogin();
                 // Save tokens to local storage
                 localStorage.setItem("accessToken", result.accessToken);
-                localStorage.setItem("refreshToken", result.refreshToken);
+                // localStorage.setItem("refreshToken", result.refreshToken)
             }
         });
     };
