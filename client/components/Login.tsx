@@ -5,7 +5,6 @@ interface Props {
   handleUserLogin: () => void
 }
 
-// Login component
 const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,8 +51,7 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
       }
     });
   }
-
-
+  
   return (
     <div className="hero-content flex-col lg:flex-row-reverse px-12">
       <div className="text-center lg:text-left lg:ml-5">

@@ -70,7 +70,6 @@ const Apis = () => {
             res = yield res.json();
             // const apiRel = res.apiRelations || ['unable to fetch api relations'];
             const apiRel = res.apiRelations || undefined;
-            console.log("res.apiRelations", res.apiRelations);
             setApiRelations(apiRel);
         }
         catch (err) {
@@ -109,7 +108,6 @@ const Apis = () => {
         const signal = controller.signal;
         if (!apiRelations) {
             getApiRelations(signal);
-            console.log("getApiRelations invoked");
         }
         return () => {
             controller.abort();

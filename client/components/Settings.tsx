@@ -1,33 +1,6 @@
-import React, { useEffect, useState, useRef, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ProfileData, PasswordData, SettingsProps } from "../types";
 
-interface ProfileData {
-  firstName: String;
-  lastName: String;
-  arn: String;
-  region: String;
-}
-
-interface PasswordData {
-  password: String;
-  confirmation: String;
-}
-
-type SettingsProps = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  confirmation: string;
-  arn: string;
-  region: string;
-  setEmail: Dispatch<SetStateAction<string>>;
-  setFirstName: Dispatch<SetStateAction<string>>;
-  setLastName: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
-  setConfirmation: Dispatch<SetStateAction<string>>;
-  setArn: Dispatch<SetStateAction<string>>;
-  setRegion: Dispatch<SetStateAction<string>>;
-}
 
 const Settings = (props: SettingsProps) => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -149,12 +122,10 @@ const Settings = (props: SettingsProps) => {
       body: JSON.stringify(updatedProfileData),
     }).then(res => res.json())
       .then((result) => {
-        console.log('email form login:', result);
         if (result.errMessage) {
           handleError();
           highlightInput(result.errors);
         } else {
-          console.log('user info:', result);
           handleSuccess();
           props.setFirstName(result.firstName);
           props.setLastName(result.lastName);
@@ -181,7 +152,6 @@ const Settings = (props: SettingsProps) => {
       body: JSON.stringify(updatedPasswordData),
     }).then(res => res.json())
       .then((result) => {
-        console.log('email form login:', result);
         if (result.errMessage) {
           handleError();
           highlightInput(result.errors);

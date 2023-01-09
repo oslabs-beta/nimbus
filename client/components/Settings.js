@@ -128,13 +128,11 @@ const Settings = (props) => {
             body: JSON.stringify(updatedProfileData),
         }).then(res => res.json())
             .then((result) => {
-            console.log('email form login:', result);
             if (result.errMessage) {
                 handleError();
                 highlightInput(result.errors);
             }
             else {
-                console.log('user info:', result);
                 handleSuccess();
                 props.setFirstName(result.firstName);
                 props.setLastName(result.lastName);
@@ -160,7 +158,6 @@ const Settings = (props) => {
             body: JSON.stringify(updatedPasswordData),
         }).then(res => res.json())
             .then((result) => {
-            console.log('email form login:', result);
             if (result.errMessage) {
                 handleError();
                 highlightInput(result.errors);

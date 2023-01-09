@@ -31,7 +31,6 @@ const react_daisyui_1 = require("react-daisyui");
 const UserAuth_1 = __importDefault(require("./UserAuth"));
 const UserDashboard_1 = __importDefault(require("./UserDashboard"));
 const HeadBar_1 = __importDefault(require("../components/HeadBar"));
-// App (root) component
 const App = () => {
     const [userLoggedIn, setUserLoggedIn] = (0, react_1.useState)(false);
     const [theme, setTheme] = react_1.default.useState('myThemeDark');

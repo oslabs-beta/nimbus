@@ -17,7 +17,6 @@ const DonutChart = (props) => {
                 {
                     data: props.rawData.data,
                     borderWidth: [0],
-                    // borderColor: ['#828DF8'],
                     backgroundColor: colors,
                 }
             ]

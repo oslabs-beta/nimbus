@@ -1,23 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LineChart from './LineChart'
 import DonutChart from './DonutChart'
+import { RawData, d3Data, costProps, HomeProps } from "../types";
 
-type RawData = {
-  y: number,
-  x: string,
-}; 
-
-type costProps = {
-  memory: number[],
-  invocations: number[],
-  duration: number[]
-}
-
-type d3Data = Array<RawData>;
-
-type HomeProps = {
-  firstName: string;
-}
 
 const Home = (props: HomeProps) => {
   const [invocationsData, setInvocations] = useState<d3Data>([]);

@@ -53,13 +53,6 @@ const Function = (props) => {
     // Create a function to convert our raw data into a format that ChartJS can use
     const convertToChartJSStructure = (rawData) => {
         const output = [];
-        // for (let key in rawData.values) {
-        //   const subElement: RawData = {
-        //     y: rawData.values[key],
-        //     x: new Date(rawData.timestamp[key]).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"}),
-        //   };
-        //   output.push(subElement);
-        // }
         for (let i = rawData.values.length - 1; i >= 0; i--) {
             const subElement = {
                 y: rawData.values[i],

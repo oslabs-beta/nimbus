@@ -2,10 +2,7 @@ import React from 'react';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2'
 import chroma from "chroma-js"
-
-type DonutChartProps = {
-    rawData: {labels?: string[], data?: number[]}
-}
+import { DonutChartProps } from "../types";
 
 const DonutChart = (props: DonutChartProps) => {
 
@@ -21,7 +18,6 @@ const DonutChart = (props: DonutChartProps) => {
                 {
                     data: props.rawData.data,
                     borderWidth: [0],
-                    // borderColor: ['#828DF8'],
                     backgroundColor: colors,
                 }
         

@@ -3,16 +3,8 @@ import "chartjs-adapter-moment";
 import { Chart, CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend,} from "chart.js";
 import { Line } from "react-chartjs-2";
 import 'chartjs-adapter-moment';
+import { RawData, LineChartProps } from "../types";
 
-type RawData = {
-  y: number,
-  x: string,
-}; 
-
-type LineChartProps = {
-  rawData : Array<RawData>,
-  label : string,
-};
 
 const LineChart = (props: LineChartProps) => {
   
@@ -47,11 +39,6 @@ const LineChart = (props: LineChartProps) => {
     <Line data = {data} options = {{
       responsive: true,
       maintainAspectRatio: false,
-      // scales: {
-      //   x: {
-      //     type: 'time',
-      //   }
-      // }
     }}/>
   );
 };

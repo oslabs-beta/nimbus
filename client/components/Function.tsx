@@ -1,26 +1,8 @@
 import React, { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import moment from "moment";
+import { FunctionProps, Data, RawData, d3Data } from "../types";
 
-type FunctionProps = {
-  funcName: string
-  invocations: Data
-  errors: Data
-  throttles: Data
-  duration: Data
-}
-
-type Data = {
-  values: Array<number>,
-  timestamp: Array<number>
-}
-
-type RawData = {
-  y: number,
-  x: string,
-}; 
-
-type d3Data = Array<RawData>;
 
 // Component to display a single function's metrics
 const Function = (props: FunctionProps) => {
@@ -48,13 +30,7 @@ const Function = (props: FunctionProps) => {
   // Create a function to convert our raw data into a format that ChartJS can use
   const convertToChartJSStructure = (rawData: Data) => {
     const output = [];
-    // for (let key in rawData.values) {
-    //   const subElement: RawData = {
-    //     y: rawData.values[key],
-    //     x: new Date(rawData.timestamp[key]).toLocaleString([], {year: "2-digit", month: "numeric", day: "numeric"}),
-    //   };
-    //   output.push(subElement);
-    // }
+    
     for (let i = rawData.values.length - 1; i >= 0; i--) {
       const subElement: RawData = {
         y: rawData.values[i],
