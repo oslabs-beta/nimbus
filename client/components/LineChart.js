@@ -28,11 +28,6 @@ const LineChart = (props) => {
     return (react_1.default.createElement(react_chartjs_2_1.Line, { data: data, options: {
             responsive: true,
             maintainAspectRatio: false,
-            // scales: {
-            //   x: {
-            //     type: 'time',
-            //   }
-            // }
         } }));
 };
 exports.default = LineChart;

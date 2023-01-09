@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
-type Method = {
-  func: string,
-  method: string,
-}
-
-type Props = {
-  selectedApi: string
-  apiRelations: Array<{apiName: string, endpoints: {[key: string]: Method[]}}> | null | undefined;
-};
-
-type Message = 'fetching data...' | 'data not found';
+import { Method, Message, ApiRelationsProps } from "../types";
 
 // Display the relations for the selected API: routes, methods, and functions.
-const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => {
+const ApiRelations: React.FC<ApiRelationsProps> = ({ selectedApi, apiRelations }: ApiRelationsProps) => {
   const [message, setMessage] = useState<Message>('fetching data...')
 
   // If data not found, set message
@@ -33,10 +22,8 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
 
   // Get endpoints data
   const endpoints = selectedApiRelations && selectedApiRelations.length > 0 ? selectedApiRelations[0].endpoints : null;
-  
-  console.log("endpoints", endpoints)
- 
-  // If endpoints is truthy, render api relations, else render message
+   
+  // If endpoints exist, render api relations, else render message
   return (
     <div>
       {endpoints ? 
@@ -57,7 +44,6 @@ const ApiRelations: React.FC<Props> = ({ selectedApi, apiRelations }: Props) => 
                     &#x3BB; : {method.func}
                   </div> 
                   </div>
-                  
                 </li>
               );
             })}

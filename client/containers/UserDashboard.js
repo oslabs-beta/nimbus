@@ -55,12 +55,7 @@ const UserDashboard = ({ handleUserLogin, toggleTheme }) => {
     const [confirmation, setConfirmation] = (0, react_1.useState)('');
     const [arn, setArn] = (0, react_1.useState)('');
     const [region, setRegion] = (0, react_1.useState)('');
-    //   const swapAuthView = () => {
-    //     setShowLogin((showLogin) => !showLogin);
-    //   }
     const getData = () => __awaiter(void 0, void 0, void 0, function* () {
-        // const refreshToken = localStorage.getItem('refreshToken')
-        // if (refreshToken) request.setHeader('refresh', `BEARER ${refreshToken}`);
         const data = yield fetch('/verifyToken', {
             method: 'GET',
             headers: {
@@ -70,11 +65,9 @@ const UserDashboard = ({ handleUserLogin, toggleTheme }) => {
             },
         });
         const res = yield data.json();
-        console.log(res, 'RESPONSE FROM VERIFYING');
         if (!res.accessToken) {
             handleUserLogin();
         }
-        console.log(res);
         setData(res);
     });
     const getUserDetails = () => __awaiter(void 0, void 0, void 0, function* () {

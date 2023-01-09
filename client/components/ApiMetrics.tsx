@@ -1,24 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import LineChart from "./LineChart";
-
-type Props = {
-  selectedApi: string
-  apiMetrics: any;
-};
-
-interface SelectedApiMetrics {
-  Latency: { timestamps: Date[], values: number[] },
-  Count: { timestamps: Date[], values: number[] },
-  '5XXError': { timestamps: Date[], values: number[] },
-  '4XXError': { timestamps: Date[], values: number[] }
-}
-
-type Metric = 'Latency' | 'Count' | '5XXError' | '4XXError';
-
-type Message = 'fetching data...' | 'data not found';
+import { SelectedApiMetrics, Metric, Message, ApiMetricsProps } from "../types";
 
 // Display the metrics for the selected API
-const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
+const ApiMetrics: React.FC<ApiMetricsProps> = ({ selectedApi, apiMetrics }: ApiMetricsProps) => {
   const [message, setMessage] = useState<Message>('fetching data...');
   
   // If data not found, set message
@@ -71,15 +56,11 @@ const ApiMetrics: React.FC<Props> = ({ selectedApi, apiMetrics }: Props) => {
     return lineChartElements;
   }
 
-  
-
   let chartElements;
   // Make chart if there is a selected API
   if (selectedApi) {
-    console.log("apiMetrics.selectedApi", apiMetrics[selectedApi])
     chartElements = makeCharts(apiMetrics[selectedApi]);
   }
-
 
   return (
     <div>

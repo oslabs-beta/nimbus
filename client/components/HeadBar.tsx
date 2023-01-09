@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
+import { HeadBarProps } from "../types";
 
-interface Props {
-    toggleTheme: () => void;
-    theme: String;
-}
-
-// HeadBar component
-const HeadBar: React.FC<Props> = ({ toggleTheme, theme }: Props) => {
+const HeadBar: React.FC<HeadBarProps> = ({ toggleTheme, theme }: HeadBarProps) => {
 
     const [checked, setChecked] = useState(false);
 

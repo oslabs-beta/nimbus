@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const LineChart_1 = __importDefault(require("./LineChart"));
 const DonutChart_1 = __importDefault(require("./DonutChart"));
+const types_1 = require("../types");
 const Home = (props) => {
     const [invocationsData, setInvocations] = (0, react_1.useState)([]);
     const [errorsData, setErrors] = (0, react_1.useState)([]);
@@ -68,19 +69,19 @@ const Home = (props) => {
             });
             res = yield res.json();
             // Convert the data to a format that Chart JS can use and set the states to the new data
-            setInvocations(convertToChartJSStructure({
+            setInvocations((0, types_1.convertToChartJSStructure)({
                 values: res.allFuncMetrics.invocations.values,
                 timestamp: res.allFuncMetrics.invocations.timestamp
             }));
-            setErrors(convertToChartJSStructure({
+            setErrors((0, types_1.convertToChartJSStructure)({
                 values: res.allFuncMetrics.errors.values,
                 timestamp: res.allFuncMetrics.errors.timestamp
             }));
-            setThrottles(convertToChartJSStructure({
+            setThrottles((0, types_1.convertToChartJSStructure)({
                 values: res.allFuncMetrics.throttles.values,
                 timestamp: res.allFuncMetrics.throttles.timestamp
             }));
-            setDurations(convertToChartJSStructure({
+            setDurations((0, types_1.convertToChartJSStructure)({
                 values: res.allFuncMetrics.duration.values,
                 timestamp: res.allFuncMetrics.duration.timestamp
             }));
@@ -132,32 +133,6 @@ const Home = (props) => {
             console.log(error);
         }
     });
-    // The data retrieved from the back end is converted to an array of objects to be compatible with D3
-    const convertToChartJSStructure = (rawData) => {
-        const output = [];
-        for (let i = rawData.values.length - 1; i >= 0; i--) {
-            const subElement = {
-                y: rawData.values[i],
-                x: new Date(rawData.timestamp[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
-            };
-            output.push(subElement);
-            // Get the date of the current iteration
-            let date = new Date(rawData.timestamp[i]);
-            // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
-            if ((date.getTime() + 1) < (new Date(rawData.timestamp[i - 1])).getTime()) {
-                date.setDate(date.getDate() + 1);
-                while (date.getTime() < (new Date(rawData.timestamp[i - 1])).getTime()) {
-                    const subElement = {
-                        y: 0,
-                        x: new Date(date).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
-                    };
-                    output.push(subElement);
-                    date.setDate(date.getDate() + 1);
-                }
-            }
-        }
-        return output;
-    };
     // Calculates the running cost of all functions
     const calculateCost = (costObj) => {
         let totalCost = 0;

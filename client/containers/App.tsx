@@ -5,7 +5,6 @@ import UserAuth from './UserAuth';
 import UserDashboard from './UserDashboard';
 import HeadBar from '../components/HeadBar'
 
-// App (root) component
 const App = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [theme, setTheme] = React.useState('myThemeDark');

@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const Register = ({ swapAuthView, handleUserLogin, }) => {
+const Register = ({ swapAuthView, handleUserLogin }) => {
     const [email, setEmail] = (0, react_1.useState)('');
     const [firstName, setFirstName] = (0, react_1.useState)('');
     const [lastName, setLastName] = (0, react_1.useState)('');

@@ -79,7 +79,6 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
     let chartElements;
     // Make chart if there is a selected API
     if (selectedApi) {
-        console.log("apiMetrics.selectedApi", apiMetrics[selectedApi]);
         chartElements = makeCharts(apiMetrics[selectedApi]);
     }
     return (react_1.default.createElement("div", null,

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ApiMetrics from './ApiMetrics';
 import ApiRelations from './ApiRelations';
-
-type View = 'metrics' | 'relations'
+import { View } from "../types";
 
 const Apis = () => {
   const [apiRelations, setApiRelations] = useState(null);
@@ -39,11 +38,10 @@ const Apis = () => {
       res = await res.json();
       // const apiRel = res.apiRelations || ['unable to fetch api relations'];
       const apiRel = res.apiRelations || undefined;
-      console.log("res.apiRelations", res.apiRelations)
       setApiRelations(apiRel);
     }
     catch(err){
-      console.log("ERROR FROM GET API RELATIONS", err);
+      console.log("Error occurred grabbing API Relations: ", err);
     }
   }
 
@@ -70,7 +68,7 @@ const Apis = () => {
       setApiMetrics(metrics);
     }
     catch(err){
-      console.log("ERROR FROM GET API METRICS", err);
+      console.log("Error occurred grabbing API Metrics: ", err);
     }
   }
 
@@ -80,7 +78,6 @@ const Apis = () => {
     const signal = controller.signal;
     if (!apiRelations) {
       getApiRelations(signal);
-      console.log("getApiRelations invoked")
     }
     
     return () => {

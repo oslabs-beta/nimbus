@@ -1,24 +1,7 @@
 import React, { useState } from 'react';
+import { UserData, AuthProps } from "../types";
 
-interface Props {
-  swapAuthView: () => void;
-  handleUserLogin: () => void;
-}
-
-interface UserData {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  confirmation: String;
-  arn: String;
-  region: String;
-}
-
-const Register: React.FC<Props> = ({
-  swapAuthView,
-  handleUserLogin,
-}: Props) => {
+const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthProps) => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
