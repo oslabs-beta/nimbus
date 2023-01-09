@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_cloudwatch_logs_1 = require("@aws-sdk/client-cloudwatch-logs");
 const logsController = {
-    // Get all logs for a given function
     getAllLogs(req, res, next) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {

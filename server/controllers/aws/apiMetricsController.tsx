@@ -1,13 +1,4 @@
-import { CloudWatchClient, 
-         GetMetricDataCommand, 
-         ListDashboardsCommand, 
-         GetMetricDataCommandInput, 
-         GetMetricDataCommandOutput,
-         MetricDataQuery, 
-         MetricDataResult
-        } from "@aws-sdk/client-cloudwatch";
-
-
+import { CloudWatchClient, GetMetricDataCommand, ListDashboardsCommand, GetMetricDataCommandInput, GetMetricDataCommandOutput, MetricDataQuery, MetricDataResult } from "@aws-sdk/client-cloudwatch";
 import { Request, Response, NextFunction } from "express";
 require('dotenv').config();
 
@@ -33,7 +24,6 @@ const apiMetricsController = {
         // Declare obj to store all the metrics of the current API
         const currApiMetrics = {};
    
-      
         for (let metric of metrics) {
           // Obtain input for GetMetricDataCommand using helper function: getCommandInput
           const metricParams: GetMetricDataCommandInput = getCommandInput(
@@ -72,7 +62,6 @@ const apiMetricsController = {
         }
         allApiMetrics[apiName] = currApiMetrics;
     }
-    
     res.locals.allApiMetrics = allApiMetrics
     return next();
   }
