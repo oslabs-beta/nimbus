@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Chart , CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import React from "react";
+import "chartjs-adapter-moment";
+import { Chart, CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend,} from "chart.js";
 import { Line } from "react-chartjs-2";
+import 'chartjs-adapter-moment';
 
 type RawData = {
   y: number,
@@ -16,6 +18,7 @@ const LineChart = (props: LineChartProps) => {
   
   // Registers plugins to be applied on all charts
   Chart.register(
+    TimeScale,
     CategoryScale,
     LinearScale,
     PointElement,
@@ -39,10 +42,17 @@ const LineChart = (props: LineChartProps) => {
       },
     ]
   };
-  
+
   return (
-    <Line data = {data} 
-    options={{responsive: true, maintainAspectRatio: false}}/>
+    <Line data = {data} options = {{
+      responsive: true,
+      maintainAspectRatio: false,
+      // scales: {
+      //   x: {
+      //     type: 'time',
+      //   }
+      // }
+    }}/>
   );
 };
 

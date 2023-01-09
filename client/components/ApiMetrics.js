@@ -48,12 +48,26 @@ const ApiMetrics = ({ selectedApi, apiMetrics }) => {
             const timeValArr = [];
             const currMetricsObj = selectedApiMetrics[metric];
             // Loop over data points: value and timestamp
-            for (let i in currMetricsObj.values) {
+            for (let i = currMetricsObj.values.length - 1; i >= 0; i--) {
                 const subElement = {
                     y: currMetricsObj.values[i],
                     x: new Date(currMetricsObj.timestamps[i]).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" }),
                 };
                 timeValArr.push(subElement);
+                // Get the date of the current iteration
+                let date = new Date(currMetricsObj.timestamps[i]);
+                // If the next day is less than the next date in our iteration push a value of 0 and the next day into our object
+                if ((date.getTime() + 1) < (new Date(currMetricsObj.timestamps[i - 1])).getTime()) {
+                    date.setDate(date.getDate() + 1);
+                    while (date.getTime() < (new Date(currMetricsObj.timestamps[i - 1])).getTime()) {
+                        const subElement = {
+                            y: 0,
+                            x: new Date(date).toLocaleString([], { year: "2-digit", month: "numeric", day: "numeric" })
+                        };
+                        timeValArr.push(subElement);
+                        date.setDate(date.getDate() + 1);
+                    }
+                }
             }
             // Add lineChart element to array
             lineChartElements.push(react_1.default.createElement("div", { key: metric, className: "card w-72 bg-neutral shadow-xl" },
