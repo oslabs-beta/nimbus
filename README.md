@@ -47,6 +47,20 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 <a href="#"><img src="./assets/aws-logo-color.png" alt="AWS" title="AWS" align="center" height="30" /></a> <br>
 
 
+### How To Contribute 
+Nimbus is an open-source product supported by the tech accelerator OS Labs. We welcome and appreciate contributions from the community. If you are interested in contributing to the development of our AWS serverless component monitoring and visualization tool, here are a few ways to get started:
+
+1. <b> Fork the repository: </b> Go to the <a href="https://github.com/oslabs-beta/nimbus"> main repository </a> on GitHub and click the “Fork” button to create a copy of the code under your own account. This will allow you to make changes to the code without affecting the original repository.
+2. <b> Set up your development environment: </b> Follow the instructions in the README file to set up your local development environment. This will typically involve installing dependencies, setting up a local development server, and configuring any necessary secrets or API keys.
+3. <b> Choose an issue to work on: </b> Browse the <a href="https://github.com/oslabs-beta/nimbus/issues"> open issues </a> in the repository and pick one that interests you. Alternatively, you can also propose your own changes by opening a new issue and describing the feature or improvement you would like to see.
+4. <b> Create a branch: </b> Once you have chosen an issue to work on, create a new branch in your fork of the repository. Name the branch something descriptive, such as “add-feature-x” or “fix-bug-y”. This will allow you to work on your changes without affecting the main branch of the repository.
+5. <b>  Make your changes: </b> Make the necessary changes to the code in your branch. Be sure to follow the repository’s style guidelines and best practices, and make sure to test your changes thoroughly before submitting them.
+6. <b> Commit and push your changes: </b> Once you are satisfied with your changes, commit them to your branch and push them to your fork of the repository.
+7. <b> Open a pull request: </b> Go to the main repository on GitHub and click the “Compare & pull request” button. Describe the changes you have made and why they are necessary. Then, submit the pull request for review.
+
+A member of the repository’s maintainer team will review your pull request and either merge it into the codebase or provide feedback for changes that need to be made. Thank you for considering contributing to our project!
+
+
 ### License
 Distributed under the MIT License
 
