@@ -1,24 +1,13 @@
-// GOAL: get the metrics for each API and store in object
-
-import { CloudWatchClient, 
-         GetMetricDataCommand, 
-         ListDashboardsCommand, 
-         GetMetricDataCommandInput, 
-         GetMetricDataCommandOutput,
-         MetricDataQuery, 
-         MetricDataResult
-        } from "@aws-sdk/client-cloudwatch";
-
-
+import { CloudWatchClient, GetMetricDataCommand, ListDashboardsCommand, GetMetricDataCommandInput, GetMetricDataCommandOutput, MetricDataQuery, MetricDataResult } from "@aws-sdk/client-cloudwatch";
 import { Request, Response, NextFunction } from "express";
 require('dotenv').config();
 
-
+// Controller for getting metrics for all APIs
 const apiMetricsController = {
-
   // Gets metrics for each API in res.locals.apiList (from apiController.getAPIList)
   getAPIMetrics: async (req: Request, res: Response, next: NextFunction) => {
-    // start a new CloudWatch client with provided credentials and region
+    
+    // Create a new CloudWatch client with provided credentials and region
     const cwClient = new CloudWatchClient({
       region: res.locals.region,
       credentials: res.locals.credentials,
@@ -29,6 +18,7 @@ const apiMetricsController = {
 
     const metrics = ['Latency', 'Count', '5XXError', '4XXError']
 
+    // For each API in res.locals.apiList, get metrics and store in allApiMetrics
     for (let apiObj of res.locals.apiList) {
         const { apiName } = apiObj;
         // Declare obj to store all the metrics of the current API
@@ -52,7 +42,7 @@ const apiMetricsController = {
               values?: any;
             }
 
-            // Declare an obj to store the timestamps and values aka x and y values for our graph
+            // Declare an object to store the timestamps and values
             const timeValObj: TimeValObj = {}
             const results = currMetricData?.MetricDataResults;
             if (results) {
@@ -61,8 +51,8 @@ const apiMetricsController = {
             }
             (currApiMetrics as any)[metric] = timeValObj;
           }
+          // If error, invoke next middleware function
           catch (err) {
-            console.log(err);
             next({
               log: "Error caught in apiMetricsController.getAPIMetrics middleware function",
               status: 500,
@@ -70,18 +60,14 @@ const apiMetricsController = {
           });
           }
         }
-
         allApiMetrics[apiName] = currApiMetrics;
     }
-
-    // console.log("allApiMetrics", allApiMetrics);
-    
     res.locals.allApiMetrics = allApiMetrics
     return next();
   }
 }
 
-
+// Helper function to obtain input for GetMetricDataCommand
 const getCommandInput = (apiName:string, metricName:string, stat='Sum') => {
 
   if (metricName === 'Count') {
@@ -106,7 +92,7 @@ const getCommandInput = (apiName:string, metricName:string, stat='Sum') => {
           MetricName: metricName,
           Dimensions: [{ Name: 'ApiName', Value: apiName }],
         },
-        Period: 60,
+        Period: 60 * 60 * 24,
         Stat: stat,
       },
     },

@@ -29,20 +29,14 @@ const Logs = () => {
     logs: '/dashboard/filteredLogs',
   };
 
-  // Change options
+  // Change period
   const changePeriod = (e: any) => {
     if (e.target.value !== period) {
       setPeriod(e.target.value);
     }
   };
 
-  // const toggleActive = (index: any) => {
-  //   setButtonState({
-  //     ...buttonState,
-  //     activeObject: buttonState.objects[index],
-  //   });
-  // };
-
+  // Change search keyword
   const changeSearch = (e: any) => {
     if (e.target.value === 'allLogs') {
       setSearch('');
@@ -116,7 +110,10 @@ const Logs = () => {
     } catch (err) {
       console.log('ERROR FROM GET LOGS', err);
     }
-  };
+    catch(err){
+      console.log("ERROR FROM GET LOGS", err);
+    }
+  }
 
   // On component mount: get all lambda functions
   useEffect(() => {

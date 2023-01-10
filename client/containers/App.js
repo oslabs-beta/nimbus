@@ -40,6 +40,7 @@ const App = () => {
     const toggleTheme = () => {
         setTheme(theme === 'myThemeDark' ? 'myThemeLight' : 'myThemeDark');
     };
+    // If user is logged in, render UserDashboard component, otherwise render UserAuth component
     return (react_1.default.createElement(react_daisyui_1.Theme, { dataTheme: theme },
         react_1.default.createElement(HeadBar_1.default, { toggleTheme: toggleTheme, theme: theme }),
         react_1.default.createElement("div", { className: 'app' }, userLoggedIn ? (react_1.default.createElement(UserDashboard_1.default, { handleUserLogin: handleUserLogin, toggleTheme: toggleTheme })) : (react_1.default.createElement(UserAuth_1.default, { handleUserLogin: handleUserLogin, toggleTheme: toggleTheme })))));

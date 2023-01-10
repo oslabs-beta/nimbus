@@ -1,27 +1,11 @@
 import React, { useEffect, useState } from "react";
 import LineChart from "./LineChart";
+import moment from "moment";
+import { FunctionProps, Data, RawData, chartJSData } from "../types";
+import { convertToChartJSStructure } from "../types";
 
-type FunctionProps = {
-  funcName: string
-  invocations: Data
-  errors: Data
-  throttles: Data
-  duration: Data
-}
-
-type Data = {
-  values: Array<number>,
-  timestamp: Array<number>
-}
-
-type RawData = {
-  y: number,
-  x: string,
-}; 
-
-type d3Data = Array<RawData>;
-
-const Function = (props: FunctionProps) => {
+// Component to display a single function's metrics
+const Function: React.FC<FunctionProps> = (props: FunctionProps) => {
   const [isClicked, setIsClicked] = useState(false)
 
   const [totalInvocations, setTotalInvocations] = useState(0)
@@ -29,32 +13,21 @@ const Function = (props: FunctionProps) => {
   const [totalThrottles, setTotalThrottles] = useState(0)
   const [totalDuration, setTotalDuration] = useState(0)
 
-  const [invocations, setInvocations] = useState<d3Data>([])
-  const [errors, setErrors] = useState<d3Data>([])
-  const [throttles, setThrottles] = useState<d3Data>([])
-  const [duration, setDuration] = useState<d3Data>([])
+  const [invocations, setInvocations] = useState<chartJSData>([])
+  const [errors, setErrors] = useState<chartJSData>([])
+  const [throttles, setThrottles] = useState<chartJSData>([])
+  const [duration, setDuration] = useState<chartJSData>([])
 
 
   useEffect(() => {
     // If our metric array has at least one value, accumulate the values
-    if (props.invocations.values[0]) setTotalInvocations(props.invocations.values.reduce((acc: number, curr: number):number => acc + curr))
-    if (props.errors.values[0]) setTotalErrors(props.errors.values.reduce((acc: number, curr: number):number => acc + curr))
-    if (props.throttles.values[0]) setTotalThrottles(props.throttles.values.reduce((acc: number, curr: number):number => acc + curr))
-    if (props.duration.values[0]) setTotalDuration(Math.ceil(props.duration.values.reduce((acc: number, curr: number):number => acc + curr)))
-  })
+    if (props.invocations.values.length > 0) setTotalInvocations(props.invocations.values.reduce((acc: number, curr: number):number => acc + curr))
+    if (props.errors.values.length > 0) setTotalErrors(props.errors.values.reduce((acc: number, curr: number):number => acc + curr))
+    if (props.throttles.values.length > 0) setTotalThrottles(props.throttles.values.reduce((acc: number, curr: number):number => acc + curr))
+    if (props.duration.values.length > 0) setTotalDuration(Math.ceil(props.duration.values.reduce((acc: number, curr: number):number => acc + curr)/props.duration.values.length))
+  }, [])
 
-  const convertToChartJSStructure = (rawData: any) => {
-    const output = [];
-    for (let key in rawData.values) {
-      const subElement: RawData = {
-        y: rawData.values[key],
-        x: new Date(rawData.timestamp[key]).toLocaleString([], {year: "numeric", month: "numeric", day: "numeric", hour: '2-digit', minute:'2-digit'}),
-      };
-      output.push(subElement);
-    }
-    return output;
-  };
-
+  // Generate the chart when the user clicks on the row
   const generateChart = () => {
     if (!isClicked) {
       setInvocations(convertToChartJSStructure(props.invocations))
@@ -69,26 +42,26 @@ const Function = (props: FunctionProps) => {
   
   return (
     <>
-      <tr className="hover:brightness-90" onClick={generateChart}>
-        <td className="bg-neutral text-center">{props.funcName}</td>
-        <td className="bg-neutral text-center">{totalInvocations}</td>
-        <td className="bg-neutral text-center">{totalErrors}</td>
-        <td className="bg-neutral text-center">{totalThrottles}</td>
-        <td className="bg-neutral text-center">{totalDuration}</td>
+      <tr className="hover:brightness-90 w-[100%]"onClick={generateChart}>
+        <td className="bg-neutral text-center w-[20%]">{props.funcName}</td>
+        <td className="bg-neutral text-center w-[20%]">{totalInvocations}</td>
+        <td className="bg-neutral text-center w-[20%]">{totalErrors}</td>
+        <td className="bg-neutral text-center w-[20%]">{totalThrottles}</td>
+        <td className="bg-neutral text-center w-[20%]">{totalDuration}</td>
       </tr>
       {isClicked && 
-        <tr>
-          <td className="bg-neutral"></td>
-          <td className="bg-neutral">
+        <tr className="w-[100%]">
+          <td className="bg-neutral w-[20%]"></td>
+          <td className="bg-neutral w-[20%]">
             <LineChart rawData={invocations} label='Invocations'/>
           </td>
-          <td className="bg-neutral">
+          <td className="bg-neutral w-[20%]">
             <LineChart rawData={errors} label='Errors'/>
           </td>
-          <td className="bg-neutral">
+          <td className="bg-neutral w-[20%]">
             <LineChart rawData={throttles} label='Throttles'/>
           </td>
-          <td className="bg-neutral">
+          <td className="bg-neutral w-[20%]">
             <LineChart rawData={duration} label='Duration'/>
           </td>
         </tr>}

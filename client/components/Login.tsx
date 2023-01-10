@@ -1,12 +1,8 @@
 import React, { useState } from "react";
+import { AuthProps } from "../types";
 
-interface Props {
-  swapAuthView: () => void
-  handleUserLogin: () => void
-}
 
-const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
-  // const [username, setUsername] = useState("");
+const Login: React.FC<AuthProps> = ({ swapAuthView, handleUserLogin }: AuthProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,7 +11,6 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
   const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
-
   const updatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
@@ -25,6 +20,7 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
     setErrorMessage(err)
   }
 
+  // Send user credentials to server and receive access and refresh tokens
   const submitForm = (e:any) => {
     e.preventDefault();
     const credentials = {
@@ -46,18 +42,20 @@ const Login: React.FC<Props> = ({ swapAuthView, handleUserLogin }: Props) => {
       else {
         console.log('user info:', result);
         handleUserLogin();
+        // Save tokens to local storage
         localStorage.setItem("accessToken", result.accessToken)
         localStorage.setItem("refreshToken", result.refreshToken)
       }
     });
   }
-
-
+  
   return (
     <div className="hero-content flex-col lg:flex-row-reverse px-12">
       <div className="text-center lg:text-left lg:ml-5">
         <h1 className="text-5xl font-bold">Login now!</h1>
-        <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+        <p className="py-6">
+          Welcome to nimbus, the ultimate monitoring and visualization tool for AWS Lambda. 
+        </p>
       </div>
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <div className="card-body">

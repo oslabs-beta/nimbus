@@ -1,53 +1,31 @@
-
-//NEED TO CONVERT FILE TO TYPESCRIPT
 import { APIGatewayClient, GetRestApisCommand, GetResourcesCommand, GetResourcesCommandInput, GetRestApisCommandOutput } from "@aws-sdk/client-api-gateway";
 import { Request, Response, NextFunction } from "express";
 import { LambdaClient, GetPolicyCommand, GetPolicyCommandOutput } from "@aws-sdk/client-lambda";
+import { Endpoint, LambdaAPIs, API, Relation } from "../../types";
 
-type Endpoint = {
-    apiId: string;
-    apiMethod: string;
-    apiPath: string;
-}
-type LambdaAPIs = {
-    functionName: string;
-    endpoints: (Endpoint | undefined)[];
-}
-
-type API = {
-    apiName: (string | undefined);
-    apiId: (string | undefined);
-    paths: (string | undefined)[] | undefined;
-}
-
-type Relation = {
-    apiName: string | undefined;
-    endpoints: { [key: string]: { method: string, func: string }[] } | undefined;
-}
-
+// Controller for the API Gateway endpoints
 const apiController = {
+    // Get relations between API Gateway endpoints and Lambda functions
     async getAPIRelations(req: Request, res: Response, next: NextFunction) {
-        // Change variable name
-        console.log('Hitting API controller');
+        // Create new APIGatewayClient
         const apiClient = new APIGatewayClient({
             region: res.locals.region, 
             credentials: res.locals.credentials,
         });
-
+        
+        // Create new LambdaClient
         const lambdaClient = new LambdaClient({
             region: res.locals.region,
             credentials: res.locals.credentials 
         });
-        // const apiData: {name: string, apiId: string, resourses: any[]}[] = [];
-        // // Grab names of API Endpoints and associated IDs
         
+        // Declare array to store APIs
         const apiList: API[] = []; 
         const lambdaAPIsList: LambdaAPIs[] = [];
+        
         try {
-            
+            // Get list of APIs and store in apiList
             const restAPIs: GetRestApisCommandOutput = await apiClient.send(new GetRestApisCommand({}));
-            //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
-            // const resources = await client.send(new GetResourceCommand({  }));
             const restAPIsItems = restAPIs?.items;
             
             if (restAPIsItems !== undefined) {
@@ -59,11 +37,11 @@ const apiController = {
                     apiList.push(apiDetails);
                 }
             }
-            //const restItems = restAPIs.items;
-            //restItems?.forEach(i => console.log(i.resourceMethods));
 
+            // Get list of Lambda functions from res.locals
             const functions: string[] = res.locals.functions;
 
+            // For each function, get the policy, create apiInfo and store apiInfo in lambdaAPIsList
             for (const func of functions) {
                 try {
                     const functionName = func;
@@ -98,12 +76,13 @@ const apiController = {
                     }
 
                 } catch (err) {
-
+                    console.log(err);
                 }
-                
             }
+            // Declare array to store relations
             const relations = [];
 
+            // For each API, create relationObj and store in relations
             for (const api of apiList) {
                 const relationObj:Relation = { apiName: api.apiName, endpoints: {} };
                 if (relationObj.endpoints) {
@@ -127,65 +106,32 @@ const apiController = {
             
             res.locals.apiRelations = relations;
             return next();
-        } catch (err) {
+        } 
+        // If error, pass to error handler
+        catch (err) {
             next({
                 log: "Error caught in apiController.getAPIRelations middleware function",
                 status: 500,
                 message: {errMessage: `Error getting API relations for the account`, err: err}
             });
         }
-
-        // // Iterate through apiData array
-        // // Send request to get associated resources
-        // for (const el of apiData) {
-        //     const resources = await client.send(new GetResourcesCommand({
-        //         restApiId: apiData[el].apiId
-        //     });
-        // );
-        // };
-
-        // // Iterate through resources array
-        // for (const resource of resources.items) {
-            
-        // }
-        // const lambdaClient = new LambdaClient({
-        //     region: res.locals.region,
-        //     credentials: res.locals.credentials 
-        // });
-
-        // const getPolicyCommand = new GetPolicyCommand({
-        //     FunctionName: "myTestFunc"
-        // });
-
-        // try {
-        //     const commandResults = await lambdaClient.send(getPolicyCommand);
-        //     console.log(commandResults);
-        //     return next();
-        // } catch (err) {
-        //     console.log(err);
-        //     return next({
-        //         log: "Error caught in apiController.getAPIRelations middleware function",
-        //         status: 500,
-        //         message: {errMessage: `Error getting relations for the account`, errors: err}
-        //         });
-        // }
-        
-
     },
 
+    // Get list of API endpoints
     async getAPIList(req: Request, res: Response, next: NextFunction) {
+
+        // Create new APIGatewayClient
         const apiClient = new APIGatewayClient({
             region: res.locals.region, 
             credentials: res.locals.credentials,
         });
 
+        // Declare array to store APIs
         const apiList: API[] = []; 
 
         try {
-            
+            // Get list of APIs and store in apiList
             const restAPIs: GetRestApisCommandOutput = await apiClient.send(new GetRestApisCommand({}));
-            //const restAPIs = await client.send(new GetResourcesCommand({ restApiId: 'd9vxwo4h1b' }));
-            // const resources = await client.send(new GetResourceCommand({  }));
             const restAPIsItems = restAPIs?.items;
             
             if (restAPIsItems !== undefined) {
@@ -201,6 +147,7 @@ const apiController = {
             return next();
         
         } catch (err) {
+            // If error, pass to error handler
             next({
                 log: "Error caught in apiController.getAPIList middleware function",
                 status: 500,
@@ -208,8 +155,6 @@ const apiController = {
             });
         }
     }
-
-
 }
 
 export default apiController;

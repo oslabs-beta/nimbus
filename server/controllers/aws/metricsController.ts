@@ -1,27 +1,32 @@
 import { CloudWatchClient, GetMetricDataCommand, GetMetricDataCommandInput, MetricDataQuery, MetricDataResult} from "@aws-sdk/client-cloudwatch";
+import { LambdaClient, GetFunctionConfigurationCommand} from "@aws-sdk/client-lambda"
 import { Request, Response, NextFunction } from "express";
+import { subMetrics, Metrics } from "../../types";
 require('dotenv').config();
 
-interface subMetrics {
-  values: number[] | undefined
-  timestamp: Date[] | undefined
-}
-
-interface Metrics {
-  invocations: subMetrics,
-  errors: subMetrics,
-  throttles: subMetrics,
-  duration: subMetrics
-}
-
-// Grab the Invocation, Error, Duration, and Throttle metrics for all functions
 const metricsController = {
+  // Grab the Invocation, Error, Duration, and Throttle metrics for all functions
   async getAllMetrics(req: Request, res: Response, next: NextFunction) {
     try {
+      // Initiate client with credentials
       const client = new CloudWatchClient({
         region: res.locals.region,
         credentials: res.locals.credentials
       })
+      
+      // Specify parameters for each metric
+      const metricMemoryData = {
+        Id: "m1",
+        MetricStat: {
+          Metric: {
+            MetricName: "MemoryUsage",
+            Namespace: "AWS/Lambda",
+          },
+          Period: 60 * 60 * 24,
+          Stat: "Average", 
+        },
+        Label: "Average memory usage of Lambda Functions"
+      }
       const metricInvocationData = {
         Id: "i1", 
         MetricStat: {
@@ -29,7 +34,7 @@ const metricsController = {
             MetricName: "Invocations",
             Namespace: "AWS/Lambda",
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum", 
         },
         Label: "Total Invocations of Lambda Functions"
@@ -41,7 +46,7 @@ const metricsController = {
             MetricName: "Errors",
             Namespace: "AWS/Lambda"
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum",
         },
         Label: "Total Errors of Lambda Functions"
@@ -53,7 +58,7 @@ const metricsController = {
             MetricName: "Throttles",
             Namespace: "AWS/Lambda"
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum",
         },
         Label: "Total Throttles of Lambda Functions"
@@ -65,20 +70,21 @@ const metricsController = {
             MetricName: "Duration",
             Namespace: "AWS/Lambda"
           },
-          Period: 300,
+          Period: 60 * 60 * 24,
           Stat: "Sum",
         },
         Label: "Total Duration of Lambda Functions"
       }
+
+      // Create input for GetMetricDataCommand
       const input: GetMetricDataCommandInput = {
-        // Update StartTime and EndTime to be more dynamic from user
         "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
         "EndTime": new Date(),
-        "MetricDataQueries": [metricInvocationData, metricErrorData, metricThrottlesData, metricDurationData],
+        "MetricDataQueries": [metricInvocationData, metricErrorData, metricThrottlesData, metricDurationData, metricMemoryData],
       }
       const command = new GetMetricDataCommand(input)
       const response = await client.send(command);
-      // Create a metrics object to store the values and timestamps of each metric
+      // Create a metrics object to send the values and timestamps of each metric to front end 
       if (response.MetricDataResults) {
         const metrics: Metrics = {
           invocations: {
@@ -96,9 +102,9 @@ const metricsController = {
           duration: {
             values: response.MetricDataResults[3].Values,
             timestamp: response.MetricDataResults[3].Timestamps
-          }
+          },
         };
-        res.locals.metrics = metrics;
+        res.locals.allFuncMetrics = metrics;
       }
       return next();
     } catch (err) {
@@ -109,10 +115,10 @@ const metricsController = {
       })
     } 
   },
-  // Grab specific metrics from cloudwatch depending on user input (seleted func)
+  // Grab metrics from cloudwatch depending on user input (seleted func)
   async getMetricsByFunc (req: Request, res: Response, next: NextFunction) {
     try {
-      // Initiate client with credentials
+      // Start a new CloudWatchClient instance
       const client = new CloudWatchClient({
         region: res.locals.region,
         credentials: res.locals.credentials
@@ -120,7 +126,6 @@ const metricsController = {
       const metricData: MetricDataQuery[] = []
       // functions from lamda controller 
       res.locals.functions.forEach((functionName:string, i:number) => {
-        // get metrics for specific function
         const metricInvocationData = {
           Id: `i${i}`, 
           MetricStat: {
@@ -134,13 +139,13 @@ const metricsController = {
                 },           
               ],
             },
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum", 
           },
           Label: `${functionName} Total invocations of Lambda Function`
         }
         metricData.push(metricInvocationData)
-        // get error data for specific function
+
         const metricErrorData = {
           Id: `e${i}`, 
           MetricStat: {
@@ -154,7 +159,7 @@ const metricsController = {
                 },           
               ],
             },   
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum",
           },
           Label: `${functionName} Total errors of Lambda Function`
@@ -174,7 +179,7 @@ const metricsController = {
                 },           
               ],
             },
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum",
           },
           Label: `${functionName} Total throttles of Lambda Function`
@@ -194,16 +199,15 @@ const metricsController = {
                 },           
               ],
             },
-            Period: 300,
+            Period: 60 * 60 * 24,
             Stat: "Sum",
           },
           Label: `${functionName} Total duration of Lambda Function`
         }
         metricData.push(metricDurationData)
       })
-      // input to get metric data command 
+      // Input to get metric data command 
       const input: GetMetricDataCommandInput = {
-        // Update StartTime and EndTime to be more dynamic from user
         "StartTime": new Date(new Date().setDate(new Date().getDate() - 30)),
         "EndTime": new Date(),
         "MetricDataQueries": metricData
@@ -213,35 +217,32 @@ const metricsController = {
       const response = await client.send(command);
       // Create a metrics object to store the values and timestamps of specific metric
       if (response.MetricDataResults) {
-        console.log(response.MetricDataResults, "METRIC DATA RESULTS")
+        
+        // Parse data into an object where keys are function names and values are the metrics for each function
         const parseData = (arr: MetricDataResult[]) => {
-          // declare an output object
           const allFuncMetrics = {};
-          // loop over elements in arr in chunks of 4
+          // :oop over elements in arr in chunks of 4
           for (let i = 0; i < arr.length; i+=4) {
-            // get function name
+            // Get function name
             const funcName = arr[i].Label!.split(' ')[0];
-            // declare func object
             const metricsByFunc = {};
-            // populate allMetricsObj
-            // loop over number of metrics
+            // Populate allMetricsObj
+            // Loop over number of metrics
             for (let j = 0; j < 4; j++) {
               const metricName = arr[i+j].Label!.split(' ')[2];
-              // declare func object
+              // Declare func object
               const singleMetric: subMetrics = {
                 values: arr[i+j].Values,
                 timestamp: arr[i+j].Timestamps
               };
-              // add metric name and stats to obj
               (metricsByFunc as any)[metricName] = singleMetric;
             }
-            // add func name and metrics to obj
             (allFuncMetrics as any)[funcName] = metricsByFunc;
           }
           return allFuncMetrics;
         }
-        // metrics data for the functions page
-        res.locals.metrics = parseData(response.MetricDataResults)
+        // Metrics data for the functions page
+        res.locals.eachFuncMetrics = parseData(response.MetricDataResults)
       }
       return next();
     } catch (err) {
@@ -249,6 +250,53 @@ const metricsController = {
         log: "Error caught in metricsController.getMetricsByFunc middleware function",
         status: 500,
         message: { err: "Error grabbing metrics for Lambda Function" }
+      })
+    }
+  },
+  // Grab required properties to calculate cost of application
+  async getCostProps(req: Request, res: Response, next: NextFunction) {
+    try {
+      // Start a new LambdaClient instance
+      const client = new LambdaClient({
+        region: res.locals.region,
+        credentials: res.locals.credentials
+      });
+
+      const memory: Array<number> = [];
+      const invocations: Array<number> = [];
+      const duration: Array<number> = [];
+      // For each function grab the memory allocated, total invocations, and total duration
+      for (const funcName of res.locals.functions) {
+        const command = new GetFunctionConfigurationCommand({FunctionName: funcName});
+        const response = await client.send(command)
+        if (response.MemorySize) {
+          memory.push(response.MemorySize)
+          if (res.locals.eachFuncMetrics[funcName].invocations.values.length > 0) {
+            invocations.push(res.locals.eachFuncMetrics[funcName].invocations.values.reduce((acc: number, curr: number) => acc + curr))
+          } else {
+            invocations.push(res.locals.eachFuncMetrics[funcName].invocations.values[0])
+          }
+          if (res.locals.eachFuncMetrics[funcName].duration.values.length > 0) {
+            duration.push(res.locals.eachFuncMetrics[funcName].duration.values.reduce((acc: number, curr: number) => acc + curr))
+          } else {
+            duration.push(res.locals.eachFuncMetrics[funcName].duration.values[0])
+          }
+        }
+      }
+
+      // Store cost related arrays in res.locals
+      res.locals.cost = {
+        memory,
+        invocations,
+        duration
+      }
+
+      return next();
+    } catch (err) {
+      return next({
+        log: "Error caught in metricsController.getCostProps middleware function",
+        status: 500,
+        message: { err: "Error grabbing cost for all Lambda Function" }
       })
     }
   }

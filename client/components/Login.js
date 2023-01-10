@@ -25,7 +25,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const Login = ({ swapAuthView, handleUserLogin }) => {
-    // const [username, setUsername] = useState("");
     const [email, setEmail] = (0, react_1.useState)("");
     const [password, setPassword] = (0, react_1.useState)("");
     const [errorMessage, setErrorMessage] = (0, react_1.useState)("");
@@ -40,6 +39,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
     const handleError = (err) => {
         setErrorMessage(err);
     };
+    // Send user credentials to server and receive access and refresh tokens
     const submitForm = (e) => {
         e.preventDefault();
         const credentials = {
@@ -60,6 +60,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
             else {
                 console.log('user info:', result);
                 handleUserLogin();
+                // Save tokens to local storage
                 localStorage.setItem("accessToken", result.accessToken);
                 localStorage.setItem("refreshToken", result.refreshToken);
             }
@@ -68,7 +69,7 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
     return (react_1.default.createElement("div", { className: "hero-content flex-col lg:flex-row-reverse px-12" },
         react_1.default.createElement("div", { className: "text-center lg:text-left lg:ml-5" },
             react_1.default.createElement("h1", { className: "text-5xl font-bold" }, "Login now!"),
-            react_1.default.createElement("p", { className: "py-6" }, "Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.")),
+            react_1.default.createElement("p", { className: "py-6" }, "Welcome to nimbus, the ultimate monitoring and visualization tool for AWS Lambda.")),
         react_1.default.createElement("div", { className: "card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100" },
             react_1.default.createElement("div", { className: "card-body" },
                 react_1.default.createElement("form", { onSubmit: submitForm },

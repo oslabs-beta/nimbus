@@ -15,20 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_lambda_1 = require("@aws-sdk/client-lambda");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-//req: Request, res: Response, next: NextFunction
 const lambdaController = {
+    // Get list of Lambda functions and store in res.locals.functions
     getFunctions(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            // Create new LambdaClient
             const lambdaClient = new client_lambda_1.LambdaClient({
                 region: res.locals.region,
                 credentials: res.locals.credentials
             });
+            // Create new ListFunctionsCommand
             const getFunctionsCommand = new client_lambda_1.ListFunctionsCommand({});
             try {
                 const commandResults = yield lambdaClient.send(getFunctionsCommand);
                 const lambdaFunctions = commandResults === null || commandResults === void 0 ? void 0 : commandResults.Functions;
                 const lambdaFunctionDetails = lambdaFunctions === null || lambdaFunctions === void 0 ? void 0 : lambdaFunctions.map(f => f.FunctionName);
-                console.log(lambdaFunctionDetails);
                 res.locals.functions = lambdaFunctionDetails;
                 return next();
             }

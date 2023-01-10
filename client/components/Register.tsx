@@ -1,25 +1,7 @@
 import React, { useState } from 'react';
+import { UserData, AuthProps } from "../types";
 
-interface Props {
-  swapAuthView: () => void;
-  handleUserLogin: () => void;
-}
-
-interface UserData {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  confirmation: String;
-  arn: String;
-  region: String;
-}
-
-const Register: React.FC<Props> = ({
-  swapAuthView,
-  handleUserLogin,
-}: Props) => {
-  // const [username, setUsername] = useState("");
+const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthProps) => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -63,6 +45,7 @@ const Register: React.FC<Props> = ({
     setErrorMessage('Some information is missing or incorrect');
   };
 
+  // Highlight erroneously filld fields in red
   const highlightInput = (errors: Array<String>): void => {
     errors.forEach((el) => {
       const input = document.querySelector<HTMLElement>(`#${el}`);
@@ -72,7 +55,7 @@ const Register: React.FC<Props> = ({
     });
   };
 
-  // Handle form sumbission
+  // Send user credentials to server and receive access and refresh tokens
   const submitForm = (e: any) => {
     e.preventDefault();
     const userData: UserData = {
@@ -100,12 +83,14 @@ const Register: React.FC<Props> = ({
         } else {
           console.log('user info:', result);
           handleUserLogin();
+          // Save tokens to local storage
           localStorage.setItem('accessToken', result.accessToken);
           localStorage.setItem('refreshToken', result.refreshToken);
         }
       });
   };
 
+  // List of AWS regions
   const regionsOptions = [
     'us-east-2',
     'us-east-1',
@@ -205,7 +190,7 @@ const Register: React.FC<Props> = ({
                     account. Click{' '}
                     <a
                       target='_blank'
-                      href='https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-fo1de99kotoi-us-east-1.s3.amazonaws.com/2022347I7Q-nimbus.yaml&stackName=NimbusStack'
+                      href='https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-htl66jverox0-us-east-1.s3.amazonaws.com/2023-01-03T001457.540Zd6i-nimbus-new.yaml&stackName=Nimbus-Stack'
                       className='text-accent underline underline-offset-2 hover:text-secondary'
                     >
                       HERE

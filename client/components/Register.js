@@ -24,8 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const Register = ({ swapAuthView, handleUserLogin, }) => {
-    // const [username, setUsername] = useState("");
+const Register = ({ swapAuthView, handleUserLogin }) => {
     const [email, setEmail] = (0, react_1.useState)('');
     const [firstName, setFirstName] = (0, react_1.useState)('');
     const [lastName, setLastName] = (0, react_1.useState)('');
@@ -60,6 +59,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect');
     };
+    // Highlight erroneously filld fields in red
     const highlightInput = (errors) => {
         errors.forEach((el) => {
             const input = document.querySelector(`#${el}`);
@@ -68,7 +68,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
             }
         });
     };
-    // Handle form sumbission
+    // Send user credentials to server and receive access and refresh tokens
     const submitForm = (e) => {
         e.preventDefault();
         const userData = {
@@ -96,11 +96,13 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
             else {
                 console.log('user info:', result);
                 handleUserLogin();
+                // Save tokens to local storage
                 localStorage.setItem('accessToken', result.accessToken);
                 localStorage.setItem('refreshToken', result.refreshToken);
             }
         });
     };
+    // List of AWS regions
     const regionsOptions = [
         'us-east-2',
         'us-east-1',
@@ -164,7 +166,7 @@ const Register = ({ swapAuthView, handleUserLogin, }) => {
                             react_1.default.createElement("p", { className: "mb-2" },
                                 "Please follow the steps below to set up the connection to your AWS account. Click",
                                 ' ',
-                                react_1.default.createElement("a", { target: '_blank', href: 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-fo1de99kotoi-us-east-1.s3.amazonaws.com/2022347I7Q-nimbus.yaml&stackName=NimbusStack', className: 'text-accent underline underline-offset-2 hover:text-secondary' }, "HERE"),
+                                react_1.default.createElement("a", { target: '_blank', href: 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://cf-templates-htl66jverox0-us-east-1.s3.amazonaws.com/2023-01-03T001457.540Zd6i-nimbus-new.yaml&stackName=Nimbus-Stack', className: 'text-accent underline underline-offset-2 hover:text-secondary' }, "HERE"),
                                 ' ',
                                 "to start the process."),
                             react_1.default.createElement("ul", { className: 'list-decimal px-5' },
