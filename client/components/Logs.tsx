@@ -180,7 +180,7 @@ const Logs = () => {
   return (
     <>
       <div className='logs-logs flex flex-col w-full overflow-auto'>
-        <div className='logs-filters flex flex-col xl:flex-row justify-center items-center lg:justify-between w-full mx-8 mb-6'>
+        <div className='logs-filters flex flex-col xl:flex-row justify-center items-center lg:justify-around w-full mx-8 mb-6'>
           <select
             className='select select-primary max-w-fit mb-3 xl:mb-0'
             onChange={changeSelectedFunc}
