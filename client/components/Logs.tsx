@@ -179,8 +179,8 @@ const Logs = () => {
 
   return (
     <>
-      <div className='logs-logs flex flex-col space-y-8 max-w-fit'>
-        <div className='logs-filters flex justify-between gap-8 max-w-full'>
+      <div className='logs-logs flex flex-col space-y-8 w-full px-8'>
+        <div className='logs-filters flex justify-between gap-8 w-full'>
           <select
             className='select select-primary w-full max-w-fit'
             onChange={changeSelectedFunc}
@@ -262,7 +262,7 @@ const Logs = () => {
                 setSelectedLogsButton('All logs');
               }}
             >
-              All logs
+              All Logs
             </button>
             <button
               className={
@@ -317,13 +317,13 @@ const Logs = () => {
             </div>
           </div>
         </div>
-        <div className='flex flex-row justify-center gap-8'>
-          <div className='logs-log-event overflow-x-auto'>
-            <table className='table table-compact max-w-max'>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Logs</th>
+        <div className='flex flex-row justify-center gap-8 w-full'>
+          <div className='logs-log-event overflow-x-auto w-full'>
+            <table className='table table-compact w-full'>
+              <thead className='w-full'>
+                <tr className='w-full'>
+                  <th className='bg-primary w-[5%]'></th>
+                  <th className='bg-primary w-[95%]'>Logs</th>
                 </tr>
               </thead>
               <tbody>{logsList}</tbody>
