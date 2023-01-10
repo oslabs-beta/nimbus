@@ -111,7 +111,6 @@ const Home = (props) => {
                 headers: {
                     'Content-Type': 'Application/JSON',
                     authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-                    refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
                 },
             });
             res = yield res.json();

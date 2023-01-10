@@ -1,6 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import { ErrorObj } from './types';
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+
 dotenv.config();
 const app = express();
 const { PORT } = process.env;
@@ -9,6 +11,7 @@ app.use(express.json());
 const authRouter = require('./routes/authRouter');
 const dashboardRouter = require('./routes/dashboardRouter');
 
+app.use(cookieParser());
 app.use('/', authRouter);
 app.use('/dashboard', dashboardRouter);
 

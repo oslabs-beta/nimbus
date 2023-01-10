@@ -64,7 +64,6 @@ const Logs = () => {
         headers: {
           'Content-Type': 'Application/JSON',
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
         },
       });
       // convert response to JS object
@@ -98,7 +97,6 @@ const Logs = () => {
         headers: {
           'Content-Type': 'Application/JSON',
           authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-          refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
         },
         body: JSON.stringify(reqBody),
       });
