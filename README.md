@@ -1,4 +1,10 @@
-# nimbus
+<h1 align="center">
+  <br>
+    <img src ="./assets/nimbus-logo-color.png" width="300"/>
+  <br>
+  AWS Lambda Performance Tool
+  <br>
+</h1>
 
 ## NOTES ########################
 
@@ -12,8 +18,7 @@ Amazon Web Services has been named as a Leader in the 2022 Magic Quadrant for Cl
 
 AWS Lambda is a secure, on-demand, event-driven, compute service that scales as needed and allows users to be billed only for what is used. 
 
-Nimbus is an open source performance monitoring tool for AWS Lambda applications. Nimbus allows developers to view metrics of their application as a whole as well as the benchmarks of each individual function. Nimbus offers a graphic user interface for customers to filter, search, and sort through the logs of Lambda functions.  
-* write something about cost here ---- in progress
+Nimbus is an open source performance monitoring tool for AWS Lambda applications. Nimbus allows developers to view metrics of their application as a whole as well as the benchmarks of each individual function. Nimbus offers a graphic user interface for customers to filter, search, and sort through the logs of Lambda functions. Additionally, Nimbus provides an estimation of the cost incurred from your invocations to help you stay aware of your spending. In short, Nimbus is a valuable tool that simplifies the process of monitoring your AWS Lambda functions.
 
 ### Installation
 * download the desktop application here
@@ -25,21 +30,21 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 ### Technologies Used
 
 <!-- FRONT END -->
-- <a href="#"><img src="./assets/electron-logo-color.png" alt="Electron" title="Electron" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/react-logo-color.png" alt="React" title="React" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/chartjs-logo-color.svg" alt="ChartJS" title="ChartJS" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/daisyui-logo-color.svg" alt="DaisyUI" title="DaisyUI" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/tailwind-logo-color.png" alt="Tailwind" title="Tailwind" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/ts-logo-long-blue.png" alt="Typescript" title="Typescript" align="center" height="30" /></a>
+<a href="#"><img src="./assets/electron-logo-color.png" alt="Electron" title="Electron" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/react-logo-color.png" alt="React" title="React" align="center" height="30" /></a> <br>
+<p><img src="./assets/chartjs-logo-color.svg" alt="ChartJS" title="ChartJS" align="center" height="30" /> Chart JS </p>
+<a href="#"><img src="./assets/daisyui-logo-color.svg" alt="DaisyUI" title="DaisyUI" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/tailwind-logo-color.png" alt="Tailwind" title="Tailwind" align="center" height="30"/></a> <br>
+<a href="#"><img src="./assets/ts-logo-long-blue.png" alt="Typescript" title="Typescript" align="center" height="30" /></a> <br>
 
 <!-- BACK END -->
-- <a href="#"><img src="./assets/express-logo-color.png" alt="Express" title="Express" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/node-logo-color.png" alt="Node.js" title="Node.js" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/mongodb-logo-color.png" alt="MongoDB" title="MongoDB" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/docker-logo-color.png" alt="Docker" title="Docker" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/jest-logo-color.png" alt="Jest" title="Jest" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/webpack-logo-color.png" alt="Webpack" title="Webpack" align="center" height="30" /></a>
-- <a href="#"><img src="./assets/aws-logo-color.png" alt="AWS" title="AWS" align="center" height="30" /></a>
+<a href="#"><img src="./assets/express-logo-color.png" alt="Express" title="Express" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/node-logo-color.png" alt="Node.js" title="Node.js" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/mongodb-logo-color.png" alt="MongoDB" title="MongoDB" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/docker-logo-color.png" alt="Docker" title="Docker" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/jest-logo-color.png" alt="Jest" title="Jest" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/webpack-logo-color.png" alt="Webpack" title="Webpack" align="center" height="30" /></a> <br>
+<a href="#"><img src="./assets/aws-logo-color.png" alt="AWS" title="AWS" align="center" height="30" /></a> <br>
 
 
 ### License
