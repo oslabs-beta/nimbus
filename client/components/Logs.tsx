@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { userContext } from 'react'
+// import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 // THINGS TO ADD
 // highlight selected buttons
@@ -14,11 +15,19 @@ const Logs = () => {
   const [logs, setLogs] = useState(['Fetching logs...']);
   const [period, setPeriod] = useState<Period>('30d');
   const [search, setSearch] = useState<Search>('');
+  // const [buttonIsActive, setButtonIsActive] = useState(false);
+  // const [buttonState, setButtonState] = useState({
+  //   activeObject: null,
+  //   objects: functionsList,
+  // });
+  const [selectedTimeButton, setSelectedTimeButton] = useState('30d');
+  const [selectedLogsButton, setSelectedLogsButton] = useState('All logs');
+  const [selectedFunctionButton, setSelectedFunctionButton] = useState('');
 
   const routes = {
     functions: '/dashboard/functions',
-    logs: '/dashboard/filteredLogs'
-  }
+    logs: '/dashboard/filteredLogs',
+  };
 
   // Change options
   const changePeriod = (e: any) => {
@@ -27,6 +36,12 @@ const Logs = () => {
     }
   };
 
+  // const toggleActive = (index: any) => {
+  //   setButtonState({
+  //     ...buttonState,
+  //     activeObject: buttonState.objects[index],
+  //   });
+  // };
 
   const changeSearch = (e: any) => {
     if (e.target.value === 'allLogs') {
@@ -34,7 +49,7 @@ const Logs = () => {
     } else if (e.target.value === 'reports') {
       setSearch('REPORT');
     } else if (e.target.value === 'errors') {
-      setSearch('ERROR')
+      setSearch('ERROR');
     } else {
       setSearch(e.target.value);
     }
@@ -60,22 +75,28 @@ const Logs = () => {
       });
       // convert response to JS object
       res = await res.json();
-    
-      // console.log("RES.FUNCTIONS", res.functions);
-      const funcArr = res.functions || ['unable to fetch lambda functions'];
 
+      console.log('RES.FUNCTIONS', res.functions);
+      // func arr is an array of strings (function names)
+      const funcArr = res.functions || ['unable to fetch lambda functions'];
+      // change functions to be array with all function names
       setFunctions(funcArr);
-      setSelectedFunc(funcArr[0])
+      //
+      setSelectedFunc(funcArr[0]);
+      setSelectedFunctionButton(funcArr[0]);
+    } catch (err) {
+      console.log('ERROR FROM GET FUNCTIONS', err);
     }
-    catch(err){
-      console.log("ERROR FROM GET FUNCTIONS", err);
-    }
-  }
+  };
 
   // Fetch logs for the selectedFunc in a string[] and setLogs
   const getLogs = async () => {
     let res;
-    const reqBody = {functionName: selectedFunc, filterPattern:search, period:period};
+    const reqBody = {
+      functionName: selectedFunc,
+      filterPattern: search,
+      period: period,
+    };
     console.log(reqBody);
     try {
       res = await fetch(`${routes.logs}`, {
@@ -89,101 +110,236 @@ const Logs = () => {
       });
       // convert response to JS object
       res = await res.json();
-
-      let logsArr = res.filteredLogs || ['Logs not found']
-      console.log("LOGS ARRAY", logsArr)
+      let logsArr = res.filteredLogs || ['Logs not found'];
+      console.log('LOGS ARRAY', logsArr);
       setLogs(logsArr);
+    } catch (err) {
+      console.log('ERROR FROM GET LOGS', err);
     }
-    catch(err){
-      console.log("ERROR FROM GET LOGS", err);
-    }
-  }
-
+  };
 
   // On component mount: get all lambda functions
   useEffect(() => {
-    console.log("first useEffct")
+    console.log('first useEffect');
     getFunctions();
+    //setSelectedFunctionButton(functions[0]);
   }, []);
 
   // On state change selectedFunc, period, search: get logs based on selected lambda func and options
   useEffect(() => {
-    console.log("second useEffct")
-    console.log("PERIOD", period)
+    console.log('second useEffect');
+    console.log('PERIOD', period);
     if (selectedFunc !== '') {
       getLogs();
     }
-    
   }, [selectedFunc, period, search]);
 
+  const logsList = logs.map((log, i) => (
+    <tr>
+      {/* <svg
+        xmlns='http://www.w3.org/2000/svg'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke-width='1.5'
+        stroke='currentColor'
+        className='w-4 h-4'
+      >
+        <path
+          stroke-linecap='round'
+          stroke-linejoin='round'
+          d='M8.25 4.5l7.5 7.5-7.5 7.5'
+        />
+      </svg> */}
+      <th>{i + 1}</th>
+      {/* <td className='whitespace-normal'>{log}</td> */}
+      <td className='whitespace-nowrap text-ellipsis max-w-7xl'>{log}</td>
+    </tr>
+    // overflow-hidden
+  ));
 
-  const logsList = logs.map((log, i) =>
-  <div key={`log-${i}`} className='logs-log-event'>{log}</div>
-  );
-
-  const functionsList = functions.map((func, i) =>
-  <button 
-    key={`func-${i}`} 
-    onClick={changeSelectedFunc} 
-    value={func} className='logs-function-name'
+  /* <div key={`log-${i}`} className='logs-log-event overflow-x-auto'>
+  <table className='table table-compact w-full'>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Logs</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+</div> */
+  // ['func1', 'func2, 'func3']
+  const functionsList = functions.map((funcStr, i) => (
+    <option
+    // className={selectedFunctionButton === funcStr ? 'btn btn-active' : 'btn'}
+    // key={`func-${i}`}
+    // onClick={(e) => {
+    //   changeSelectedFunc(e);
+    //   setSelectedFunctionButton(funcStr);
+    // }}
+    // value={funcStr}
     >
-      {func}
-    </button>
-  );
-
+      {funcStr}
+    </option>
+  ));
 
   return (
-    <div>
-      <div>Logs</div>
-      <div className='logs-container' style={{ display: 'flex', gap: '2rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }} className='logs-functions'>
-          functions
-          {functionsList}
-        </div>
-        <div className='logs-logs'>
-          <div className='logs-filters'>
-            <div
-              className='logs-options-period'
-              style={{ display: 'flex', gap: '1rem' }}
+    <>
+      <div className='logs-logs flex flex-col space-y-8 max-w-fit'>
+        <div className='logs-filters flex justify-between gap-8 max-w-full'>
+          <select
+            className='select select-primary w-full max-w-fit'
+            onChange={changeSelectedFunc}
+          >
+            {functionsList}
+          </select>
+          <div className='btn-group'>
+            <button
+              className={
+                selectedTimeButton === '30d' ? 'btn btn-active' : 'btn'
+              }
+              id='30d'
+              value={'30d'}
+              onClick={(e) => {
+                changePeriod(e);
+                setSelectedTimeButton('30d');
+              }}
             >
-              <button id='30d' value={'30d'} onClick={changePeriod}>
-                30D
-              </button>
-              <button id='14d' value={'14d'} onClick={changePeriod}>
-                14D
-              </button>
-              <button id='7d' value={'7d'} onClick={changePeriod}>
-                7D
-              </button>
-              <button id='1d' value={'1d'} onClick={changePeriod}>
-                1D
-              </button>
-              <button id='1hr' value={'1hr'} onClick={changePeriod}>
-                1H
-              </button>
-            </div>
+              30D
+            </button>
+            <button
+              className={
+                selectedTimeButton === '14d' ? 'btn btn-active' : 'btn'
+              }
+              id='14d'
+              value={'14d'}
+              onClick={(e) => {
+                changePeriod(e);
+                setSelectedTimeButton('14d');
+              }}
+            >
+              14D
+            </button>
+            <button
+              className={selectedTimeButton === '7d' ? 'btn btn-active' : 'btn'}
+              id='7d'
+              value={'7d'}
+              onClick={(e) => {
+                changePeriod(e);
+                setSelectedTimeButton('7d');
+              }}
+            >
+              7D
+            </button>
+            <button
+              className={selectedTimeButton === '1d' ? 'btn btn-active' : 'btn'}
+              id='1d'
+              value={'1d'}
+              onClick={(e) => {
+                changePeriod(e);
+                setSelectedTimeButton('1d');
+              }}
+            >
+              1D
+            </button>
+            <button
+              className={
+                selectedTimeButton === '1hr' ? 'btn btn-active' : 'btn'
+              }
+              id='1hr'
+              value={'1hr'}
+              onClick={(e) => {
+                changePeriod(e);
+                setSelectedTimeButton('1hr');
+              }}
+            >
+              1H
+            </button>
+          </div>
 
-            <div className='logs-options-filters'>
-              <button value={'allLogs'} onClick={changeSearch}>
-                All logs
+          <div className='btn-group'>
+            <button
+              className={
+                selectedLogsButton === 'All logs' ? 'btn btn-active' : 'btn'
+              }
+              value={'allLogs'}
+              onClick={(e) => {
+                changeSearch(e);
+                setSelectedLogsButton('All logs');
+              }}
+            >
+              All logs
+            </button>
+            <button
+              className={
+                selectedLogsButton === 'Reports' ? 'btn btn-active' : 'btn'
+              }
+              value={'reports'}
+              onClick={(e) => {
+                changeSearch(e);
+                setSelectedLogsButton('Reports');
+              }}
+            >
+              Reports
+            </button>
+            <button
+              className={
+                selectedLogsButton === 'Errors' ? 'btn btn-active' : 'btn'
+              }
+              value={'errors'}
+              onClick={(e) => {
+                changeSearch(e);
+                setSelectedLogsButton('Errors');
+              }}
+            >
+              Errors
+            </button>
+          </div>
+
+          <div className='form-control'>
+            <div className='input-group'>
+              <input
+                type='text'
+                placeholder='Search…'
+                className='input input-bordered'
+                onChange={changeSearch}
+              />
+              <button className='btn btn-square' onClick={getLogs}>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-6 w-6'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                  />
+                </svg>
               </button>
-              <button value={'reports'} onClick={changeSearch}>
-                Reports
-              </button>
-              <button value={'errors'} onClick={changeSearch}>
-                Errors
-              </button>
-            </div>
-            <div className='logs-options-search'>
-              <input onChange={changeSearch}></input>
-              <button onClick={getLogs}>Search</button>
             </div>
           </div>
-          logs
-          {logsList}
+        </div>
+        <div className='flex flex-row justify-center gap-8'>
+          <div className='logs-log-event overflow-x-auto'>
+            <table className='table table-compact max-w-max'>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Logs</th>
+                </tr>
+              </thead>
+              <tbody>{logsList}</tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
