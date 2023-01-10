@@ -110,10 +110,7 @@ const Logs = () => {
     } catch (err) {
       console.log('ERROR FROM GET LOGS', err);
     }
-    catch(err){
-      console.log("ERROR FROM GET LOGS", err);
-    }
-  }
+  };
 
   // On component mount: get all lambda functions
   useEffect(() => {
