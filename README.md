@@ -8,7 +8,7 @@
 
 ## NOTES ########################
 
-This application is currently in development. Expected release date will be on January 15, 2022.
+This application is currently in development. Expected release date will be on January 15, 2023.
 
 
 ### About Nimbus
