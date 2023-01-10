@@ -175,7 +175,7 @@ const Home = (props) => {
                 react_1.default.createElement("div", { className: "col-span-2 card bg-accent shadow-xl" },
                     react_1.default.createElement("div", { className: "card-body p-2" },
                         react_1.default.createElement("p", { className: 'text-sm ml-1' }, "Cost"),
-                        react_1.default.createElement("div", { className: 'w-full text-center text-3xl text-base-300 mb-2 pb-2' },
+                        react_1.default.createElement("div", { className: 'w-full text-center text-4xl text-base-300 mb-2 pb-1' },
                             "$",
                             cost.toLocaleString(undefined, { maximumFractionDigits: 2 }))))),
             react_1.default.createElement("div", { className: "w-full lg:w-3/5" },

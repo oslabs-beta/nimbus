@@ -152,7 +152,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <div className="col-span-2 card bg-accent shadow-xl">
             <div className="card-body p-2">
               <p className='text-sm ml-1'>Cost</p>
-              <div className='w-full text-center text-3xl text-base-300 mb-2 pb-2'>${cost.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
+              <div className='w-full text-center text-4xl text-base-300 mb-2 pb-1'>${cost.toLocaleString(undefined, {maximumFractionDigits:2})}</div>
             </div>
           </div>
       </div>
