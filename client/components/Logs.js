@@ -39,9 +39,17 @@ const Logs = () => {
     const [logs, setLogs] = (0, react_1.useState)(['Fetching logs...']);
     const [period, setPeriod] = (0, react_1.useState)('30d');
     const [search, setSearch] = (0, react_1.useState)('');
+    // const [buttonIsActive, setButtonIsActive] = useState(false);
+    // const [buttonState, setButtonState] = useState({
+    //   activeObject: null,
+    //   objects: functionsList,
+    // });
+    const [selectedTimeButton, setSelectedTimeButton] = (0, react_1.useState)('30d');
+    const [selectedLogsButton, setSelectedLogsButton] = (0, react_1.useState)('All logs');
+    const [selectedFunctionButton, setSelectedFunctionButton] = (0, react_1.useState)('');
     const routes = {
         functions: '/dashboard/functions',
-        logs: '/dashboard/filteredLogs'
+        logs: '/dashboard/filteredLogs',
     };
     // Change period
     const changePeriod = (e) => {
@@ -83,19 +91,27 @@ const Logs = () => {
             });
             // convert response to JS object
             res = yield res.json();
-            // console.log("RES.FUNCTIONS", res.functions);
+            console.log('RES.FUNCTIONS', res.functions);
+            // func arr is an array of strings (function names)
             const funcArr = res.functions || ['unable to fetch lambda functions'];
+            // change functions to be array with all function names
             setFunctions(funcArr);
+            //
             setSelectedFunc(funcArr[0]);
+            setSelectedFunctionButton(funcArr[0]);
         }
         catch (err) {
-            console.log("ERROR FROM GET FUNCTIONS", err);
+            console.log('ERROR FROM GET FUNCTIONS', err);
         }
     });
     // Fetch logs for the selectedFunc in a string[] and setLogs
     const getLogs = () => __awaiter(void 0, void 0, void 0, function* () {
         let res;
-        const reqBody = { functionName: selectedFunc, filterPattern: search, period: period };
+        const reqBody = {
+            functionName: selectedFunc,
+            filterPattern: search,
+            period: period,
+        };
         console.log(reqBody);
         try {
             res = yield fetch(`${routes.logs}`, {
@@ -110,52 +126,98 @@ const Logs = () => {
             // convert response to JS object
             res = yield res.json();
             let logsArr = res.filteredLogs || ['Logs not found'];
-            console.log("LOGS ARRAY", logsArr);
+            console.log('LOGS ARRAY', logsArr);
             setLogs(logsArr);
         }
         catch (err) {
-            console.log("ERROR FROM GET LOGS", err);
+            console.log('ERROR FROM GET LOGS', err);
         }
     });
     // On component mount: get all lambda functions
     (0, react_1.useEffect)(() => {
-        console.log("first useEffct");
+        console.log('first useEffect');
         getFunctions();
+        //setSelectedFunctionButton(functions[0]);
     }, []);
     // On state change selectedFunc, period, search: get logs based on selected lambda func and options
     (0, react_1.useEffect)(() => {
-        console.log("second useEffct");
-        console.log("PERIOD", period);
+        console.log('second useEffect');
+        console.log('PERIOD', period);
         if (selectedFunc !== '') {
             getLogs();
         }
     }, [selectedFunc, period, search]);
-    // Map logs to divs
-    const logsList = logs.map((log, i) => react_1.default.createElement("div", { key: `log-${i}`, className: 'logs-log-event' }, log));
-    // Map functions to buttons
-    const functionsList = functions.map((func, i) => react_1.default.createElement("button", { key: `func-${i}`, onClick: changeSelectedFunc, value: func, className: 'logs-function-name' }, func));
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("div", null, "Logs"),
-        react_1.default.createElement("div", { className: 'logs-container', style: { display: 'flex', gap: '2rem' } },
-            react_1.default.createElement("div", { style: { display: 'flex', flexDirection: 'column' }, className: 'logs-functions' },
-                "functions",
-                functionsList),
-            react_1.default.createElement("div", { className: 'logs-logs' },
-                react_1.default.createElement("div", { className: 'logs-filters' },
-                    react_1.default.createElement("div", { className: 'logs-options-period', style: { display: 'flex', gap: '1rem' } },
-                        react_1.default.createElement("button", { id: '30d', value: '30d', onClick: changePeriod }, "30D"),
-                        react_1.default.createElement("button", { id: '14d', value: '14d', onClick: changePeriod }, "14D"),
-                        react_1.default.createElement("button", { id: '7d', value: '7d', onClick: changePeriod }, "7D"),
-                        react_1.default.createElement("button", { id: '1d', value: '1d', onClick: changePeriod }, "1D"),
-                        react_1.default.createElement("button", { id: '1hr', value: '1hr', onClick: changePeriod }, "1H")),
-                    react_1.default.createElement("div", { className: 'logs-options-filters' },
-                        react_1.default.createElement("button", { value: 'allLogs', onClick: changeSearch }, "All logs"),
-                        react_1.default.createElement("button", { value: 'reports', onClick: changeSearch }, "Reports"),
-                        react_1.default.createElement("button", { value: 'errors', onClick: changeSearch }, "Errors")),
-                    react_1.default.createElement("div", { className: 'logs-options-search' },
-                        react_1.default.createElement("input", { onChange: changeSearch }),
-                        react_1.default.createElement("button", { onClick: getLogs }, "Search"))),
-                "logs",
-                logsList))));
+    const logsList = logs.map((log, i) => (react_1.default.createElement("tr", null,
+        react_1.default.createElement("th", null, i + 1),
+        react_1.default.createElement("td", { className: 'whitespace-nowrap text-ellipsis max-w-7xl' }, log))
+    // overflow-hidden
+    ));
+    /* <div key={`log-${i}`} className='logs-log-event overflow-x-auto'>
+    <table className='table table-compact w-full'>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Logs</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+  </div> */
+    // ['func1', 'func2, 'func3']
+    const functionsList = functions.map((funcStr, i) => (react_1.default.createElement("option", null, funcStr)));
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("div", { className: 'logs-logs flex flex-col space-y-8 max-w-fit' },
+            react_1.default.createElement("div", { className: 'logs-filters flex justify-between gap-8 max-w-full' },
+                react_1.default.createElement("select", { className: 'select select-primary w-full max-w-fit', onChange: changeSelectedFunc }, functionsList),
+                react_1.default.createElement("div", { className: 'btn-group' },
+                    react_1.default.createElement("button", { className: selectedTimeButton === '30d' ? 'btn btn-active' : 'btn', id: '30d', value: '30d', onClick: (e) => {
+                            changePeriod(e);
+                            setSelectedTimeButton('30d');
+                        } }, "30D"),
+                    react_1.default.createElement("button", { className: selectedTimeButton === '14d' ? 'btn btn-active' : 'btn', id: '14d', value: '14d', onClick: (e) => {
+                            changePeriod(e);
+                            setSelectedTimeButton('14d');
+                        } }, "14D"),
+                    react_1.default.createElement("button", { className: selectedTimeButton === '7d' ? 'btn btn-active' : 'btn', id: '7d', value: '7d', onClick: (e) => {
+                            changePeriod(e);
+                            setSelectedTimeButton('7d');
+                        } }, "7D"),
+                    react_1.default.createElement("button", { className: selectedTimeButton === '1d' ? 'btn btn-active' : 'btn', id: '1d', value: '1d', onClick: (e) => {
+                            changePeriod(e);
+                            setSelectedTimeButton('1d');
+                        } }, "1D"),
+                    react_1.default.createElement("button", { className: selectedTimeButton === '1hr' ? 'btn btn-active' : 'btn', id: '1hr', value: '1hr', onClick: (e) => {
+                            changePeriod(e);
+                            setSelectedTimeButton('1hr');
+                        } }, "1H")),
+                react_1.default.createElement("div", { className: 'btn-group' },
+                    react_1.default.createElement("button", { className: selectedLogsButton === 'All logs' ? 'btn btn-active' : 'btn', value: 'allLogs', onClick: (e) => {
+                            changeSearch(e);
+                            setSelectedLogsButton('All logs');
+                        } }, "All logs"),
+                    react_1.default.createElement("button", { className: selectedLogsButton === 'Reports' ? 'btn btn-active' : 'btn', value: 'reports', onClick: (e) => {
+                            changeSearch(e);
+                            setSelectedLogsButton('Reports');
+                        } }, "Reports"),
+                    react_1.default.createElement("button", { className: selectedLogsButton === 'Errors' ? 'btn btn-active' : 'btn', value: 'errors', onClick: (e) => {
+                            changeSearch(e);
+                            setSelectedLogsButton('Errors');
+                        } }, "Errors")),
+                react_1.default.createElement("div", { className: 'form-control' },
+                    react_1.default.createElement("div", { className: 'input-group' },
+                        react_1.default.createElement("input", { type: 'text', placeholder: 'Search\u2026', className: 'input input-bordered', onChange: changeSearch }),
+                        react_1.default.createElement("button", { className: 'btn btn-square', onClick: getLogs },
+                            react_1.default.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', className: 'h-6 w-6', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor' },
+                                react_1.default.createElement("path", { strokeLinecap: 'round', strokeLinejoin: 'round', strokeWidth: '2', d: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' })))))),
+            react_1.default.createElement("div", { className: 'flex flex-row justify-center gap-8' },
+                react_1.default.createElement("div", { className: 'logs-log-event overflow-x-auto' },
+                    react_1.default.createElement("table", { className: 'table table-compact max-w-max' },
+                        react_1.default.createElement("thead", null,
+                            react_1.default.createElement("tr", null,
+                                react_1.default.createElement("th", null),
+                                react_1.default.createElement("th", null, "Logs"))),
+                        react_1.default.createElement("tbody", null, logsList)))))));
 };
 exports.default = Logs;

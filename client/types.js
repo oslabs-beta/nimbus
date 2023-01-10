@@ -9,9 +9,8 @@ exports.convertToChartJSStructure = void 0;
 ;
 ;
 ;
-// NOTE TO SELF:
-// Files that use convertToChartJSStructure
-// Function, Home
+// Function is used in Home&Function components
+// Converted RawData into a structure that is compatible with ChartJS
 const convertToChartJSStructure = (rawData) => {
     const output = [];
     for (let i = rawData.values.length - 1; i >= 0; i--) {
