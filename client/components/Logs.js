@@ -166,8 +166,8 @@ const Logs = () => {
     // ['func1', 'func2, 'func3']
     const functionsList = functions.map((funcStr, i) => (react_1.default.createElement("option", null, funcStr)));
     return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("div", { className: 'logs-logs flex flex-col space-y-8 max-w-fit' },
-            react_1.default.createElement("div", { className: 'logs-filters flex justify-between gap-8 max-w-full' },
+        react_1.default.createElement("div", { className: 'logs-logs flex flex-col space-y-8 w-full px-8' },
+            react_1.default.createElement("div", { className: 'logs-filters flex justify-between gap-8 w-full' },
                 react_1.default.createElement("select", { className: 'select select-primary w-full max-w-fit', onChange: changeSelectedFunc }, functionsList),
                 react_1.default.createElement("div", { className: 'btn-group' },
                     react_1.default.createElement("button", { className: selectedTimeButton === '30d' ? 'btn btn-active' : 'btn', id: '30d', value: '30d', onClick: (e) => {
@@ -194,7 +194,7 @@ const Logs = () => {
                     react_1.default.createElement("button", { className: selectedLogsButton === 'All logs' ? 'btn btn-active' : 'btn', value: 'allLogs', onClick: (e) => {
                             changeSearch(e);
                             setSelectedLogsButton('All logs');
-                        } }, "All logs"),
+                        } }, "All Logs"),
                     react_1.default.createElement("button", { className: selectedLogsButton === 'Reports' ? 'btn btn-active' : 'btn', value: 'reports', onClick: (e) => {
                             changeSearch(e);
                             setSelectedLogsButton('Reports');
@@ -209,13 +209,13 @@ const Logs = () => {
                         react_1.default.createElement("button", { className: 'btn btn-square', onClick: getLogs },
                             react_1.default.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', className: 'h-6 w-6', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor' },
                                 react_1.default.createElement("path", { strokeLinecap: 'round', strokeLinejoin: 'round', strokeWidth: '2', d: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' })))))),
-            react_1.default.createElement("div", { className: 'flex flex-row justify-center gap-8' },
-                react_1.default.createElement("div", { className: 'logs-log-event overflow-x-auto' },
-                    react_1.default.createElement("table", { className: 'table table-compact max-w-max' },
-                        react_1.default.createElement("thead", null,
-                            react_1.default.createElement("tr", null,
-                                react_1.default.createElement("th", null),
-                                react_1.default.createElement("th", null, "Logs"))),
+            react_1.default.createElement("div", { className: 'flex flex-row justify-center gap-8 w-full' },
+                react_1.default.createElement("div", { className: 'logs-log-event overflow-x-auto w-full' },
+                    react_1.default.createElement("table", { className: 'table table-compact w-full' },
+                        react_1.default.createElement("thead", { className: 'w-full' },
+                            react_1.default.createElement("tr", { className: 'w-full' },
+                                react_1.default.createElement("th", { className: 'bg-primary w-[5%]' }),
+                                react_1.default.createElement("th", { className: 'bg-primary w-[95%]' }, "Logs"))),
                         react_1.default.createElement("tbody", null, logsList)))))));
 };
 exports.default = Logs;
