@@ -43,7 +43,7 @@ const Logs = () => {
     } else if (e.target.value === 'reports') {
       setSearch('REPORT');
     } else if (e.target.value === 'errors') {
-      setSearch('ERROR');
+      setSearch('error');
     } else {
       setSearch(e.target.value);
     }
@@ -127,7 +127,7 @@ const Logs = () => {
   }, [selectedFunc, period, search]);
 
   const logsList = logs.map((log, i) => (
-    <tr className='w-full'>
+    <tr className="w-full">
       {/* <svg
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
@@ -179,15 +179,15 @@ const Logs = () => {
 
   return (
     <>
-      <div className='logs-logs flex flex-col space-y-8 w-full px-8'>
-        <div className='logs-filters flex justify-between gap-8 w-full'>
+      <div className='logs-logs flex flex-col w-full overflow-auto'>
+        <div className='logs-filters flex flex-col xl:flex-row justify-center items-center lg:justify-around w-full mx-8 mb-6'>
           <select
-            className='select select-primary w-full max-w-fit'
+            className='select select-primary max-w-fit mb-3 xl:mb-0'
             onChange={changeSelectedFunc}
           >
             {functionsList}
           </select>
-          <div className='btn-group'>
+          <div className='btn-group mb-3 xl:mb-0'>
             <button
               className={
                 selectedTimeButton === '30d' ? 'btn btn-active' : 'btn'
@@ -251,7 +251,7 @@ const Logs = () => {
             </button>
           </div>
 
-          <div className='btn-group'>
+          <div className='btn-group mb-3 xl:mb-0'>
             <button
               className={
                 selectedLogsButton === 'All logs' ? 'btn btn-active' : 'btn'
@@ -317,7 +317,7 @@ const Logs = () => {
             </div>
           </div>
         </div>
-        <div className='flex flex-row justify-center gap-8 w-full'>
+        <div className='flex flex-row justify-center gap-8 w-full mx-8 '>
           <div className='logs-log-event overflow-x-auto w-full'>
             <table className='table table-compact w-full'>
               <thead className='w-full'>
