@@ -234,7 +234,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
               <div className="form-control">
               <input type='submit' value='Submit' className="btn btn-primary"></input>
               </div>
-              <button onClick={swapAuthView} className="underline underline-offset-2 text-secondary">Switch to Login</button>
+              <button onClick={swapAuthView} className="underline underline-offset-2 text-base-300">Switch to Login</button>
             </div>
           </div>
           { (errorMessage !== '')

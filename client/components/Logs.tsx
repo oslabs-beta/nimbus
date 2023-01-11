@@ -127,7 +127,7 @@ const Logs = () => {
   }, [selectedFunc, period, search]);
 
   const logsList = logs.map((log, i) => (
-    <tr>
+    <tr className='w-full'>
       {/* <svg
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
@@ -142,9 +142,9 @@ const Logs = () => {
           d='M8.25 4.5l7.5 7.5-7.5 7.5'
         />
       </svg> */}
-      <th>{i + 1}</th>
+      <th className="w-[5%]">{i + 1}</th>
       {/* <td className='whitespace-normal'>{log}</td> */}
-      <td className='whitespace-nowrap text-ellipsis max-w-7xl'>{log}</td>
+      <td className='w-[95%]'>{log}</td>
     </tr>
     // overflow-hidden
   ));
@@ -326,7 +326,7 @@ const Logs = () => {
                   <th className='bg-primary w-[95%]'>Logs</th>
                 </tr>
               </thead>
-              <tbody>{logsList}</tbody>
+              <tbody className='w-full'>{logsList}</tbody>
             </table>
           </div>
         </div>

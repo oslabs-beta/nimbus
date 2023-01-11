@@ -185,7 +185,7 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
                                 regionsOptions.map((item, idx) => (react_1.default.createElement("option", { key: `region-${idx}`, value: item }, item))))),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("input", { type: 'submit', value: 'Submit', className: "btn btn-primary" })),
-                        react_1.default.createElement("button", { onClick: swapAuthView, className: "underline underline-offset-2 text-secondary" }, "Switch to Login"))),
+                        react_1.default.createElement("button", { onClick: swapAuthView, className: "underline underline-offset-2 text-base-300" }, "Switch to Login"))),
                 (errorMessage !== '')
                     &&
                         react_1.default.createElement("div", { className: "alert alert-error shadow-lg fixed bottom-0 mt-1" },

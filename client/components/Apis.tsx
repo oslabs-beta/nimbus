@@ -116,7 +116,7 @@ const Apis = () => {
   return (
     <div className='w-full'>
       <div className='flex flex-row'>
-        <ul className='menu mt-4 lg:mt-0 bg-base-100 w-3/12 p-2 rounded-box'>
+        <ul className='menu mt-4 lg:mt-0 bg-base-100 w-3/12 p-6 rounded-box'>
           <li key={'menu-title'} className='menu-title'>
             <span className='text-lg'>API list</span>
           </li>
