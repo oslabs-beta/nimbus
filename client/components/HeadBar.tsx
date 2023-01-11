@@ -12,7 +12,7 @@ const HeadBar: React.FC<HeadBarProps> = ({ toggleTheme, theme }: HeadBarProps) =
     }
     
     return (
-        <div className="navbar bg-secondary flex-row justify-between shadow-inner shadow-md">
+        <div className="navbar bg-secondary flex-row justify-between shadow-md">
             {/* <a className="btn btn-ghost normal-case text-xl">nimbus </a> */}
             <div>
                 <img src={require("../../assets/cloud.png").default} className="w-12 ml-3" />
@@ -22,7 +22,7 @@ const HeadBar: React.FC<HeadBarProps> = ({ toggleTheme, theme }: HeadBarProps) =
             </div>
             <div className="form-control">
                 <label className="label cursor-pointer">
-                    <span className="label-text">{theme === 'myThemeDark' ? 'Light' : 'Dark'}</span> 
+                    <span className="label-text">{theme === 'myThemeDark' ? 'Dark' : 'Light'}</span> 
                     <input type="checkbox" className="toggle ml-2" checked={checked} onClick={handleToggle} />
                 </label>
             </div>
