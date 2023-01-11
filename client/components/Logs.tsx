@@ -144,7 +144,7 @@ const Logs = () => {
       </svg> */}
       <th className="w-[5%]">{i + 1}</th>
       {/* <td className='whitespace-normal'>{log}</td> */}
-      <td className='whitespace-nowrap text-ellipsis w-[95%] overflow-hidden text-truncate'>{log}</td>
+      <td className='w-[95%]'>{log}</td>
     </tr>
     // overflow-hidden
   ));

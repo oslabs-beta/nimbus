@@ -51,9 +51,9 @@ const Login: React.FC<AuthProps> = ({ swapAuthView, handleUserLogin }: AuthProps
   return (
     <div className="hero-content flex-col lg:flex-row-reverse px-12">
       <div className="text-center lg:text-left lg:ml-5">
-        <h1 className="text-5xl font-bold">Login now!</h1>
+        <h1 className="text-5xl font-bold">Login Now</h1>
         <p className="py-6">
-          Welcome to nimbus, the ultimate monitoring and visualization tool for AWS Lambda. 
+          Go Serverless with Confidence. Monitor and Visualize your AWS Lamda with Ease.
         </p>
       </div>
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">

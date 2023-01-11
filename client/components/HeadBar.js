@@ -32,7 +32,10 @@ const HeadBar = ({ toggleTheme, theme }) => {
         setChecked(prev => !prev);
     };
     return (react_1.default.createElement("div", { className: "navbar bg-secondary flex-row justify-between shadow-inner shadow-md" },
-        react_1.default.createElement("a", { className: "btn btn-ghost normal-case text-xl" }, "nimbus"),
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("img", { src: require("../../assets/cloud.png").default, className: "w-12 ml-3" }),
+            theme === 'myThemeDark' ?
+                react_1.default.createElement("img", { src: require("../../assets/nimbus3.png").default, className: "w-28 ml-1" }) : react_1.default.createElement("img", { src: require("../../assets/nimbus.png").default, className: "w-28 ml-1" })),
         react_1.default.createElement("div", { className: "form-control" },
             react_1.default.createElement("label", { className: "label cursor-pointer" },
                 react_1.default.createElement("span", { className: "label-text" }, theme === 'myThemeDark' ? 'Light' : 'Dark'),

@@ -67,8 +67,8 @@ const Login = ({ swapAuthView, handleUserLogin }) => {
     };
     return (react_1.default.createElement("div", { className: "hero-content flex-col lg:flex-row-reverse px-12" },
         react_1.default.createElement("div", { className: "text-center lg:text-left lg:ml-5" },
-            react_1.default.createElement("h1", { className: "text-5xl font-bold" }, "Login now!"),
-            react_1.default.createElement("p", { className: "py-6" }, "Welcome to nimbus, the ultimate monitoring and visualization tool for AWS Lambda.")),
+            react_1.default.createElement("h1", { className: "text-5xl font-bold" }, "Login Now"),
+            react_1.default.createElement("p", { className: "py-6" }, "Go Serverless with Confidence. Monitor and Visualize your AWS Lamda with Ease.")),
         react_1.default.createElement("div", { className: "card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100" },
             react_1.default.createElement("div", { className: "card-body" },
                 react_1.default.createElement("form", { onSubmit: submitForm },

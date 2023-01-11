@@ -13,7 +13,7 @@ const UserAuth: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }: Use
   }
 
   return (
-    <div className="user-auth hero min-h-screen bg-base-150">
+    <div className="user-auth hero min-h-screen bg-base-200">
       {showLogin === true ? <Login handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/> : <Register handleUserLogin={handleUserLogin} swapAuthView={swapAuthView}/>}
     </div>
   )
