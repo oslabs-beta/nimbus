@@ -29,7 +29,7 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 - Create an account by entering your information and linking it to your AWS account following the instructions provided on the Register page.
 
 
-<img src ="./assets/NimbusGIFs/register-LQ.gif" alt="login gif" width="400" height="225" style="flex:1;padding-right:10px;"/>
+<img src ="./assets/NimbusGIFs/register-LQ.gif" alt="login gif" width="800" height="450"/>
 
 
 - If you already have an account, simply log in.
