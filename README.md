@@ -8,7 +8,7 @@
 
 ## NOTES ########################
 
-This application is currently in development. Expected release date will be on January 15, 2023.
+This application is currently in development. Expected release date will be on January 12, 2023.
 
 
 ### About Nimbus
@@ -32,25 +32,25 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 
 - If you already have an account, simply log in.
 
-<img src ="./assets/login.gif" alt="login gif" align="center" width="400" height="300"/>
+<img src ="./assets/login.gif" alt="login gif" width="800" height="450"/>
 
 On the home page, you'll find a lot of information about the health of your AWS application, especially as it relates to lambda functions. This includes important metrics like the number of calls, errors, throttles, costs, and runtimes.
 
 - Head over to the Functions tab to see metrics broken down by individual functions, including invocations, errors, throttles, and durations.
 
-<img src ="./assets/functions.gif" alt="functions gif"/>
+<img src ="./assets/functions.gif" alt="functions gif" width="800" height="450"/>
 
 - The Logs tab is where you can find all your lambda function logs and filter them by time period, reports only, errors only, or any keyword.
 
-<img src ="./assets/logs.gif" alt="logs gif"/>
+<img src ="./assets/logs.gif" alt="logs gif" width="800" height="450"/>
 
 - The APIs tab lets you view common API metrics, endpoints, and the lambda functions they're connected to.
 
-<img src ="./assets/apis.gif" alt="apis gif"/>
+<img src ="./assets/apis.gif" alt="apis gif" width="800" height="450"/>
 
 - In the Settings tab, you can update your personal information (including AWS Cloudformation Stack ARN and region) or change your login details.
 
-<img src ="./assets/settings.gif" alt="settings gif"/>
+<img src ="./assets/settings.gif" alt="settings gif" width="800" height="450"/>
 
 
 ### Technologies Used
