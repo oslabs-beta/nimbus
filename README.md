@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    <img src ="./assets/nimbus-logo-color.png" width="300"/>
+    <img src ="./assets/nimbus-logo-color.png" align="center" width="300"/>
   <br>
   AWS Lambda Performance Tool
   <br>
@@ -32,7 +32,7 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 
 - If you already have an account, simply log in.
 
-<img src ="./assets/login.gif" alt="login gif"/>
+<img src ="./assets/login.gif" alt="login gif" align="center" width="400" height="300"/>
 
 On the home page, you'll find a lot of information about the health of your AWS application, especially as it relates to lambda functions. This includes important metrics like the number of calls, errors, throttles, costs, and runtimes.
 
