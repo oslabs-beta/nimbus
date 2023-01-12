@@ -28,38 +28,31 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 
 - Create an account by entering your information and linking it to your AWS account following the instructions provided on the Register page.
 
-<div style="display:flex">
-  <img src ="./assets/NimbusGIFs/register-LQ.gif" alt="login gif" width="400" height="225" style="flex:1;padding-right:10px;"/>
-  <img src ="./assets/NimbusGIFs/register-light-LQ.gif" alt="login gif" width="400" height="225" style="flex:1;padding-left:10px;"/>
-</div>
+
+<img src ="./assets/NimbusGIFs/register-LQ.gif" alt="login gif" width="400" height="225" style="flex:1;padding-right:10px;"/>
 
 
 - If you already have an account, simply log in.
 
 <img src ="./assets/NimbusGIFs/login-to-home-LQ.gif" alt="login gif" width="800" height="450"/>
-<img src ="./assets/NimbusGIFs/login-to-home-light-LQ.gif" alt="login gif" width="800" height="450"/>
 
 On the home page, you'll find a lot of information about the health of your AWS application, especially as it relates to lambda functions. This includes important metrics like the number of calls, errors, throttles, costs, and runtimes.
 
 - Head over to the Functions tab to see metrics broken down by individual functions, including invocations, errors, throttles, and durations.
 
-<img src ="./assets/NimbusGIFs/functions-LQ.gif" alt="functions gif" width="800" height="450"/>
 <img src ="./assets/NimbusGIFs/functions-light-LQ.gif" alt="functions gif" width="800" height="450"/>
 
 - The Logs tab is where you can find all your lambda function logs and filter them by time period, reports only, errors only, or any keyword.
 
 <img src ="./assets/NimbusGIFs/logs-LQ.gif" alt="logs gif" width="800" height="450"/>
-<img src ="./assets/NimbusGIFs/logs-light-LQ.gif" alt="logs gif" width="800" height="450"/>
 
 - The APIs tab lets you view common API metrics, endpoints, and the lambda functions they're connected to.
 
-<img src ="./assets/NimbusGIFs/apis-LQ.gif" alt="apis gif" width="800" height="450"/>
 <img src ="./assets/NimbusGIFs/apis-light-LQ.gif" alt="apis gif" width="800" height="450"/>
 
 - In the Settings tab, you can update your personal information (including AWS Cloudformation Stack ARN and region) or change your login details.
 
 <img src ="./assets/NimbusGIFs/settings-LQ.gif" alt="settings gif" width="800" height="450"/>
-<img src ="./assets/NimbusGIFs/settings-light-LQ.gif" alt="settings gif" width="800" height="450"/>
 
 
 ### Technologies Used
