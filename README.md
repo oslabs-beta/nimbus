@@ -32,25 +32,25 @@ Nimbus is an open source performance monitoring tool for AWS Lambda applications
 
 - If you already have an account, simply log in.
 
-[insert gif here]
+<img src ="./assets/login.gif" alt="login gif"/>
 
-- On the home page, you'll find a lot of information about the health of your AWS application, especially as it relates to lambda functions. This includes important metrics like the number of calls, errors, throttles, costs, and runtimes.
-
-[insert gif here]
+On the home page, you'll find a lot of information about the health of your AWS application, especially as it relates to lambda functions. This includes important metrics like the number of calls, errors, throttles, costs, and runtimes.
 
 - Head over to the Functions tab to see metrics broken down by individual functions, including invocations, errors, throttles, and durations.
 
-[insert gif here]
+<img src ="./assets/functions.gif" alt="functions gif"/>
 
 - The Logs tab is where you can find all your lambda function logs and filter them by time period, reports only, errors only, or any keyword.
 
-[insert gif here]
+<img src ="./assets/logs.gif" alt="logs gif"/>
 
 - The APIs tab lets you view common API metrics, endpoints, and the lambda functions they're connected to.
 
-[insert gif here]
+<img src ="./assets/apis.gif" alt="apis gif"/>
 
 - In the Settings tab, you can update your personal information (including AWS Cloudformation Stack ARN and region) or change your login details.
+
+<img src ="./assets/settings.gif" alt="settings gif"/>
 
 
 ### Technologies Used
