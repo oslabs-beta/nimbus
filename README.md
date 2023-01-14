@@ -20,7 +20,7 @@ Nimbus is a tool for monitoring, but it also has a number of features that make 
 ### Installation
 Download the desktop application HERE
 
-### Demo
+### User Guide
 - Visit the landing page and download the app for your operating system. Install it on your computer to get started.
 
 - Create an account by entering your information and linking it to your AWS account following the instructions provided on the Register page.
