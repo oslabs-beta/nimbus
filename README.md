@@ -8,20 +8,17 @@
 
 ## NOTES ########################
 
-This application is currently in development. Expected release date will be on January 12, 2023.
-
 
 ### About Nimbus
-Serverless architecture is a hot topic in the software engineering world. The serverless framework abstracts infrastructure away from developers and allows them to shift focus towards business logic. 
+Serverless architecture has become very popular in the field of software engineering, and Amazon's launch of AWS Lambda in 2014 has been a big part of its growth. AWS Lambda is a serverless computing service that lets users run code in response to events like changes to a DynamoDB table, an API call to API Gateway, or the addition of a file to an S3 bucket. As a function-as-a-service (FaaS) offering, AWS Lambda allows developers to focus on the business logic of their applications by abstracting away the underlying server infrastructure, such as maintenance, capacity planning, and scaling
 
-Amazon Web Services has been named as a Leader in the 2022 Magic Quadrant for Cloud Infrastructure and Platform Services (CIPS) for the 12th consecutive year. In 2014, AWS pioneered the enhanced cloud infrastructure sector by launching the Lambda service. Lambda was the first FaaS offering by a large public cloud vender. 
+AWS Lambda is a well-known service for serverless computing that lets users run code when certain events happen. But it can be hard to keep track of how well your Lambda functions are working and how they are being used, especially if you have a lot of functions and triggers or are running complex workloads. This is where Nimbus comes in. Nimbus is a desktop app that aims to solve this problem by making it easy to connect to your AWS account and keep an eye on the metrics of your Lambda functions. With Nimbus, you can see information about how your functions are being used and how well they are working in real time. This includes the number of function calls, how long each call took, and any errors or throttles that happened. Nimbus also gives you an estimate of how much your function calls will cost, so you can keep track of how much you're spending. In short, Nimbus is a valuable tool that simplifies the process of monitoring your AWS Lambda functions.
 
-AWS Lambda is a secure, on-demand, event-driven, compute service that scales as needed and allows users to be billed only for what is used. 
+Nimbus is a tool for monitoring, but it also has a number of features that make your AWS experience better. For example, Nimbus lets you look at and analyze the logs that your lambda functions create. This can help you solve problems and find ways to improve your code. Nimbus also allows you to monitor resources within your AWS API Gateway. It shows important API metrics like the number of calls, 4xx errors, 5xx errors, and latency. It also shows the lambda function that is connected to each endpoint. This makes it easy to see everything about your serverless app
 
-Nimbus is an open source performance monitoring tool for AWS Lambda applications. Nimbus allows developers to view metrics of their application as a whole as well as the benchmarks of each individual function. Nimbus offers a graphic user interface for customers to filter, search, and sort through the logs of Lambda functions. Additionally, Nimbus provides an estimation of the cost incurred from your invocations to help you stay aware of your spending. In short, Nimbus is a valuable tool that simplifies the process of monitoring your AWS Lambda functions.
 
 ### Installation
-* download the desktop application here
+Download the desktop application HERE
 
 ### Demo
 - Visit the landing page and download the app for your operating system. Install it on your computer to get started.
@@ -79,7 +76,30 @@ On the home page, you'll find a lot of information about the health of your AWS 
 Nimbus is an open-source product supported by the tech accelerator OS Labs. We welcome and appreciate contributions from the community. If you are interested in contributing to the development of our AWS serverless component monitoring and visualization tool, here are a few ways to get started:
 
 1. <b> Fork the repository: </b> Go to the <a href="https://github.com/oslabs-beta/nimbus"> main repository </a> on GitHub and click the “Fork” button to create a copy of the code under your own account. This will allow you to make changes to the code without affecting the original repository.
-2. <b> Set up your development environment: </b> Follow the instructions in the README file to set up your local development environment. This will typically involve installing dependencies, setting up a local development server, and configuring any necessary secrets or API keys.
+2. <b> Set up your development environment: </b> 
+  - To install the dependencies configured in the package.json file, run the following command:
+  ```
+  npm install
+  ```
+  - To set up a MongoDB database, you will need to obtain a connection string. Once you have the connection string, create an ENV file in the root directory and input the connection string as follows:
+  ```
+  MONGO_URI='your_connection_string'
+  ```
+  - Next, input your desired port number in the ENV file:
+  ```
+  PORT=your_port_number
+  ```
+  - The Nimbus application requires the use of JWT tokens for implementation, so you will need to create tokens for this purpose. You can input these tokens in the ENV file as follows:
+  ```
+  ACCESS_TOKEN_SECRET=your_access_token_secret
+  REFRESH_TOKEN_SECRET=your_refresh_token_secret
+  ```
+  - Finally, you will need to obtain the access key id, secret key, and region from your AWS IAM account. Input these values in the ENV file as follows:
+  ```
+  AWS_ACCESS_KEY_ID=your_access_key_id
+  AWS_SECRET_KEY=your_secret_key
+  AWS_REGION=your_region
+  ```
 3. <b> Choose an issue to work on: </b> Browse the <a href="https://github.com/oslabs-beta/nimbus/issues"> open issues </a> in the repository and pick one that interests you. Alternatively, you can also propose your own changes by opening a new issue and describing the feature or improvement you would like to see.
 4. <b> Create a branch: </b> Once you have chosen an issue to work on, create a new branch in your fork of the repository. Name the branch something descriptive, such as “add-feature-x” or “fix-bug-y”. This will allow you to work on your changes without affecting the main branch of the repository.
 5. <b>  Make your changes: </b> Make the necessary changes to the code in your branch. Be sure to follow the repository’s style guidelines and best practices, and make sure to test your changes thoroughly before submitting them.
