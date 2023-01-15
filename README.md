@@ -6,8 +6,6 @@
   <br>
 </h1>
 
-## NOTES ########################
-
 
 ### About Nimbus
 Serverless architecture has become very popular in the field of software engineering, and Amazon's launch of AWS Lambda in 2014 has been a big part of its growth. AWS Lambda is a serverless computing service that lets users run code in response to events like changes to a DynamoDB table, an API call to API Gateway, or the addition of a file to an S3 bucket. As a function-as-a-service (FaaS) offering, AWS Lambda allows developers to focus on the business logic of their applications by abstracting away the underlying server infrastructure, such as maintenance, capacity planning, and scaling
