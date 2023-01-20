@@ -42,12 +42,4 @@ describe ("POST /", () => {
 }); 
 
 
-// Should specify JSON in the content type header
-//     //     test("should specify json in the content type header", async () => {
-//     //         const response = await request(app).post("/login").send({
-//     //             username: "username", 
-//     //             password: "password",
-//     //         })
-//     //         expect(response.headers['content-type']).toEqual("application/json; charset=utf-8");
-//     //     });
-//     // });
+
