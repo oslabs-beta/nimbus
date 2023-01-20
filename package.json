@@ -4,7 +4,7 @@
   "description": "",
   "main": "electron/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon server/server.js & electron electron/main.js",
     "dev": "webpack serve --mode development & npm start",
     "build": "webpack --mode production"
