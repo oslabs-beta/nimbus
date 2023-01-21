@@ -16,7 +16,7 @@ Nimbus is a tool for monitoring, but it also has a number of features that make 
 
 
 ### Installation
-Download the desktop application HERE
+Download the desktop application [HERE](https://www.nimbusos.io/)
 
 ### User Guide
 - Visit the landing page and download the app for your operating system. Install it on your computer to get started.
