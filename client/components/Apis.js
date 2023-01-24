@@ -131,7 +131,7 @@ const Apis = () => {
     };
     return (react_1.default.createElement("div", { className: 'w-full' },
         react_1.default.createElement("div", { className: 'flex flex-row' },
-            react_1.default.createElement("ul", { className: 'menu mt-4 lg:mt-0 bg-base-100 w-3/12 p-2 rounded-box' },
+            react_1.default.createElement("ul", { className: 'menu mt-4 lg:mt-0 bg-base-100 w-3/12 p-6 rounded-box' },
                 react_1.default.createElement("li", { key: 'menu-title', className: 'menu-title' },
                     react_1.default.createElement("span", { className: 'text-lg' }, "API list")),
                 apiMetrics ? getApiNames() : ''),

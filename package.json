@@ -5,7 +5,7 @@
   "main": "electron/main.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon server/server.js & electron electron/main.js",
+    "start": "node server/server.js",
     "dev": "webpack serve --mode development & npm start",
     "build": "webpack --mode production"
   },

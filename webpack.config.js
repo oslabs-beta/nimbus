@@ -67,18 +67,4 @@ const config = {
   ],
 };
 
-// devServer: {
-//   port: 8080,
-//   static: {
-//     directory: path.resolve(__dirname, 'build'),
-//     publicPath: './build'
-//   },
-//   proxy: {
-//     '/': {
-//       target: 'http://localhost:3000',
-//       // secure: true,
-//     },
-//   },
-// },
-
 module.exports = config;
