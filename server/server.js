@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const path = require("path");
 dotenv.config();
 const app = (0, express_1.default)();
 const { PORT } = process.env;
@@ -13,6 +14,10 @@ app.use(express_1.default.json());
 const authRouter = require('./routes/authRouter');
 const dashboardRouter = require('./routes/dashboardRouter');
 app.use(cookieParser());
+app.use(express_1.default.static(path.resolve(__dirname, '../build')));
+app.get('/', function (req, res) {
+    return res.sendFile(path.resolve(__dirname, '../build/index.html'));
+});
 app.use('/', authRouter);
 app.use('/dashboard', dashboardRouter);
 // Handle all remaining endpoints that are not defined in the server/routers
@@ -33,3 +38,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Server is running at https://localhost:${PORT}`);
 });
+module.exports = app;

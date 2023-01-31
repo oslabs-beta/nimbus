@@ -103,7 +103,6 @@ const Logs = () => {
       // convert response to JS object
       res = await res.json();
       let logsArr = res.filteredLogs || ['Logs not found'];
-      console.log('LOGS ARRAY', logsArr);
       setLogs(logsArr);
     } catch (err) {
       console.log('ERROR FROM GET LOGS', err);

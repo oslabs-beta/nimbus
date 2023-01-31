@@ -1,10 +1,7 @@
 import React from "react";
-import "chartjs-adapter-moment";
-import { Chart, CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend,} from "chart.js";
+import { Chart, CategoryScale, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { Line } from "react-chartjs-2";
-import 'chartjs-adapter-moment';
 import { RawData, LineChartProps } from "../types";
-
 
 const LineChart = (props: LineChartProps) => {
   

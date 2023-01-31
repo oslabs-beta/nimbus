@@ -14,7 +14,7 @@ const authController: authController = {
         email
       }
       // Generate an access and refresh token for user
-      const accessToken = jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, { expiresIn: '10s'});
+      const accessToken = jwt.sign(res.locals.user, ACCESS_TOKEN_SECRET, { expiresIn: '24h'});
       const refreshToken = jwt.sign(res.locals.user, REFRESH_TOKEN_SECRET);
       // Store refresh token in cookies
       res.cookie('refreshToken', refreshToken, { secure: true, httpOnly: true, sameSite: 'strict' }); 
@@ -55,7 +55,7 @@ const authController: authController = {
             if (user) {
               // Generate new access token
               user.iat = Date.now()
-              const newAccessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '10s'})
+              const newAccessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '24h'})
               res.locals.accessToken = newAccessToken;
               res.locals.email = user.email
             } 

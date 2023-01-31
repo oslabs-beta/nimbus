@@ -3,6 +3,7 @@ import { ErrorObj } from './types';
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 
+const path = require("path");
 dotenv.config();
 const app = express();
 const { PORT } = process.env;
@@ -12,6 +13,14 @@ const authRouter = require('./routes/authRouter');
 const dashboardRouter = require('./routes/dashboardRouter');
 
 app.use(cookieParser());
+app.use(express.static(path.resolve(__dirname, '../build')));
+
+
+app.get('/', function(req, res) {
+  return res.sendFile(path.resolve(__dirname, '../build/index.html'));
+});
+
+
 app.use('/', authRouter);
 app.use('/dashboard', dashboardRouter);
 
