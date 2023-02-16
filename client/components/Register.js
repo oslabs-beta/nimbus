@@ -33,6 +33,7 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
     const [arn, setArn] = (0, react_1.useState)('');
     const [region, setRegion] = (0, react_1.useState)('');
     const [errorMessage, setErrorMessage] = (0, react_1.useState)('');
+    const [errors, setErrors] = (0, react_1.useState)({ email: false, firstName: false, lastName: false, password: false, confirmation: false, arn: false });
     // Update state when user types email, password etc.
     const updateEmail = (e) => {
         setEmail(e.target.value);
@@ -59,14 +60,13 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
     const handleError = () => {
         setErrorMessage('Some information is missing or incorrect');
     };
-    // Highlight erroneously filld fields in red
-    const highlightInput = (errors) => {
+    // Update errors object
+    const updateErrors = (errors) => {
+        const errorObj = { email: false, firstName: false, lastName: false, password: false, confirmation: false, arn: false };
         errors.forEach((el) => {
-            const input = document.querySelector(`#${el}`);
-            if (input) {
-                input.style.borderColor = 'red';
-            }
+            errorObj[el] = true;
         });
+        setErrors(errorObj);
     };
     // Send user credentials to server and receive access and refresh tokens
     const submitForm = (e) => {
@@ -91,7 +91,7 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
             console.log('email form login:', result);
             if (result.errMessage) {
                 handleError();
-                highlightInput(result.errors);
+                updateErrors(result.errors);
             }
             else {
                 console.log('user info:', result);
@@ -141,23 +141,23 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'email', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "Email")),
-                            react_1.default.createElement("input", { type: 'text', id: 'email', name: 'email', onChange: updateEmail, className: "input input-bordered" })),
+                            react_1.default.createElement("input", { type: 'text', id: 'email', name: 'email', onChange: updateEmail, className: errors.email ? "input input-bordered input-error" : "input input-bordered" })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'firstName', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "First Name")),
-                            react_1.default.createElement("input", { type: 'text', id: 'firstName', name: 'firstName', onChange: updateFirstName, className: "input input-bordered" })),
+                            react_1.default.createElement("input", { type: 'text', id: 'firstName', name: 'firstName', onChange: updateFirstName, className: errors.firstName ? "input input-bordered input-error" : "input input-bordered" })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'lastName', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "Last Name")),
-                            react_1.default.createElement("input", { type: 'text', id: 'lastName', name: 'lastName', onChange: updateLastName, className: "input input-bordered" })),
+                            react_1.default.createElement("input", { type: 'text', id: 'lastName', name: 'lastName', onChange: updateLastName, className: errors.lastName ? "input input-bordered input-error" : "input input-bordered" })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'password', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "Password")),
-                            react_1.default.createElement("input", { type: 'password', id: 'password', name: 'password', onChange: updatePassword, className: "input input-bordered" })),
+                            react_1.default.createElement("input", { type: 'password', id: 'password', name: 'password', onChange: updatePassword, className: errors.password ? "input input-bordered input-error" : "input input-bordered" })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'confirmation', className: "label" },
                                 react_1.default.createElement("span", { className: "label-text" }, "Confirm Password")),
-                            react_1.default.createElement("input", { type: 'password', id: 'confirmation', name: 'confirmation', onChange: updateConfirmation, className: "input input-bordered" })))),
+                            react_1.default.createElement("input", { type: 'password', id: 'confirmation', name: 'confirmation', onChange: updateConfirmation, className: errors.confirmation ? "input input-bordered input-error" : "input input-bordered" })))),
                 react_1.default.createElement("div", { className: 'card flex-shrink-0 w-full max-w-md lg:max-w-xl shadow-2xl bg-base-100' },
                     react_1.default.createElement("div", { className: 'card-body' },
                         react_1.default.createElement("div", { className: '' },
@@ -178,7 +178,7 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'arn', className: 'label' },
                                 react_1.default.createElement("span", { className: "label-text" }, "ARN")),
-                            react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, className: "input input-bordered input-secondary" })),
+                            react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, className: errors.email ? "input input-bordered input-secondary input-error" : "input input-bordered input-secondary " })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("select", { onChange: updateRegion, value: region, className: "select select-secondary w-full" },
                                 react_1.default.createElement("option", { value: '' }, "Select AWS region"),

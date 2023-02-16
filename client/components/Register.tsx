@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { UserData, AuthProps } from "../types";
 
+type FormErrors = {email:boolean; firstName:boolean; lastName:boolean; password:boolean; confirmation:boolean; arn:boolean};
+
 const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthProps) => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -10,6 +12,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
   const [arn, setArn] = useState('');
   const [region, setRegion] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState<FormErrors>({email: false, firstName: false, lastName: false, password: false, confirmation: false, arn: false});
 
   // Update state when user types email, password etc.
   const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,19 +48,20 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
     setErrorMessage('Some information is missing or incorrect');
   };
 
-  // Highlight erroneously filld fields in red
-  const highlightInput = (errors: Array<String>): void => {
+  // Update errors object
+  const updateErrors = (errors: Array<string>): void => {
+    const errorObj:any = {email:false, firstName:false, lastName:false, password:false, confirmation:false, arn:false}
+    
     errors.forEach((el) => {
-      const input = document.querySelector<HTMLElement>(`#${el}`);
-      if (input) {
-        input.style.borderColor = 'red';
-      }
+      errorObj[el] = true;
     });
+    setErrors(errorObj);
   };
 
   // Send user credentials to server and receive access and refresh tokens
   const submitForm = (e: any) => {
     e.preventDefault();
+
     const userData: UserData = {
       email,
       firstName,
@@ -79,7 +83,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
         console.log('email form login:', result);
         if (result.errMessage) {
           handleError();
-          highlightInput(result.errors);
+          updateErrors(result.errors);
         } else {
           console.log('user info:', result);
           handleUserLogin();
@@ -135,7 +139,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
                   id='email'
                   name='email'
                   onChange={updateEmail}
-                  className="input input-bordered"
+                  className={errors.email ? "input input-bordered input-error" : "input input-bordered"}
                 ></input>
               </div>
               <div className="form-control">
@@ -145,7 +149,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
                   id='firstName'
                   name='firstName'
                   onChange={updateFirstName}
-                  className="input input-bordered"
+                  className={errors.firstName ? "input input-bordered input-error" : "input input-bordered"}
                 ></input>
               </div>
               <div className="form-control">
@@ -155,7 +159,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
                   id='lastName'
                   name='lastName'
                   onChange={updateLastName}
-                  className="input input-bordered"
+                  className={errors.lastName ? "input input-bordered input-error" : "input input-bordered"}
                 ></input>
               </div>
               <div className="form-control">
@@ -165,7 +169,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
                   id='password'
                   name='password'
                   onChange={updatePassword}
-                  className="input input-bordered"
+                  className={errors.password ? "input input-bordered input-error" : "input input-bordered"}
                 ></input>
               </div>
               <div className="form-control">
@@ -175,7 +179,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
                   id='confirmation'
                   name='confirmation'
                   onChange={updateConfirmation}
-                  className="input input-bordered"
+                  className={errors.confirmation ? "input input-bordered input-error" : "input input-bordered"}
                 ></input>
               </div>
             </div>
@@ -219,7 +223,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
               </div>
               <div className="form-control">
                 <label htmlFor='arn' className='label'><span className="label-text">ARN</span></label>
-                <input type='text' id='arn' name='arn' onChange={updateArn} className="input input-bordered input-secondary"></input>
+                <input type='text' id='arn' name='arn' onChange={updateArn} className={errors.email ? "input input-bordered input-secondary input-error" : "input input-bordered input-secondary "}></input>
               </div>
               <div className="form-control">
                 <select onChange={updateRegion} value={region} className="select select-secondary w-full">
