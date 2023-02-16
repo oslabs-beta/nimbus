@@ -178,7 +178,7 @@ const Register = ({ swapAuthView, handleUserLogin }) => {
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("label", { htmlFor: 'arn', className: 'label' },
                                 react_1.default.createElement("span", { className: "label-text" }, "ARN")),
-                            react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, className: errors.email ? "input input-bordered input-secondary input-error" : "input input-bordered input-secondary " })),
+                            react_1.default.createElement("input", { type: 'text', id: 'arn', name: 'arn', onChange: updateArn, className: errors.arn ? "input input-bordered input-secondary input-error" : "input input-bordered input-secondary " })),
                         react_1.default.createElement("div", { className: "form-control" },
                             react_1.default.createElement("select", { onChange: updateRegion, value: region, className: "select select-secondary w-full" },
                                 react_1.default.createElement("option", { value: '' }, "Select AWS region"),

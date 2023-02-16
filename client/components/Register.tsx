@@ -223,7 +223,7 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
               </div>
               <div className="form-control">
                 <label htmlFor='arn' className='label'><span className="label-text">ARN</span></label>
-                <input type='text' id='arn' name='arn' onChange={updateArn} className={errors.email ? "input input-bordered input-secondary input-error" : "input input-bordered input-secondary "}></input>
+                <input type='text' id='arn' name='arn' onChange={updateArn} className={errors.arn ? "input input-bordered input-secondary input-error" : "input input-bordered input-secondary "}></input>
               </div>
               <div className="form-control">
                 <select onChange={updateRegion} value={region} className="select select-secondary w-full">
