@@ -1,58 +1,70 @@
 const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
-  entry: [
-    './client/index.tsx'
-  ],
+  entry: ['./client/index.tsx'],
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /\.(scss|css)$/,
         use: [
           'style-loader',
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1
-            }
+              importLoaders: 1,
+            },
           },
-          'postcss-loader'
-        ]
+          'sass-loader',
+          'postcss-loader',
+        ],
       },
       {
         test: /\.ts(x)?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+    ],
   },
   devServer: {
-    'static': {
-      directory: './dist'
-    }
+    port: 8080,
+    hot: true,
+    static: {
+      directory: './dist',
+    },
+    proxy: {
+      '/': {
+        target: 'http://localhost:3000',
+        // secure: true,
+      },
+    },
   },
   resolve: {
-    extensions: [
-      '.tsx',
-      '.ts',
-      '.js'
-    ],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "./client/index.html"),
+      template: path.join(__dirname, './client/index.html'),
     }),
   ],
 };
+
 module.exports = config;
