@@ -27,7 +27,6 @@ const Login: React.FC<AuthProps> = ({ swapAuthView, handleUserLogin }: AuthProps
       email,
       password
     }
-    console.log(credentials);
     
     fetch('/login', {
       method: 'POST',
@@ -40,7 +39,6 @@ const Login: React.FC<AuthProps> = ({ swapAuthView, handleUserLogin }: AuthProps
         handleError('Wrong username or password');
       }
       else {
-        console.log('user info:', result);
         handleUserLogin();
         // Save access token to local storage
         localStorage.setItem("accessToken", result.accessToken)

@@ -16,17 +16,17 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
   const [averageDuration, setAverageDuration] = useState(0);
   const [invocationsByFunc, setInvocationsByFunc] = useState({})
 
-  const route = {
+  const route = useRef({
     allMetrics: '/dashboard/allMetrics',
     funcMetrics: '/dashboard/funcmetrics'
-  }
+  });
 
   // Sends a GET request to the '/dashboard/allMetrics' route
   // Uses ReactHooks to change the states based on data received from AWS
   const getMetrics = async () => {
     let res;
     try {
-      res = await fetch(route.allMetrics, {
+      res = await fetch(route.current.allMetrics, {
         method: 'GET',
         headers: {
           'Content-Type': 'Application/JSON',
@@ -74,7 +74,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
   const getFuncMetrics = async () => {
     let res;
     try {
-      res = await fetch(route.funcMetrics, {
+      res = await fetch(route.current.funcMetrics, {
         method: 'GET',
         headers: {
           'Content-Type': 'Application/JSON',

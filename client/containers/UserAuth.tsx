@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Login from "../components/Login.js";
 import Register from "../components/Register.js";
 import { UserAuthProps } from "../types";
@@ -8,9 +8,9 @@ const UserAuth: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }: Use
   const [showLogin, setShowLogin] = useState(true);
 
   // Swap between login and register views
-  const swapAuthView = () => {
+  const swapAuthView = useCallback(() => {
     setShowLogin((showLogin) => !showLogin);
-  }
+  }, [showLogin]);
 
   return (
     <div className="user-auth hero min-h-screen bg-base-200">

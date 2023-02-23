@@ -1,5 +1,5 @@
 import { request } from 'http';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Home from '../components/Home';
@@ -24,28 +24,7 @@ const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }
   const [arn, setArn] = useState('');
   const [region, setRegion] = useState('');
 
-  const getData = async () => {
-    
-    const data = await fetch('/verifyToken', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'Application/JSON',
-        authorization: `BEARER ${localStorage.getItem('accessToken')}`,
-        refresh: `BEARER ${localStorage.getItem('refreshToken')}`,
-      },
-    });
-    const res = await data.json();
-
-    if (!res.accessToken) {
-      handleUserLogin();
-    }
-
-    setData(res);
-  };
-
-
-
-  const getUserDetails = async () => {
+  const getUserDetails = useCallback(async () => {
     let res;
     try {
       res = await fetch(`${routes.userDetails}`, {
@@ -66,7 +45,7 @@ const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }
     } catch (err) {
       console.log(err);
     }
-  }
+  }, [email, firstName, lastName, arn, region]);
 
   useEffect(() => {
     getUserDetails();
