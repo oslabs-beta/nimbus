@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ApiMetrics from './ApiMetrics';
 import ApiRelations from './ApiRelations';
@@ -11,16 +11,16 @@ const Apis = () => {
   const [showInfo, setShowInfo] = useState<View>('metrics');
 
   // Switch between metrics and relations
-  const toggleDisplay = (e:any) => {
+  const toggleDisplay = useCallback((e:any) => {
     if (e.target.value !== showInfo) {
       setShowInfo(e.target.value);
     }
-  }
+  }, [showInfo]);
  
   // Change the selected api
-  const handleSelectedApi = (e:any) => {
+  const handleSelectedApi = useCallback((e:any) => {
     setSelectedApi(() => e.target.value)
-  }
+  }, [selectedApi]);
 
   // Fetch Api relations data and set apiRelation state 
   const getApiRelations = async (signal:AbortSignal) => {
@@ -35,7 +35,6 @@ const Apis = () => {
         signal
       });
       res = await res.json();
-      // const apiRel = res.apiRelations || ['unable to fetch api relations'];
       const apiRel = res.apiRelations || undefined;
       setApiRelations(apiRel);
     }

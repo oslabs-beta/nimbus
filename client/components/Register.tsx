@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { UserData, AuthProps } from "../types";
 
 type FormErrors = {email:boolean; firstName:boolean; lastName:boolean; password:boolean; confirmation:boolean; arn:boolean};
@@ -15,38 +15,38 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
   const [errors, setErrors] = useState<FormErrors>({email: false, firstName: false, lastName: false, password: false, confirmation: false, arn: false});
 
   // Update state when user types email, password etc.
-  const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-  };
+  }, [email]);
 
-  const updateFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateFirstName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(e.target.value);
-  };
+  }, [firstName]);
 
-  const updateLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateLastName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setLastName(e.target.value);
-  };
+  }, [lastName]);
 
-  const updatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updatePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-  };
+  }, [password]);
 
-  const updateConfirmation = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateConfirmation = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmation(e.target.value);
-  };
+  }, [confirmation]);
 
-  const updateArn = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateArn = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setArn(e.target.value);
-  };
+  }, [arn]);
 
-  const updateRegion = (e: any) => {
+  const updateRegion = useCallback((e: any) => {
     setRegion(e.target.value);
-  };
+  }, [region]);
 
   // Hnadle wrong user input
-  const handleError = () => {
+  const handleError = useCallback(() => {
     setErrorMessage('Some information is missing or incorrect');
-  };
+  }, [errorMessage]);
 
   // Update errors object
   const updateErrors = (errors: Array<string>): void => {
@@ -71,7 +71,6 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
       arn,
       region,
     };
-    console.log('user data from front end ', userData);
 
     fetch('/register', {
       method: 'POST',
@@ -80,12 +79,10 @@ const Register: React.FC<AuthProps> = ({swapAuthView, handleUserLogin }: AuthPro
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log('email form login:', result);
         if (result.errMessage) {
           handleError();
           updateErrors(result.errors);
         } else {
-          console.log('user info:', result);
           handleUserLogin();
           // Save access token to local storage
           localStorage.setItem('accessToken', result.accessToken);

@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Component to fetch all functions metrics and display them
 const Functions = () => {
-  const [funcMetrics, setFuncMetrics] = useState({})
+  const [funcMetrics, setFuncMetrics] = useState({});
+
   // Grab each functions metrics when the component mounts
   const grabFuncsMetrics = async() => {
     let response;
@@ -17,12 +18,12 @@ const Functions = () => {
     })
     response = await response.json()
     setFuncMetrics(response.eachFuncMetrics)
-  }
+  };
 
   // Grab functions metrics when the component mounts
   useEffect(() => {
     grabFuncsMetrics()    
-  }, [])  
+  }, []);
 
   // Display table head and each function metrics component
   return (

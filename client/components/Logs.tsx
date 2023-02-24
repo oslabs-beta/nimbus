@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { userContext } from 'react'
 // import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-// THINGS TO ADD
+// To Do:
 // highlight selected buttons
 
 // Types
@@ -69,7 +69,6 @@ const Logs = () => {
       // convert response to JS object
       res = await res.json();
 
-      console.log('RES.FUNCTIONS', res.functions);
       // func arr is an array of strings (function names)
       const funcArr = res.functions || ['unable to fetch lambda functions'];
       // change functions to be array with all function names
@@ -90,7 +89,6 @@ const Logs = () => {
       filterPattern: search,
       period: period,
     };
-    console.log(reqBody);
     try {
       res = await fetch(`${routes.logs}`, {
         method: 'POST',
@@ -111,15 +109,11 @@ const Logs = () => {
 
   // On component mount: get all lambda functions
   useEffect(() => {
-    console.log('first useEffect');
     getFunctions();
-    //setSelectedFunctionButton(functions[0]);
   }, []);
 
   // On state change selectedFunc, period, search: get logs based on selected lambda func and options
   useEffect(() => {
-    console.log('second useEffect');
-    console.log('PERIOD', period);
     if (selectedFunc !== '') {
       getLogs();
     }

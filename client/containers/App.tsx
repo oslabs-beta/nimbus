@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useCallback} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Theme } from 'react-daisyui'
 import UserAuth from './UserAuth';
@@ -8,14 +8,15 @@ import HeadBar from '../components/HeadBar'
 const App = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [theme, setTheme] = React.useState('myThemeDark');
-
-  const handleUserLogin = () => {
-    setUserLoggedIn((userLoggedIn) => !userLoggedIn);
-  };
-
-  const toggleTheme = () => {
+  
+  const toggleTheme = useCallback(() => {
     setTheme(theme === 'myThemeDark' ? 'myThemeLight' : 'myThemeDark');
-  };
+  }, [theme]);
+
+  const handleUserLogin  = useCallback(() => {
+    setUserLoggedIn((userLoggedIn) => !userLoggedIn);
+  }, [userLoggedIn]);
+
   
   // If user is logged in, render UserDashboard component, otherwise render UserAuth component
   return (
