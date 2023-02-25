@@ -11,14 +11,14 @@ const Apis = () => {
   const [showInfo, setShowInfo] = useState<View>('metrics');
 
   // Switch between metrics and relations
-  const toggleDisplay = useCallback((e:any) => {
+  const toggleDisplay = useCallback((e: React.BaseSyntheticEvent) => {
     if (e.target.value !== showInfo) {
       setShowInfo(e.target.value);
     }
   }, [showInfo]);
  
   // Change the selected api
-  const handleSelectedApi = useCallback((e:any) => {
+  const handleSelectedApi = useCallback((e: React.BaseSyntheticEvent) => {
     setSelectedApi(() => e.target.value)
   }, [selectedApi]);
 
