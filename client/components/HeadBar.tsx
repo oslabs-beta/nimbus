@@ -6,10 +6,10 @@ const HeadBar: React.FC<HeadBarProps> = ({ toggleTheme, theme }: HeadBarProps) =
     const [checked, setChecked] = useState(false);
 
     // Toggle theme (light/dark)
-    const handleToggle = useCallback(() => {
+    const handleToggle =  () => {
         toggleTheme();
         setChecked(prev => !prev);
-    }, []);
+    };
     
     return (
         <div className="navbar bg-secondary flex-row justify-between shadow-md">
