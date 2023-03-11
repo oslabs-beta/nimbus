@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { HeadBarProps } from "../types";
-import Logout from '../components/Logout';
 
 const HeadBar: React.FC<HeadBarProps> = ({ toggleTheme, theme }: HeadBarProps) => {
 

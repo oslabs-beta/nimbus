@@ -1,6 +1,5 @@
 import React from "react";
 
-
 const Logout: React.FC = () => {
     const logOut = () => {
         fetch('/logout')
