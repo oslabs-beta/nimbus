@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
+import Logout from '../components/Logout';
 
 // Sidebar component
 const Layout = () => {
@@ -22,6 +23,10 @@ const Layout = () => {
       <li onClick={() => setSelectedTab('Settings')}>
         <Link to='/settings' className={selectedTab === 'Settings' ? 'active' : ''}>Settings</Link>
       </li>
+      <div className="ml-4 mt-3 mb-6 lg:hidden">
+        <Logout />
+      </div>
+      
     </ul>
   );
 };

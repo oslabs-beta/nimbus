@@ -20,7 +20,7 @@ const HeadBar: React.FC<HeadBarProps> = ({ toggleTheme, theme }: HeadBarProps) =
                 <img src={require("../../assets/nimbus3.png").default} className="w-28 ml-1"/> : <img src={require("../../assets/nimbus.png").default} className="w-28 ml-1"/>}
 
             </div>
-            <div className="form-control">
+            <div className="form-control flex-row">
                 <label className="label cursor-pointer">
                     <span className="label-text">{theme === 'myThemeDark' ? 'Dark' : 'Light'}</span> 
                     <input type="checkbox" className="toggle ml-2" checked={checked} onClick={handleToggle} />
