@@ -10,8 +10,8 @@ const Logout: React.FC = () => {
     }
 
     return (
-        <div>
-            <button className="btn btn-outline" onClick={logOut}>Log Out</button>
+        <div className="ml-4 mt-3 mb-6">
+            <button className="btn btn-outline btn-sm text-sm" onClick={logOut}>Log Out</button>
         </div>
     )
 }
