@@ -21,7 +21,7 @@ const Login: React.FC<AuthProps> = ({ swapAuthView, handleUserLogin }: AuthProps
   }
 
   // Send user credentials to server and receive access and refresh tokens
-  const submitForm = (e:any) => {
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const credentials = {
       email,
