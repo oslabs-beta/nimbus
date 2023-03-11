@@ -21,13 +21,20 @@ router.post('/register', credentialsController.getCredentials, userController.cr
     return res.status(200).json({
         accessToken: res.locals.accessToken,
     })
-})
+});
 
 router.get('/verifyToken', authController.verifyToken, (req: Request, res: Response) => {
     return res.status(200).json({
         message: res.locals.accessToken ? 'YOU ARE AUTHENTICATED' : 'NOT AUTHENTICATED',
         accessToken: res.locals.accessToken,
     });
-})
+});
+
+router.get('/logout', authController.removeToken, (req: Request, res: Response) => {
+    return res.status(200).json({
+        message: res.locals.accessToken ? 'YOU ARE AUTHENTICATED' : 'NOT AUTHENTICATED',
+        accessToken: res.locals.accessToken,
+    });
+});
 
 module.exports = router;

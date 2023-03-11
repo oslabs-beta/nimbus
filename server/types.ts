@@ -28,6 +28,7 @@ export interface getUserToken extends Request {
 export type authController = {
     verifyToken: (req: getUserToken, res: Response, next: NextFunction) => Promise<void>;
     generateJWT: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    removeToken: (req: Request, res: Response, next: NextFunction) => void;
 };
 
 

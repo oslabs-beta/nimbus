@@ -6,7 +6,7 @@ require('dotenv').config();
 const User = require('../models/userModel')
 
 const authController: authController = {
-  async generateJWT (req: Request, res: Response, next: NextFunction) {
+  async generateJWT (req, res, next) {
     try {
       const { email } = req.body;
       // Grab user from database
@@ -65,7 +65,12 @@ const authController: authController = {
         }
       } 
       return next();
-  } 
+  } ,
+
+  removeToken (req, res, next) {
+    res.clearCookie("refreshToken");
+    return next();
+  }
 };
 
 export default authController;
