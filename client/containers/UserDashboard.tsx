@@ -7,6 +7,7 @@ import Functions from '../components/Functions';
 import Logs from '../components/Logs';
 import Apis from '../components/Apis';
 import Settings from '../components/Settings';
+import Logout from '../components/Logout'
 import { UserAuthProps, FetchHeader} from "../types";
 
 const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }: UserAuthProps) => {
@@ -54,7 +55,7 @@ const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }
   return (
     <>
       <Router>
-        <div className="drawer drawer-mobile">
+        <div className="drawer drawer-mobile z-0">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center pb-12 pt-6 relative">
             <Routes>
@@ -90,6 +91,9 @@ const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }
           </div>
         </div>
       </Router>
+      <div className="hidden ml-4 mt-3 mb-6 lg:block lg:fixed lg:bottom-2 z-10">
+          <Logout />
+      </div>
     </> 
   );
 };
