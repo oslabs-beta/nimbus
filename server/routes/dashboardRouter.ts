@@ -1,7 +1,9 @@
-const express = require('express') 
-import { Request, Response } from 'express'
+const express = require('express') ;
+import { Request, Response } from 'express';
 import apiController from '../controllers/aws/apiController';
-const router = express.Router()
+const router = express.Router();
+const settingsRouter = require('./settingsRouter');
+
 import authController from '../controllers/authController';
 import credentialsController from '../controllers/aws/credentialsController';
 import lambdaController from '../controllers/aws/lambdaController';
@@ -15,75 +17,66 @@ import apiMetricsController from '../controllers/aws/apiMetricsController'
     // ARN is used to get credentials from client's AWS account
     // Credentials used to grab metrics
 
-router.get('/allMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, metricsController.getAllMetrics, lambdaController.getFunctions, metricsController.getMetricsByFunc, metricsController.getCostProps, (req: Request, res: Response) => {
+router.use(authController.verifyToken, credentialsController.getCredentialsFromDB);
+
+router.get('/allMetrics', metricsController.getAllMetrics, lambdaController.getFunctions, metricsController.getMetricsByFunc, metricsController.getCostProps, (req: Request, res: Response) => {
     return res.status(200).json({
         allFuncMetrics: res.locals.allFuncMetrics,
         cost: res.locals.cost
     });
 });
 
-router.get('/funcmetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, metricsController.getMetricsByFunc, (req: Request, res: Response) => {
+router.get('/funcmetrics', lambdaController.getFunctions, metricsController.getMetricsByFunc, (req: Request, res: Response) => {
     return res.status(200).json({
         eachFuncMetrics: res.locals.eachFuncMetrics,
     });
 });
 
-router.get('/functions', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, (req: Request, res: Response) => {
+router.get('/functions', lambdaController.getFunctions, (req: Request, res: Response) => {
     return res.status(200).json({
         functions: res.locals.functions
     });
 });
 
 // Handles POST Requests to get Logs for all functions and the ability to filter
-router.post('/allLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getAllLogs, (req: Request, res: Response) => {
+router.post('/allLogs', logsController.getAllLogs, (req: Request, res: Response) => {
     return res.status(200).json({
         logs: res.locals.logs
     });
 });
 
-router.post('/filteredLogs', authController.verifyToken, credentialsController.getCredentialsFromDB, logsController.getFilteredLogs, (req: Request, res: Response) => {
+router.post('/filteredLogs', logsController.getFilteredLogs, (req: Request, res: Response) => {
     return res.status(200).json({
         filteredLogs: res.locals.filteredLogs
     });
 });
 
 // Handles GET/POST Requests to grab API Metrics + Relationships
-router.post('/apiRelations', authController.verifyToken, credentialsController.getCredentialsFromDB, lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
+router.post('/apiRelations', lambdaController.getFunctions, apiController.getAPIRelations, (req: Request, res: Response) => {
     return res.status(200).json({
         apiRelations: res.locals.apiRelations
     });
 });
 
 
-router.get('/apiList', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, (req: Request, res: Response) => {
+router.get('/apiList', apiController.getAPIList, (req: Request, res: Response) => {
     return res.status(200).json({
         apiList: res.locals.apiList
     });
 });
 
-router.get('/apiMetrics', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, apiMetricsController.getAPIMetrics, (req: Request, res: Response) => {
+router.get('/apiMetrics', apiController.getAPIList, apiMetricsController.getAPIMetrics, (req: Request, res: Response) => {
     return res.status(200).json({
         allApiMetrics: res.locals.allApiMetrics
     });
 });
 
-router.get('/apiList', authController.verifyToken, credentialsController.getCredentialsFromDB, apiController.getAPIList, (req: Request, res: Response) => {
+router.get('/apiList', apiController.getAPIList, (req: Request, res: Response) => {
     return res.status(200).json({
         apiList: res.locals.apiList
     });
 });
 
-//Handles GET/POST requests to the Settings Tab
-router.get('/userDetails', authController.verifyToken, userController.getUser, (req: Request, res: Response) => {
-    return res.status(200).json(res.locals.user);
-});
-
-router.post('/updateProfile', authController.verifyToken, credentialsController.getCredentials, userController.updateUserProfile, (req: Request, res: Response) => {
-    return res.status(200).json(res.locals.user);
-});
-
-router.post('/updatePassword', authController.verifyToken, userController.updateUserPassword, (req: Request, res: Response) => {
-    return res.status(200).json(res.locals.success);
-});
+router.use('/settings', settingsRouter);
 
 module.exports = router;

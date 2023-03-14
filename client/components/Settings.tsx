@@ -11,8 +11,8 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
 
   // Store routes in object
   const routes = {
-    updateProfile: '/dashboard/updateProfile',
-    updatePassword: '/dashboard/updatePassword'
+    updateProfile: '/dashboard/settings/updateProfile',
+    updatePassword: '/dashboard/settings/updatePassword'
   }
   
   // Update state on change
