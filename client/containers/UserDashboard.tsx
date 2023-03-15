@@ -13,7 +13,7 @@ import { UserAuthProps, FetchHeader} from "../types";
 const UserDashboard: React.FC<UserAuthProps> = ({ handleUserLogin, toggleTheme }: UserAuthProps) => {
 
   const routes = {
-    userDetails: '/dashboard/userDetails',
+    userDetails: '/dashboard/settings/userDetails',
   }
 
   const [data, setData] = useState([]);

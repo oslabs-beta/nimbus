@@ -1,8 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import { ErrorObj } from './types';
+import authController from './controllers/authController';
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
-
 const path = require("path");
 dotenv.config();
 const app = express();
