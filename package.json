@@ -30,6 +30,7 @@
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@types/jsonwebtoken": "^8.5.9",
+    "aws-sdk": "^2.1339.0",
     "bcrypt": "^5.1.0",
     "chart.js": "^4.1.2",
     "chartjs-adapter-moment": "^1.0.1",
