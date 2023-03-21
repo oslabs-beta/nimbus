@@ -3,8 +3,8 @@ import { AwsCredentialIdentity } from "@aws-sdk/types";
 import { Request, Response, NextFunction } from "express";
 import dotenv from 'dotenv';
 dotenv.config();
-
 const AWS = require('aws-sdk');
+
 AWS.config.update({region: process.env.AWS_REGION});
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 

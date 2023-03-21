@@ -3,7 +3,7 @@ import { getUserToken, authController } from '../types';
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
-const User = require('../models/userModel')
+
 
 const authController: authController = {
   async generateJWT (req, res, next) {

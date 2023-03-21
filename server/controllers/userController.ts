@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { userController , KeyType, KeyTypeSettings, KeyTypePassword } from '../types';
 require('dotenv').config();
-
 const AWS = require('aws-sdk');
-AWS.config.update({region: process.env.AWS_REGION});
-const dynamodb = new AWS.DynamoDB.DocumentClient(); 
-
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const jwt = require('jsonwebtoken');
+
+AWS.config.update({region: process.env.AWS_REGION});
+const dynamodb = new AWS.DynamoDB.DocumentClient(); 
 
 const userController: userController = {
 
@@ -171,31 +170,42 @@ const userController: userController = {
       })
     };
 
-    const params = {
+    const originalUserParams = {
       TableName: process.env.TABLE_NAME,
       Key: {
-        'email': originalEmail
+        'email' : originalEmail,
       },
-      UpdateExpression: 'set firstName = :value1, lastName = :value2, arn = :value3, region = :value4',
-      ExpressionAttributeValues: {
-        ':value1': firstName,
-        ':value2': lastName,
-        ':value3': arn,
-        ':value4': region
-      }
-    };
+    }
 
     try {
+      const params = {
+        TableName: process.env.TABLE_NAME,
+        Key: {
+          'email' : originalEmail
+        },
+        UpdateExpression: 'set firstName = :value1, lastName = :value2',
+        ExpressionAttributeValues: {
+          ':value1' : firstName, 
+           ':value2' : lastName, 
+        },
+        ReturnValues: 'ALL_NEW'
+      };
+
       // Update user in database with hashedPass as password
       const updatedUser = await dynamodb.update(params).promise();
-      console.log(updatedUser);
-      // HI MADELINE
-      res.locals.user = updatedUser;
+      
+      res.locals.user = {
+        'email' : originalEmail , 
+        'firstName' : firstName , 
+        'lastName' : lastName , 
+        'arn' : arn , 
+        'region' : region , 
+      };
 
       return next();
     } catch (err) {
       return next({
-        log: "Error caught in userController.updateUserProfile middleware function",
+        log: "Error caught in userController.updateUserProfile middleware function" + err,
         status: 500,
         message: {errMessage: `Error updating user's profile`, errors: errors}
       })
@@ -229,20 +239,19 @@ const userController: userController = {
       const hashedPass = await bcrypt.hash(password, SALT_WORK_FACTOR);
 
       const params = {
-        TableName: 'TABLE_NAME',
+        TableName: process.env.TABLE_NAME,
         Key: {
-          'email' : {S: originalEmail}
+          'email' : originalEmail
         },
-        UpdateExpression: `SET password = :value1`,
+        UpdateExpression: `set password = :value1`,
         ExpressionAttributeValues: {
-          ':value1' : { S: hashedPass}
-        }
+          ':value1' : hashedPass
+        },
       };
 
       // create a new user in database with hashedPass as password
-      const updatedUser = await dynamodb.updateItem(params);
+      const updatedUser = await dynamodb.update(params).promise();
 
-      console.log(updatedUser) // HI MADELINE
       res.locals.success = {successMessage: 'Password updated!'};
       return next();
     } catch (err) {

@@ -191,11 +191,11 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
             </div>
             <div className="form-control">
               <label htmlFor='arn' className="label"><span className="label-text">ARN</span></label>
-              <input type='text' id='arn' name='arn' onChange={updateArn} value={props.arn} className="input input-bordered"></input>
+              <input type='text' id='arn' name='arn' disabled={true} onChange={updateArn} value={props.arn} className="input input-bordered"></input>
             </div>
             <div className='form-control'>
             <label htmlFor='region' className="label"><span className="label-text">Region</span></label>
-              <select onChange={updateRegion} value={props.region} className="select select-secondary w-full">
+              <select onChange={updateRegion} disabled={true} value={props.region} className="select select-secondary w-full">
                 <option value={props.region}>{props.region}</option>
                 {filteredRegionsOptions.map((item, idx) => (
                   <option key={`region-${idx}`} value={item}>
