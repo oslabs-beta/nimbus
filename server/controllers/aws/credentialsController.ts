@@ -1,15 +1,17 @@
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { AwsCredentialIdentity } from "@aws-sdk/types";
 import { Request, Response, NextFunction } from "express";
-import User from '../../models/userModel';
 import dotenv from 'dotenv';
 dotenv.config();
+const AWS = require('aws-sdk');
 
+AWS.config.update({region: process.env.AWS_REGION});
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const credentials: AwsCredentialIdentity = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_KEY,
-  };
+};
 
 const region = process.env.AWS_REGION;
 
@@ -48,10 +50,19 @@ const credentialsController = {
   // This function is used when grabbing information from Lambda, Gateway, etc
   async getCredentialsFromDB(req: Request, res: Response, next: NextFunction) {
     const { email } = res.locals;
-    const user: any = await User.findOne({ email })
+
+    const params = {
+      TableName: process.env.TABLE_NAME,
+      Key: {
+        'email' : email,
+      },
+    };
+
+    const user: any = await dynamodb.get(params).promise();
+
     if (user) {
-      res.locals.arn = user.arn;
-      res.locals.region = user.region;
+      res.locals.arn = user.Item.arn;
+      res.locals.region = user.Item.region;
     }
     
     const roleDetails = {

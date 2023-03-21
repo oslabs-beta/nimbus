@@ -1,21 +1,30 @@
 import { Request, Response, NextFunction } from "express";
 import { userController , KeyType, KeyTypeSettings, KeyTypePassword } from '../types';
-// import { nextTick } from "process";
-import User from '../models/userModel';
-const bcrypt = require('bcrypt')
+require('dotenv').config();
+const AWS = require('aws-sdk');
+const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-const jwt = require('jsonwebtoken')
-import * as dotenv from "dotenv";
-require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
+AWS.config.update({region: process.env.AWS_REGION});
+const dynamodb = new AWS.DynamoDB.DocumentClient(); 
 
 const userController: userController = {
 
   // Middleware for user login
   async verifyUser(req, res, next) {
     const { email, password } = req.body;
+
+    const params = {
+      TableName: process.env.TABLE_NAME,
+      Key: {
+        'email' : email,
+      },
+    };
+
     try {
-      const user: any = await User.findOne({email});
+      const user: any = await dynamodb.get(params).promise();
 
       // If the user does not exist in the database, invoke global error handler
       if (!user) {
@@ -24,10 +33,10 @@ const userController: userController = {
             status: 500,
             message: {err: 'User not in database'}
           });
-      }
+      };
 
       // If user exists with cooresponding email, compare password from client with password in database
-      const isValid: boolean = await bcrypt.compare(password, user.password);
+      const isValid: boolean = await bcrypt.compare(password, user.Item.password);
 
       if (!isValid) {
         return next({
@@ -35,7 +44,8 @@ const userController: userController = {
           status: 500,
           message: {err: 'Wrong password'}
         });
-      } 
+      };
+
       res.locals.email = email;
       return next(); 
       // All other errors, invoke global error handler
@@ -80,19 +90,26 @@ const userController: userController = {
         status: 500,
         message: {errMessage: `Error found in user input`, errors: errors}
       })
-    }
+    };
 
     // If the registration form was successfully filled out, create a new user in the database
     try {
       const hashedPass = await bcrypt.hash(password, SALT_WORK_FACTOR);
-      const user = await User.create({
-          firstName,
-          lastName,
-          email,
-          password: hashedPass,
-          arn,
-          region
-      })
+
+      const params = {
+        TableName: process.env.TABLE_NAME,
+        Item: {
+          'email' : email , 
+          'firstName' : firstName , 
+          'lastName' : lastName , 
+          'password' : hashedPass , 
+          'arn' : arn , 
+          'region' : region , 
+        },
+      };
+
+      const user = await dynamodb.put(params).promise();
+
       res.locals.user = user;
       return next();
       // Invoke global error handler if a DB error occurs
@@ -108,13 +125,22 @@ const userController: userController = {
   // Middleware for grabbing user info on Settings tab
   async getUser(req, res, next) {
     const { email } = res.locals;
-    const user: any = await User.findOne({email});
+
+    const params = {
+      TableName: process.env.TABLE_NAME,
+      Key: {
+        'email' : email
+      },
+    };
+
+    const user: any = await dynamodb.get(params).promise();
+
     res.locals.user = {
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      arn: user.arn,
-      region: user.region
+      email: user.Item.email,
+      firstName: user.Item.firstName,
+      lastName: user.Item.lastName,
+      arn: user.Item.arn,
+      region: user.Item.region
     }
     return next();
   },
@@ -138,30 +164,48 @@ const userController: userController = {
     // Send errors array to the front end
     if (errors.length > 0) {
       return next({
-        log: "Error caught in userController.createUser middleware function",
+        log: "Error caught in userController.updateUserProfile middleware function",
         status: 500,
         message: {errMessage: `Error found in user input`, errors: errors}
       })
-    }
-    try {
-      // Update user in database with hashedPass as password
-      const updatedUser = await User.findOneAndUpdate({
-          email: originalEmail
+    };
+
+    const originalUserParams = {
+      TableName: process.env.TABLE_NAME,
+      Key: {
+        'email' : originalEmail,
       },
-      {
-        firstName,
-        lastName,
-        arn,
-        region
-      }, 
-      {
-        new: true
-      })
-      res.locals.user = updatedUser;
+    }
+
+    try {
+      const params = {
+        TableName: process.env.TABLE_NAME,
+        Key: {
+          'email' : originalEmail
+        },
+        UpdateExpression: 'set firstName = :value1, lastName = :value2',
+        ExpressionAttributeValues: {
+          ':value1' : firstName, 
+           ':value2' : lastName, 
+        },
+        ReturnValues: 'ALL_NEW'
+      };
+
+      // Update user in database with hashedPass as password
+      const updatedUser = await dynamodb.update(params).promise();
+      
+      res.locals.user = {
+        'email' : originalEmail , 
+        'firstName' : firstName , 
+        'lastName' : lastName , 
+        'arn' : arn , 
+        'region' : region , 
+      };
+
       return next();
     } catch (err) {
       return next({
-        log: "Error caught in userController.updateUserProfile middleware function",
+        log: "Error caught in userController.updateUserProfile middleware function" + err,
         status: 500,
         message: {errMessage: `Error updating user's profile`, errors: errors}
       })
@@ -185,23 +229,29 @@ const userController: userController = {
     // Send errors array back to front end
     if (errors.length > 0) {
       return next({
-        log: "Error caught in userController.createUser middleware function",
+        log: "Error caught in userController.updateUserPassword middleware function",
         status: 500,
         message: {errMessage: `Error found in user input`, errors: errors}
       })
-    }
+    };
+
     try {
       const hashedPass = await bcrypt.hash(password, SALT_WORK_FACTOR);
+
+      const params = {
+        TableName: process.env.TABLE_NAME,
+        Key: {
+          'email' : originalEmail
+        },
+        UpdateExpression: `set password = :value1`,
+        ExpressionAttributeValues: {
+          ':value1' : hashedPass
+        },
+      };
+
       // create a new user in database with hashedPass as password
-      const updatedUser = await User.findOneAndUpdate({
-          email: originalEmail
-      },
-      {
-        password: hashedPass,
-      }, 
-      {
-        new: true
-      })
+      const updatedUser = await dynamodb.update(params).promise();
+
       res.locals.success = {successMessage: 'Password updated!'};
       return next();
     } catch (err) {
