@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
-import Login from "../components/Login.js";
-import Register from "../components/Register.js";
+import Login from "../components/Login";
+import Register from "../components/Register";
 import { UserAuthProps } from "../types";
 
 // UserAuth component, displays login or register component depending on state
