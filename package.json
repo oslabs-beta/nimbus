@@ -5,8 +5,9 @@
   "main": "electron/main.js",
   "scripts": {
     "test": "jest",
-    "start": "node server/server.js",
-    "dev": "webpack serve --mode development & npm start",
+    "start:server": "ts-node server/server.ts",
+    "dev": "webpack serve --mode development",
+    "start": "npm run start:server & npm run dev",
     "build": "webpack --config ./webpack.config.js"
   },
   "repository": {
@@ -86,6 +87,7 @@
     "tailwindcss": "^3.2.4",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.2",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1"
